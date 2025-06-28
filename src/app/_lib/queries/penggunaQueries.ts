@@ -1,7 +1,10 @@
 import "server-only";
 
 import { prisma } from "@/lib/prisma";
-import { TPenggunaSearchParams } from "../validations/penggunaSearchParams";
+import {
+  PenggunaWithRelations,
+  TPenggunaSearchParams,
+} from "../validations/penggunaSearchParams";
 import { Prisma } from "@/generated/prisma";
 
 export async function getPengguna(input: TPenggunaSearchParams) {
@@ -12,13 +15,17 @@ export async function getPengguna(input: TPenggunaSearchParams) {
     },
   };
 
+  if (input.peran) {
+    whereClause["peran"] = input.peran;
+  }
+
   const filtered = await prisma.pengguna.count({
-    where: { ...whereClause, peran: input.peran },
+    where: { ...whereClause },
   });
   const data = await prisma.pengguna.findMany({
     take: input.perPage,
     skip: (input.page - 1) * input.perPage,
-    where: { ...whereClause, peran: input.peran },
+    where: { ...whereClause },
     select: {
       id: true,
       nama: true,
@@ -134,6 +141,7 @@ export async function getDetailPengguna(id: string) {
           tempatTanggalLahir: true,
           mulaiMasukPendidikan: true,
           tahunLulus: true,
+          pembimbingId: true,
           pembimbing: {
             select: {
               pengguna: {
@@ -198,4 +206,66 @@ export async function getAllPenggunaDosen() {
   });
 
   return allDosen;
+}
+
+export async function getPenggunaByProgramStudi(
+  programStudiId: string,
+  params: TPenggunaSearchParams
+) {
+  const whereClause: Prisma.PenggunaWhereInput = {
+    programStudiId: programStudiId,
+  };
+
+  if (params.nama) {
+    whereClause.nama = {
+      contains: params.nama,
+    };
+  }
+  if (params.username) {
+    whereClause.username = {
+      contains: params.username,
+    };
+  }
+  if (params.angkatan) {
+    if (params.peran === "MAHASISWA") {
+      whereClause.mahasiswa = {
+        angkatan: {
+          contains: params.angkatan,
+        },
+      };
+    } else {
+      console.warn("Filter angkatan hanya berlaku untuk peran MAHASISWA.");
+    }
+  }
+  if (params.peran && params.peran !== null) {
+    whereClause.peran = params.peran;
+  }
+
+  const filtered = await prisma.pengguna.count({
+    where: whereClause,
+  });
+
+  const data: PenggunaWithRelations[] = await prisma.pengguna.findMany({
+    take: params.perPage,
+    skip: (params.page - 1) * params.perPage,
+    where: whereClause,
+    orderBy: {
+      createdAt: "desc",
+    },
+    include: {
+      mahasiswa: true,
+      dosen: true,
+      programStudi: {
+        select: {
+          id: true,
+          nama: true,
+          displayName: true,
+        },
+      },
+    },
+  });
+
+  const pageCount = Math.ceil(filtered / params.perPage);
+
+  return { data, pageCount, filtered };
 }

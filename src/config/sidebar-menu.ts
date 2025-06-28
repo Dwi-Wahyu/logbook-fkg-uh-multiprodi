@@ -39,39 +39,8 @@ export const dosenSidebarMenu = {
           title: "Kegiatan",
           url: "kegiatan",
           icon: Activity,
-          isDropdown: true,
-          items: [
-            {
-              title: "Semester 1",
-              url: "?semester=1",
-              isQuery: true,
-            },
-            {
-              title: "Semester 2",
-              url: "?semester=2",
-              isQuery: true,
-            },
-            {
-              title: "Semester 3",
-              url: "?semester=3",
-              isQuery: true,
-            },
-            {
-              title: "Semester 4",
-              url: "?semester=4",
-              isQuery: true,
-            },
-            {
-              title: "Semester 5",
-              url: "?semester=5",
-              isQuery: true,
-            },
-            {
-              title: "Semester 6",
-              url: "?semester=6",
-              isQuery: true,
-            },
-          ],
+          isDropdown: false,
+          items: [],
         },
       ],
     },

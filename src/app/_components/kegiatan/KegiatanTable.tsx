@@ -28,7 +28,14 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { Loader2, PlusCircle, Trash2, Edit, Eye } from "lucide-react";
+import {
+  Loader2,
+  PlusCircle,
+  Trash2,
+  Edit,
+  Eye,
+  LucideSquareDashedMousePointer,
+} from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -40,11 +47,9 @@ import { toast } from "sonner";
 import { CustomToast } from "@/components/toast";
 import Link from "next/link";
 
-// Import the exact type from your queries file
 import { KegiatanWithRelations } from "@/app/_lib/queries/kegiatanQueries";
-
-// REMOVE the manual Kegiatan type definition as it will now be imported
-// type Kegiatan = { ... };
+import { useSession } from "next-auth/react";
+import { type SearchParams } from "nuqs/server"; // Import SearchParams type for currentSearchParams
 
 type MataKuliahOption = {
   id: number;
@@ -52,18 +57,13 @@ type MataKuliahOption = {
   semester: number;
 };
 
-// Props yang diterima dari Server Component (page.tsx)
 interface KegiatanTableProps {
-  initialKegiatanList: KegiatanWithRelations[]; // Use the imported type here
+  initialKegiatanList: KegiatanWithRelations[];
   initialPageCount: number;
   initialFilteredCount: number;
   allMataKuliah: MataKuliahOption[];
-  currentSearchParams: {
-    page?: string;
-    perPage?: string;
-    status?: "DIAJUKAN" | "DISETUJUI" | "DITOLAK" | null; // Keep null as per previous discussion
-    mataKuliahId?: string;
-  };
+  // Perbarui tipe currentSearchParams untuk menyertakan 'semester'
+  currentSearchParams: SearchParams; // Gunakan SearchParams dari nuqs/server untuk mencakup semua parameter
 }
 
 export default function KegiatanTable({
@@ -75,37 +75,47 @@ export default function KegiatanTable({
 }: KegiatanTableProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  // Ensure the state uses the correct type as well
   const [data, setData] =
     useState<KegiatanWithRelations[]>(initialKegiatanList);
   const [pageCount, setPageCount] = useState(initialPageCount);
   const [filteredCount, setFilteredCount] = useState(initialFilteredCount);
 
   // State untuk filter dan pagination
-  const [page, setPage] = useState(parseInt(currentSearchParams.page || "1"));
+  const [page, setPage] = useState(
+    parseInt(currentSearchParams.page?.toString() || "1")
+  );
   const [perPage, setPerPage] = useState(
-    parseInt(currentSearchParams.perPage || "10")
+    parseInt(currentSearchParams.perPage?.toString() || "10")
   );
   const [statusFilter, setStatusFilter] = useState(
-    currentSearchParams.status || "all" // 'all' can be a string, not necessarily part of the enum
+    currentSearchParams.status?.toString() || "all" // status bisa string atau array string, pastikan .toString()
   );
   const [mataKuliahFilter, setMataKuliahFilter] = useState(
-    currentSearchParams.mataKuliahId || "all"
+    currentSearchParams.mataKuliahId?.toString() || "all"
+  );
+  // --- Tambahkan state untuk semesterFilter ---
+  const [semesterFilter, setSemesterFilter] = useState(
+    currentSearchParams.semester?.toString() || "all" // Pastikan semester juga diinisialisasi
   );
 
   useEffect(() => {
     setData(initialKegiatanList);
     setPageCount(initialPageCount);
     setFilteredCount(initialFilteredCount);
-    setPage(parseInt(currentSearchParams.page || "1"));
-    setPerPage(parseInt(currentSearchParams.perPage || "10"));
-    // Ensure statusFilter handles 'null' by converting it to 'all' or similar default
+    setPage(parseInt(currentSearchParams.page?.toString() || "1"));
+    setPerPage(parseInt(currentSearchParams.perPage?.toString() || "10"));
     setStatusFilter(
-      currentSearchParams.status === null
+      currentSearchParams.status?.toString() === "null" // nuqs bisa mengembalikan string "null"
         ? "all"
-        : currentSearchParams.status || "all"
+        : currentSearchParams.status?.toString() || "all"
     );
-    setMataKuliahFilter(currentSearchParams.mataKuliahId || "all");
+    setMataKuliahFilter(currentSearchParams.mataKuliahId?.toString() || "all");
+    // --- Update useEffect untuk semesterFilter ---
+    setSemesterFilter(
+      currentSearchParams.semester?.toString() === "null"
+        ? "all"
+        : currentSearchParams.semester?.toString() || "all"
+    );
   }, [
     initialKegiatanList,
     initialPageCount,
@@ -119,18 +129,23 @@ export default function KegiatanTable({
       params.set("page", page.toString());
       params.set("perPage", perPage.toString());
 
-      // If statusFilter is 'all', delete the parameter. Otherwise, set it.
       if (statusFilter && statusFilter !== "all") {
         params.set("status", statusFilter);
       } else {
         params.delete("status");
       }
 
-      // If mataKuliahFilter is 'all', delete the parameter. Otherwise, set it.
       if (mataKuliahFilter && mataKuliahFilter !== "all") {
         params.set("mataKuliahId", mataKuliahFilter);
       } else {
         params.delete("mataKuliahId");
+      }
+
+      // --- Tambahkan logika untuk semesterFilter ---
+      if (semesterFilter && semesterFilter !== "all") {
+        params.set("semester", semesterFilter);
+      } else {
+        params.delete("semester");
       }
 
       router.push(`/admin/kegiatan?${params.toString()}`);
@@ -224,6 +239,17 @@ export default function KegiatanTable({
     }
   };
 
+  const session = useSession();
+
+  const isDosen = session.data?.user.peran === "DOSEN";
+  const isMahasiswa = session.data?.user.peran === "MAHASISWA";
+  const isAdminOrSuperadmin =
+    session.data?.user.peran === "ADMIN" ||
+    session.data?.user.peran === "SUPERADMIN";
+
+  // Generate semester options dynamically (e.g., from 1 to 14 for typical university semesters)
+  const semesterOptions = Array.from({ length: 14 }, (_, i) => i + 1);
+
   return (
     <Card className="w-full shadow-md">
       <CardHeader>
@@ -235,8 +261,8 @@ export default function KegiatanTable({
             <Select
               value={statusFilter}
               onValueChange={(
-                value: "DIAJUKAN" | "DISETUJUI" | "DITOLAK" | "all"
-              ) => setStatusFilter(value)} // Type assertion for clarity
+                value: string // Ubah tipe menjadi string karena 'all' juga mungkin
+              ) => setStatusFilter(value)}
             >
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Filter Status" />
@@ -264,6 +290,27 @@ export default function KegiatanTable({
                 ))}
               </SelectContent>
             </Select>
+
+            {/* --- Tambahkan Select untuk Semester --- */}
+            {isMahasiswa && ( // Tampilkan hanya untuk mahasiswa jika semester hanya relevan bagi mereka
+              <Select
+                value={semesterFilter}
+                onValueChange={(value: string) => setSemesterFilter(value)}
+              >
+                <SelectTrigger className="w-[150px]">
+                  <SelectValue placeholder="Filter Semester" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Semua Semester</SelectItem>
+                  {semesterOptions.map((s) => (
+                    <SelectItem key={s} value={s.toString()}>
+                      Semester {s}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+
             <Button onClick={handleSearch} disabled={isPending}>
               {isPending ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -342,22 +389,56 @@ export default function KegiatanTable({
                       {new Date(kegiatan.createdAt).toLocaleDateString("id-ID")}
                     </TableCell>
                     <TableCell className="flex space-x-2 justify-center">
-                      <Link href={`/admin/kegiatan/detail/${kegiatan.id}`}>
-                        <Button variant="outline" size="sm" className="p-2">
-                          <Eye className="h-4 w-4" />
-                        </Button>
-                      </Link>
-                      <Link href={`/admin/kegiatan/edit/${kegiatan.id}`}>
-                        <Button variant="outline" size="sm" className="p-2">
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                      </Link>
-                      {/* Uncomment if status-based buttons are needed
-                      {kegiatan.status === "DIAJUKAN" && (
+                      {(isMahasiswa || isAdminOrSuperadmin) && ( // Mahasiswa atau Admin/Superadmin bisa melihat/mengedit
                         <>
+                          <Link href={`/admin/kegiatan/detail/${kegiatan.id}`}>
+                            <Button variant="outline" size="sm" className="p-2">
+                              <Eye className="h-4 w-4" />
+                            </Button>
+                          </Link>
+                          {isMahasiswa &&
+                            kegiatan.status === "DIAJUKAN" && ( // Hanya mahasiswa bisa edit jika status DIAJUKAN
+                              <Link
+                                href={`/admin/kegiatan/edit/${kegiatan.id}`}
+                              >
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  className="p-2"
+                                >
+                                  <Edit className="h-4 w-4" />
+                                </Button>
+                              </Link>
+                            )}
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            className="p-2"
+                            onClick={() => handleDelete(kegiatan.id)}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </>
+                      )}
+                      {(isDosen || isAdminOrSuperadmin) && ( // Dosen atau Admin/Superadmin bisa tanggapi
+                        <>
+                          {!isMahasiswa && ( // Hindari duplikasi tombol detail jika mahasiswa dan dosen/admin
+                            <Link
+                              href={`/admin/kegiatan/detail/${kegiatan.id}`}
+                            >
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="p-2"
+                              >
+                                Detail
+                              </Button>
+                            </Link>
+                          )}
                           <Button
                             size="sm"
                             className="p-2"
+                            disabled={kegiatan.status === "DISETUJUI"}
                             onClick={() =>
                               handleUpdateStatus(kegiatan.id, "DISETUJUI")
                             }
@@ -367,6 +448,7 @@ export default function KegiatanTable({
                           <Button
                             variant="destructive"
                             size="sm"
+                            disabled={kegiatan.status === "DITOLAK"}
                             className="p-2"
                             onClick={() =>
                               handleUpdateStatus(kegiatan.id, "DITOLAK")
@@ -375,15 +457,7 @@ export default function KegiatanTable({
                             Tolak
                           </Button>
                         </>
-                      )} */}
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        className="p-2"
-                        onClick={() => handleDelete(kegiatan.id)}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}

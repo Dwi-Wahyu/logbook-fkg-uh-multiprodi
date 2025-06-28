@@ -68,11 +68,6 @@ export default async function DaftarProgramStudi() {
               Kelola data program studi dan field kustomnya dengan mudah.
             </CardDescription>
           </div>
-          {/* <Link href="/admin/program-studi/tambah">
-            <Button className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-md rounded-lg flex items-center px-6 py-3">
-              <PlusCircle className="mr-2 h-5 w-5" /> Tambah Program Studi
-            </Button>
-          </Link> */}
         </CardHeader>
         <CardContent className="pt-0">
           <Suspense fallback={<ProgramStudiTableSkeleton />}>
@@ -115,47 +110,13 @@ export default async function DaftarProgramStudi() {
                           <div className="flex justify-center space-x-2">
                             {/* Buttons in a flex container */}
                             <Link
-                              href={`/admin/program-studi/detail/${programStudi.id}`}
+                              href={`/admin/pengaturan/program-studi/${programStudi.id}`}
                             >
-                              <Button
-                                variant="outline"
-                                size="icon"
-                                className="p-2 rounded-md border-primary text-primary hover:bg-primary/10 transition-colors"
-                              >
-                                {/* Primary outline */}
+                              <Button variant="outline">
                                 <Eye className="h-4 w-4" />
-                                <span className="sr-only">Lihat Detail</span>
+                                Lihat Daftar Pengguna
                               </Button>
                             </Link>
-                            {/* Uncomment and style Edit/Delete buttons as needed */}
-                            {/* Example Edit Button */}
-                            <Link
-                              href={`/admin/program-studi/edit/${programStudi.id}`}
-                            >
-                              <Button
-                                variant="outline"
-                                size="icon"
-                                className="p-2 rounded-md border-indigo-500 text-indigo-500 hover:bg-indigo-50 transition-colors"
-                              >
-                                {/* Accent color for edit */}
-                                <Edit className="h-4 w-4" />
-                                <span className="sr-only">
-                                  Edit Program Studi
-                                </span>
-                              </Button>
-                            </Link>
-                            {/* Example Delete Button (consider a custom modal for confirmation instead of simple click) */}
-                            <Button
-                              variant="destructive"
-                              size="icon"
-                              className="p-2 rounded-md hover:bg-red-600 transition-colors"
-                            >
-                              {/* Destructive button */}
-                              <Trash2 className="h-4 w-4" />
-                              <span className="sr-only">
-                                Hapus Program Studi
-                              </span>
-                            </Button>
                           </div>
                         </TableCell>
                       </TableRow>

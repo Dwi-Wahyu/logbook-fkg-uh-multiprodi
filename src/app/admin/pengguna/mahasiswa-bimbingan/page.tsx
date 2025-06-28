@@ -1,6 +1,6 @@
 import MahasiswaBimbinganCard from "@/app/_components/pengguna/MahasiswaBimbinganCard";
 import UnauthorizedPage from "@/app/_components/UnauthorizedPage";
-import { getDetailPengguna } from "@/app/_lib/actions/penggunaActions";
+import { getDetailPengguna } from "@/app/_lib/queries/penggunaQueries";
 import { auth } from "@/config/auth";
 
 export default async function DaftarMahasiswaBimbingan() {

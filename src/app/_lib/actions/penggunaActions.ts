@@ -22,8 +22,8 @@ import { unlinkSync, writeFileSync } from "fs";
 import { generateSafeFilename } from "@/hooks/use-safe-filename";
 import { TEditProfilPengguna } from "@/schema/EditProfilSchema";
 import { TUpdatePasswordSchema } from "@/schema/pengguna/UpdatePasswordSchema";
-import { TUpdatePembimbingSchema } from "@/app/_components/bimbingan/GantiPembimbingDialog";
 import { createNotifikasi } from "./notifikasiAction";
+import { TUpdatePembimbingSchema } from "@/schema/BimbinganSchema";
 
 export async function deletePengguna(id: string) {
   if (!id) throw new Error("ID tidak ditemukan.");
@@ -154,6 +154,7 @@ export async function editProfilPengguna(
       penggunaId: id,
     },
     data: {
+      semester: payload.semester,
       judulDisertasi: payload.judulDisertasi,
       email: payload.email,
       nomorTelpon: payload.nomorTelpon,
@@ -261,60 +262,4 @@ export async function updatePassword(payload: TUpdatePasswordSchema) {
   console.log(updatePengguna);
 
   return { success: true };
-}
-
-export async function updatePembimbing(payload: TUpdatePembimbingSchema) {
-  const { alasan, id, pembimbingId, promotorId, koPromotorId } = payload;
-  try {
-    const updateQuery = await prisma.pengguna.update({
-      where: {
-        id,
-      },
-      data: {
-        mahasiswa: {
-          update: {
-            pembimbingId,
-          },
-        },
-      },
-    });
-
-    createNotifikasi({
-      judul: "Perubahan Pembimbing Akademik",
-      penggunaId: payload.id,
-      pesan: `Pembimbing akademik Anda telah diperbarui oleh Administrator. ${
-        alasan ? `Alasan: ${alasan}` : ""
-      } Silakan periksa profil Anda untuk melihat detail perubahan.`,
-    });
-
-    if (pembimbingId) {
-      createNotifikasi({
-        judul: "Penugasan sebagai Dosen Pembimbing",
-        penggunaId: pembimbingId,
-        pesan: `Anda telah ditetapkan sebagai pembimbing akademik untuk mahasiswa ${updateQuery.nama}. Silakan periksa detail mahasiswa bimbingan Anda.`,
-      });
-    }
-
-    if (promotorId) {
-      createNotifikasi({
-        judul: "Penugasan sebagai Promotor Akademik",
-        penggunaId: promotorId,
-        pesan: `Anda telah ditetapkan sebagai pembimbing akademik untuk mahasiswa ${updateQuery.nama}. Silakan periksa detail mahasiswa bimbingan Anda.`,
-      });
-    }
-
-    if (koPromotorId) {
-      createNotifikasi({
-        judul: "Penugasan sebagai Ko-Promotor Akademik",
-        penggunaId: koPromotorId,
-        pesan: `Anda telah ditetapkan sebagai ko-pembimbing akademik untuk mahasiswa ${updateQuery.nama}. Silakan koordinasi dengan pembimbing utama.`,
-      });
-    }
-
-    revalidatePath("/admin/pengguna/detail/" + payload.id);
-
-    return { success: true };
-  } catch (error) {
-    return { success: false, error };
-  }
 }

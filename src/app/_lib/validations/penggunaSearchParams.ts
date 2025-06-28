@@ -1,3 +1,4 @@
+import { Prisma } from "@/generated/prisma";
 import {
   createSearchParamsCache,
   parseAsString,
@@ -7,7 +8,7 @@ import {
 
 export const penggunaSearchParams = createSearchParamsCache({
   page: parseAsInteger.withDefault(1),
-  perPage: parseAsInteger.withDefault(5),
+  perPage: parseAsInteger.withDefault(10),
   nama: parseAsString.withDefault(""),
   username: parseAsString.withDefault(""),
   angkatan: parseAsString.withDefault(""),
@@ -28,6 +29,26 @@ export type TPenggunaSearchParams = {
   nama: string;
   username: string;
   angkatan: string;
-  peran: "MAHASISWA" | "DOSEN" | "ADMIN" | "SUPERADMIN";
+  peran: "MAHASISWA" | "DOSEN" | "ADMIN" | "SUPERADMIN" | null;
   filterFlag: string;
 };
+
+export type PenggunaWithRelations = Prisma.PenggunaGetPayload<{
+  include: {
+    mahasiswa: true;
+    dosen: true;
+    programStudi: {
+      select: {
+        id: true;
+        nama: true;
+        displayName: true;
+      };
+    };
+  };
+}>;
+
+export type ProgramStudiWithFields = Prisma.ProgramStudiGetPayload<{
+  include: {
+    fields: true;
+  };
+}>;

@@ -12,14 +12,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { CalendarIcon, FilePenLine, Loader, Save } from "lucide-react";
+import { CalendarIcon, FilePenLine, Loader2, Save } from "lucide-react"; // Use Loader2
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
@@ -38,6 +37,7 @@ import { getProfilPengguna } from "../_lib/queries/penggunaQueries";
 import { CustomToast } from "@/components/toast";
 import { useSession } from "next-auth/react";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
 type ProfilPengguna = Awaited<ReturnType<typeof getProfilPengguna>>;
 
@@ -56,15 +56,14 @@ export default function ProfilEditFormMahasiswa({
   const form = useForm<TEditProfilPengguna>({
     resolver: zodResolver(editProfilPenggunaSchema),
     defaultValues: {
-      semester: initialData?.mahasiswa?.semester || 0,
+      semester: initialData?.mahasiswa?.semester ?? undefined,
       judulDisertasi: initialData?.mahasiswa?.judulDisertasi || "",
       email: initialData?.mahasiswa?.email || "",
       nomorTelpon: initialData?.mahasiswa?.nomorTelpon || "",
       angkatan: initialData?.mahasiswa?.angkatan || "",
       tahunLulus: initialData?.mahasiswa?.tahunLulus || "",
-      mulaiMasukPendidikan: initialData?.mahasiswa?.mulaiMasukPendidikan as
-        | Date
-        | undefined,
+      mulaiMasukPendidikan:
+        initialData?.mahasiswa?.mulaiMasukPendidikan ?? undefined,
       tempatTanggalLahir: initialData?.mahasiswa?.tempatTanggalLahir || "",
       alamat: initialData?.mahasiswa?.alamat || "",
       alamatKeluarga: initialData?.mahasiswa?.alamatKeluarga || "",
@@ -74,20 +73,29 @@ export default function ProfilEditFormMahasiswa({
 
   const showAlert = useMemo(() => {
     const dataLengkap =
-      initialData?.mahasiswa?.semester &&
-      initialData?.mahasiswa?.judulDisertasi &&
-      initialData?.mahasiswa?.email &&
-      initialData?.mahasiswa?.nomorTelpon &&
-      initialData?.mahasiswa?.alamat &&
-      initialData?.mahasiswa?.alamatKeluarga &&
-      initialData?.mahasiswa?.tahunLulus &&
-      initialData?.mahasiswa?.pekerjaan &&
-      initialData?.mahasiswa?.mulaiMasukPendidikan;
+      initialData?.mahasiswa?.semester !== null &&
+      initialData?.mahasiswa?.semester !== undefined &&
+      initialData?.mahasiswa?.judulDisertasi !== null &&
+      initialData?.mahasiswa?.judulDisertasi !== undefined &&
+      initialData?.mahasiswa?.email !== null &&
+      initialData?.mahasiswa?.email !== undefined &&
+      initialData?.mahasiswa?.nomorTelpon !== null &&
+      initialData?.mahasiswa?.nomorTelpon !== undefined &&
+      initialData?.mahasiswa?.alamat !== null &&
+      initialData?.mahasiswa?.alamat !== undefined &&
+      initialData?.mahasiswa?.alamatKeluarga !== null &&
+      initialData?.mahasiswa?.alamatKeluarga !== undefined &&
+      initialData?.mahasiswa?.tahunLulus !== null &&
+      initialData?.mahasiswa?.tahunLulus !== undefined &&
+      initialData?.mahasiswa?.pekerjaan !== null &&
+      initialData?.mahasiswa?.pekerjaan !== undefined &&
+      initialData?.mahasiswa?.mulaiMasukPendidikan !== null &&
+      initialData?.mahasiswa?.mulaiMasukPendidikan !== undefined;
 
     return !dataLengkap;
   }, [initialData]);
 
-  const onSubmit = async (payload: any) => {
+  const onSubmit = async (payload: TEditProfilPengguna) => {
     try {
       setLoading(true);
 
@@ -102,11 +110,26 @@ export default function ProfilEditFormMahasiswa({
           />
         ));
         setEditForm(false);
+      } else {
+        toast.custom(() => (
+          <CustomToast
+            title="Gagal Memperbarui Profil"
+            description={"Terjadi kesalahan yang tidak diketahui."}
+            variant="destructive"
+          />
+        ));
       }
-
-      setLoading(false);
     } catch (error) {
-      toast.error("Gagal memperbarui profil");
+      console.error("Error submitting profile edit:", error);
+      toast.custom(() => (
+        <CustomToast
+          title="Gagal memperbarui profil"
+          description="Terjadi kesalahan tak terduga. Mohon coba lagi."
+          variant="destructive"
+        />
+      ));
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -118,8 +141,8 @@ export default function ProfilEditFormMahasiswa({
 
   return (
     <Form {...form}>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="rounded-lg border items-center p-4 flex gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <div className="rounded-lg border items-center p-4 flex gap-4 bg-white shadow-sm">
           <Avatar className="h-10 w-10 rounded-lg">
             <AvatarImage
               src={`/image/profile-picture/${initialData?.mahasiswa?.pembimbing?.pengguna.avatar}`}
@@ -132,8 +155,8 @@ export default function ProfilEditFormMahasiswa({
             </AvatarFallback>
           </Avatar>
           <div>
-            <h1 className="font-semibold">Pembimbing</h1>
-            <h1 className="text-sm">
+            <h1 className="font-semibold text-gray-800">Pembimbing</h1>
+            <h1 className="text-sm text-gray-600">
               {initialData?.mahasiswa?.pembimbing?.pengguna.nama ??
                 "Belum menetapkan pembimbing"}
             </h1>
@@ -142,38 +165,65 @@ export default function ProfilEditFormMahasiswa({
       </div>
 
       {showAlert && (
-        <Alert variant={"destructive"}>
-          <AlertTitle>Alert !</AlertTitle>
-          <AlertDescription>Tolong lengkapi data berikut ini.</AlertDescription>
+        <Alert variant={"destructive"} className="mb-6 rounded-md">
+          <AlertTitle className="font-bold text-lg">Perhatian!</AlertTitle>
+          <AlertDescription className="text-base">
+            Beberapa data profil Anda belum lengkap. Mohon lengkapi untuk
+            memastikan informasi Anda akurat.
+          </AlertDescription>
         </Alert>
       )}
 
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         {/* Section: Data Dasar */}
+        <h2 className="text-xl font-semibold text-gray-800 border-b pb-2 mb-4">
+          Data Dasar
+        </h2>
         <div className="space-y-4">
-          <Label htmlFor="program_studi">Program Studi</Label>
+          <Label
+            htmlFor="program_studi"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
+            Program Studi
+          </Label>
           <Input
             id="program_studi"
             defaultValue={session.data?.user.programStudi}
             disabled
+            className="bg-gray-100 border-gray-200"
           />
 
           <FormField
             control={form.control}
             name="semester"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Semester</FormLabel>
-                <FormControl>
-                  <Input
-                    disabled={!editForm}
-                    placeholder="Contoh: 1, 3, atau 5"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+            render={({ field }) => {
+              // Destructuring value and onChange to handle them explicitly
+              const { onChange, value, ...restField } = field;
+
+              return (
+                <FormItem>
+                  <FormLabel>Semester</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      disabled={!editForm}
+                      placeholder="Contoh: 1, 3, atau 5"
+                      onChange={(e) => {
+                        const parsedValue =
+                          e.target.value === ""
+                            ? undefined
+                            : Number(e.target.value);
+                        onChange(parsedValue); // Call react-hook-form's onChange
+                      }}
+                      // Explicitly set value prop, converting null/undefined to "" for HTML input
+                      value={value ?? ""}
+                      {...restField}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
           />
 
           <FormField
@@ -232,6 +282,9 @@ export default function ProfilEditFormMahasiswa({
         </div>
 
         {/* Section: Data Akademik */}
+        <h2 className="text-xl font-semibold text-gray-800 border-b pb-2 mb-4 mt-8">
+          Data Akademik
+        </h2>
         <div className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <FormField
@@ -270,49 +323,52 @@ export default function ProfilEditFormMahasiswa({
                 </FormItem>
               )}
             />
-
-            <FormField
-              control={form.control}
-              name="mulaiMasukPendidikan"
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <FormLabel>Mulai Masuk Pendidikan Doktor FKG Unhas</FormLabel>
-                  <Popover>
-                    <PopoverTrigger disabled={!editForm} asChild>
-                      <FormControl>
-                        <Button
-                          variant={"outline"}
-                          className={cn(
-                            "w-full pl-3 text-left font-normal",
-                            !field.value && "text-muted-foreground"
-                          )}
-                        >
-                          {field.value ? (
-                            format(field.value, "PPP")
-                          ) : (
-                            <span>Pilih tanggal</span>
-                          )}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={field.value}
-                        onSelect={field.onChange}
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
           </div>
+
+          <FormField
+            control={form.control}
+            name="mulaiMasukPendidikan"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel>Mulai Masuk Pendidikan Doktor FKG Unhas</FormLabel>
+                <Popover>
+                  <PopoverTrigger disabled={!editForm} asChild>
+                    <FormControl>
+                      <Button
+                        variant={"outline"}
+                        className={cn(
+                          "w-full pl-3 text-left font-normal",
+                          !field.value && "text-muted-foreground"
+                        )}
+                      >
+                        {field.value ? (
+                          format(field.value, "dd MMMM🧍")
+                        ) : (
+                          <span>Pilih tanggal</span>
+                        )}
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={field.value}
+                      onSelect={field.onChange}
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
 
         {/* Section: Data Pribadi */}
+        <h2 className="text-xl font-semibold text-gray-800 border-b pb-2 mb-4 mt-8">
+          Data Pribadi
+        </h2>
         <div className="space-y-4">
           <FormField
             control={form.control}
@@ -387,12 +443,13 @@ export default function ProfilEditFormMahasiswa({
           />
         </div>
 
-        <div className="flex flex-col md:flex-row justify-end gap-4">
+        <div className="flex flex-col md:flex-row justify-end gap-4 pt-6 border-t mt-8">
           <Button
             onClick={() => setEditForm(false)}
-            disabled={!editForm}
+            disabled={!editForm || loading}
             type="button"
             variant="outline"
+            className="px-6 py-2"
           >
             Batal
           </Button>
@@ -403,17 +460,22 @@ export default function ProfilEditFormMahasiswa({
                 e.preventDefault();
                 setEditForm(true);
               }}
+              className="px-6 py-2 bg-primary hover:bg-primary/90 text-primary-foreground"
             >
-              <FilePenLine />
+              <FilePenLine className="mr-2 h-4 w-4" />
               Edit Data
             </Button>
           ) : (
-            <Button type="submit" disabled={form.formState.isSubmitting}>
-              {loading ? <Loader className="animate-spin" /> : <Save />}
-
-              {form.formState.isSubmitting
-                ? "Menyimpan..."
-                : "Simpan Perubahan"}
+            <Button type="submit" disabled={loading}>
+              {loading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Menyimpan...
+                </>
+              ) : (
+                <>
+                  <Save className="mr-2 h-4 w-4" /> Simpan Perubahan
+                </>
+              )}
             </Button>
           )}
         </div>

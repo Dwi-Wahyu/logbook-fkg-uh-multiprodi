@@ -41,7 +41,10 @@ export default async function KegiatanListPage({
     judul: search.judul, // Use parsed judul
     status: search.status, // Use parsed status
     mataKuliahId: search.mataKuliahId, // Use parsed mataKuliahId
+    semester: search.semester,
   });
+
+  console.log(kegiatanList);
 
   // Ambil semua mata kuliah untuk filter dropdown
   const allMataKuliah = await getAllMataKuliah();

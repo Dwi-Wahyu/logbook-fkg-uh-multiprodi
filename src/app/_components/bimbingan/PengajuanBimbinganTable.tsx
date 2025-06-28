@@ -21,12 +21,12 @@ import { DataTableAdvancedToolbar } from "@/components/datatable/data-table-adva
 import { Input } from "@/components/ui/input";
 import { useQueryState } from "nuqs";
 import { getPermohonanBimbingan } from "@/app/_lib/queries/bimbinganQueries";
-import { tanggapiPermohonan } from "@/app/_lib/actions/bimbinganActions";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { useSession } from "next-auth/react";
 import UnauthorizedPage from "../UnauthorizedPage";
 import { CustomToast } from "@/components/toast";
+import { tanggapiPermohonan } from "@/app/_lib/actions/bimbinganActions";
 
 type TableType = Awaited<ReturnType<typeof getPermohonanBimbingan>>;
 

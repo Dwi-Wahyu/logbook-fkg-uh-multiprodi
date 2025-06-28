@@ -202,7 +202,7 @@ export default function TambahKegiatanForm({
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <Card className="w-full shadow-lg">
           <CardHeader className="pb-4">
-            <CardTitle className="text-3xl font-bold text-gray-800">
+            <CardTitle className="text-xl font-bold text-gray-800">
               Formulir Pengajuan Kegiatan
             </CardTitle>
             <CardDescription className="text-md text-gray-600">
@@ -266,7 +266,7 @@ export default function TambahKegiatanForm({
             {selectedMataKuliahId && selectedMataKuliahId !== "0" && (
               <div className="space-y-6 p-4 border rounded-md bg-gray-50">
                 <h3 className="text-lg font-semibold text-gray-700">
-                  Detail Kegiatan (Sesuai Program Studi)
+                  Detail Kegiatan
                 </h3>
                 {loadingFields ? (
                   <div className="flex justify-center items-center h-20">

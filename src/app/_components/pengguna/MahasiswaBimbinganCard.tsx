@@ -104,16 +104,6 @@ export default function MahasiswaBimbinganCard({ dataPengguna }: Props) {
                     Detail
                   </Link>
                 </Button>
-                {canHapusBimbingan && (
-                  <Button
-                    variant={"destructive"}
-                    className="ml-2"
-                    onClick={() => toggleOpen(mahasiswa.pengguna.id)}
-                  >
-                    <Trash />
-                    Hapus
-                  </Button>
-                )}
               </div>
 
               <DropdownMenu>

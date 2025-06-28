@@ -109,6 +109,7 @@ export async function getDataPembimbing(id: string) {
         select: {
           pembimbing: {
             select: {
+              id: true,
               pengguna: {
                 select: {
                   username: true,

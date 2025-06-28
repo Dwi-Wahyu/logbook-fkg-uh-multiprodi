@@ -88,8 +88,7 @@ export default function DataPembimbingAnda({
               </CardTitle>
               <CardDescription className="text-base text-gray-600">
                 Anda belum memiliki dosen pembimbing yang ditugaskan. Silakan
-                hubungi koordinator program studi Anda untuk informasi lebih
-                lanjut.
+                hubungi admin program studi Anda untuk informasi lebih lanjut.
               </CardDescription>
             </div>
           )}
