@@ -3,5 +3,5 @@ export default async function Detail({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  return <h1>halo</h1>;
+  return <h1></h1>;
 }
