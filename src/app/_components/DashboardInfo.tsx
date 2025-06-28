@@ -24,19 +24,15 @@ export default async function DashboardInfo({
     },
   });
 
-  type pengajuanWhereType = Prisma.kegiatanWhereInput;
+  type pengajuanWhereType = Prisma.KegiatanWhereInput;
 
   let pengajuanWhereClause: pengajuanWhereType = {};
 
   if (peran === "DOSEN") {
-    pengajuanWhereClause = {
-      pengaju: {
-        pembimbingId: id,
-      },
-    };
+    pengajuanWhereClause = {};
   } else if (peran === "MAHASISWA") {
-    pengajuanWhereClause = {
-      pengajuId: id,
+    pengajuanWhereClause.logbook = {
+      penggunaId: id,
     };
   } else {
     pengajuanWhereClause = {};

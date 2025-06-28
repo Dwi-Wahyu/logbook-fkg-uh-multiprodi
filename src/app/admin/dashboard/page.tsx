@@ -22,9 +22,8 @@ export default async function Dashboard() {
         </h1>
       </div>
 
-      {/* <DashboardInfo peran={session.user.peran} id={session.user.id} /> */}
+      <DashboardInfo peran={session.user.peran} id={session.user.id} />
 
-      {/* todo: create skeleton for notifikasi card */}
       <NotifikasiCard allNotifikasi={allNotifikasi} />
     </div>
   );
