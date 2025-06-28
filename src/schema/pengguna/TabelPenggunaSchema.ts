@@ -14,13 +14,11 @@ export interface PenggunaSelect {
   id: string;
   nama: string;
   username: string;
-  peran: pengguna_peran;
   profil?: ProfilSelect | null;
   bimbingan?: PenggunaBimbinganSelect[];
   koBimbingan?: PenggunaBimbinganSelect[];
 }
 
-import { pengguna_peran } from "@/generated/prisma";
 import { z } from "zod";
 
 export const profilSelectSchema = z.object({

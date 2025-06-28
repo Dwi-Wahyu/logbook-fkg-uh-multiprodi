@@ -66,7 +66,7 @@ export async function findAllNotifikasi(params: TFindAllNotifikasi) {
   }
 }
 
-export async function hapusNotifikasi(id: number) {
+export async function hapusNotifikasi(id: string) {
   const deletedNotifikasi = await prisma.notifikasi.delete({
     where: { id },
   });
@@ -78,11 +78,11 @@ export async function hapusNotifikasi(id: number) {
   };
 }
 
-export async function markAsRead(notifikasiId: number) {
+export async function markAsRead(notifikasiId: string) {
   try {
     const updatedNotifikasi = await prisma.notifikasi.update({
       where: { id: notifikasiId },
-      data: { dibaca: true },
+      data: { isRead: true },
     });
 
     return {
@@ -103,7 +103,7 @@ export async function countUnreadNotifikasi(penggunaId: string) {
     const count = await prisma.notifikasi.count({
       where: {
         penggunaId,
-        dibaca: false,
+        isRead: false,
       },
     });
 

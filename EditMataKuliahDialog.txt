@@ -47,12 +47,14 @@ type PageProps = {
   id: number;
   judul: string;
   semester: number;
+  programStudiId: number;
 };
 
 export default function EditMataKuliahDialog({
   id,
   judul,
   semester,
+  programStudiId,
 }: PageProps) {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
@@ -62,6 +64,7 @@ export default function EditMataKuliahDialog({
       id,
       judul,
       semester,
+      
     },
   });
 

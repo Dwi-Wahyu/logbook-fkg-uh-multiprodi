@@ -6,7 +6,6 @@ import { defaultTableSearchParams } from "@/app/_lib/validations/defaultTableSea
 import { MataKuliahTable } from "@/app/_components/mata-kuliah/MataKuliahTable";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { getMataKuliah } from "@/app/_lib/queries/mataKuliahQueries";
-import TambahMataKuliahDialog from "@/app/_components/mata-kuliah/TambahMataKuliahDialog";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 

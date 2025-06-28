@@ -22,7 +22,6 @@ import { Input } from "@/components/ui/input";
 import { useQueryState } from "nuqs";
 
 import { useSession } from "next-auth/react";
-import EditMataKuliahDialog from "./EditMataKuliahDialog";
 import { CustomToast } from "@/components/toast";
 import { getMataKuliah } from "@/app/_lib/queries/mataKuliahQueries";
 import { deleteMataKuliah } from "@/app/_lib/actions/mataKuliahActions";
@@ -74,11 +73,11 @@ export function MataKuliahTable({ promises }: TableProps) {
     cell: ({ row }: { row: any }) => {
       return (
         <>
-          <EditMataKuliahDialog
+          {/* <EditMataKuliahDialog
             id={row.original.id}
             judul={row.original.judul}
             semester={row.original.semester}
-          />
+          /> */}
           <Button
             onClick={() => toggleOpenDialog(row.original.id, "delete")}
             size={"sm"}

@@ -13,7 +13,7 @@ export default function NotifikasiCard({
 }: {
   allNotifikasi: Awaited<ReturnType<typeof findAllNotifikasi>>;
 }) {
-  function handleHapus(id: number) {
+  function handleHapus(id: string) {
     const actions = hapusNotifikasi(id);
   }
 

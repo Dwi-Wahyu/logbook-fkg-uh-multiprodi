@@ -29,7 +29,11 @@ export default async function DashboardInfo({
   let pengajuanWhereClause: pengajuanWhereType = {};
 
   if (peran === "DOSEN") {
-    pengajuanWhereClause = {};
+    pengajuanWhereClause.logbook = {
+      mahasiswa: {
+        pembimbingId: id,
+      },
+    };
   } else if (peran === "MAHASISWA") {
     pengajuanWhereClause.logbook = {
       penggunaId: id,
@@ -51,6 +55,8 @@ export default async function DashboardInfo({
     },
   });
 
+  const isAdmin = peran === "ADMIN" || peran === "SUPERADMIN";
+
   return (
     <Suspense fallback={<DashboardInfoSkeleton />}>
       <div className="mb-5 grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
@@ -58,17 +64,21 @@ export default async function DashboardInfo({
 
         <DashboardCard icon={Users2} title="Dosen" value={jumlahDosen} />
 
-        <DashboardCard
-          icon={NotebookText}
-          title="Jumlah Pengajuan"
-          value={jumlahPengajuan}
-        />
+        {!isAdmin && (
+          <>
+            <DashboardCard
+              icon={NotebookText}
+              title="Jumlah Pengajuan"
+              value={jumlahPengajuan}
+            />
 
-        <DashboardCard
-          icon={UserSearch}
-          title="Jumlah Pengajuan Belum Disetujui"
-          value={jumlahPengajuanBelumDisetujui}
-        />
+            <DashboardCard
+              icon={UserSearch}
+              title="Jumlah Pengajuan Belum Disetujui"
+              value={jumlahPengajuanBelumDisetujui}
+            />
+          </>
+        )}
       </div>
     </Suspense>
   );
