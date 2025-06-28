@@ -1,30 +1,14 @@
-import {
-  getAllDosen,
-  getDetailPengguna,
-} from "@/app/_lib/actions/penggunaActions";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { getNameInitials } from "@/service/getNameInitials";
-import { Edit, Eye, Trash2 } from "lucide-react";
-import Link from "next/link";
-import GantiPembimbingDialog from "../bimbingan/GantiPembimbingDialog";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import PembimbingHero from "../PembimbingHero";
+import { getDetailPengguna } from "@/app/_lib/queries/penggunaQueries";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 type Props = {
   dataPengguna: Awaited<ReturnType<typeof getDetailPengguna>>;
 };
 
 export default async function PembimbingCard({ dataPengguna }: Props) {
-  const allDosen = await getAllDosen();
-
   return (
     <Card>
       <CardHeader>
@@ -32,35 +16,26 @@ export default async function PembimbingCard({ dataPengguna }: Props) {
       </CardHeader>
 
       <CardContent>
-        <div className="w-full gap-5 grid md:grid-cols-3 grid-cols-1">
-          <PembimbingHero
-            avatar={dataPengguna?.koPromotor?.avatar ?? ""}
-            nama={dataPengguna?.koPromotor?.nama ?? ""}
-            username={dataPengguna?.koPromotor?.username ?? ""}
-            pembimbingType="PEMBIMBING"
-          />
-          <PembimbingHero
-            avatar={dataPengguna?.promotor?.avatar ?? ""}
-            nama={dataPengguna?.promotor?.nama ?? ""}
-            username={dataPengguna?.promotor?.username ?? ""}
-            pembimbingType="PROMOTOR"
-          />
-          <PembimbingHero
-            avatar={dataPengguna?.koPromotor?.avatar ?? ""}
-            nama={dataPengguna?.koPromotor?.nama ?? ""}
-            username={dataPengguna?.koPromotor?.username ?? ""}
-            pembimbingType="KO-PROMOTOR"
-          />
-        </div>
-
-        <GantiPembimbingDialog
-          id={dataPengguna?.id ?? ""}
-          namaMahasiswa={dataPengguna?.nama ?? ""}
-          pembimbingId={dataPengguna?.pembimbingId ?? ""}
-          promotorId={dataPengguna?.promotorId ?? ""}
-          koPromotorId={dataPengguna?.koPromotorId ?? ""}
-          allDosen={allDosen}
+        <PembimbingHero
+          avatar={dataPengguna?.mahasiswa?.pembimbing?.pengguna.avatar ?? ""}
+          nama={dataPengguna?.mahasiswa?.pembimbing?.pengguna.nama ?? ""}
+          username={
+            dataPengguna?.mahasiswa?.pembimbing?.pengguna.username ?? ""
+          }
+          programStudi={
+            dataPengguna?.mahasiswa?.pembimbing?.pengguna.programStudi
+              .displayName ?? ""
+          }
         />
+        <div className="flex justify-end pt-5">
+          <Button asChild>
+            <Link
+              href={`/admin/pengguna/mahasiswa/ganti-pembimbing-mahasiswa/${dataPengguna?.id}`}
+            >
+              Ubah Pembimbing Mahasiswa
+            </Link>
+          </Button>
+        </div>
       </CardContent>
     </Card>
   );

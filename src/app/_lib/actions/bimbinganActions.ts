@@ -5,15 +5,12 @@ import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { validateServerActionPayload } from "@/lib/validateServerActionPayload"; // Asumsi Anda punya ini
+import {
+  TUpdatePembimbingSchema,
+  updatePembimbingSchema,
+} from "@/schema/BimbinganSchema";
 
 // Zod Schema untuk update pembimbing
-export const updatePembimbingSchema = z.object({
-  mahasiswaId: z.string(), // ID Mahasiswa yang akan diubah pembimbingnya
-  alasan: z.string().min(1, "Alasan perubahan wajib diisi."),
-  pembimbingId: z.string().optional().nullable(), // Bisa null/undefined jika ingin mengosongkan pembimbing
-});
-
-export type TUpdatePembimbingSchema = z.infer<typeof updatePembimbingSchema>;
 
 /**
  * Server Action to update the main supervisor (pembimbing) for a student.

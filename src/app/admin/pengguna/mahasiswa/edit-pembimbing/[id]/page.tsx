@@ -13,16 +13,11 @@ import {
 import { getAllDosen } from "@/app/_lib/queries/penggunaQueries";
 import GantiPembimbingForm from "@/app/_components/bimbingan/GantiPembimbingForm";
 
-// Props yang diterima oleh halaman Next.js
-interface EditPembimbingPageProps {
-  params: {
-    id: string; // ID Mahasiswa dari URL
-  };
-}
-
 export default async function EditPembimbingPage({
   params,
-}: EditPembimbingPageProps) {
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const session = await auth();
 
   // Redirect jika tidak ada sesi atau tidak punya peran yang sesuai
@@ -35,7 +30,7 @@ export default async function EditPembimbingPage({
     redirect("/dashboard"); // Atau halaman akses ditolak
   }
 
-  const mahasiswaId = params.id;
+  const { id: mahasiswaId } = await params;
 
   // Fetch data secara paralel
   const [mahasiswaData, allDosen] = await Promise.all([
@@ -44,6 +39,7 @@ export default async function EditPembimbingPage({
   ]);
 
   if (!mahasiswaData) {
+    return <h1>Mahasiswa tidak ditemukan</h1>;
     notFound(); // Tampilkan halaman 404 jika mahasiswa tidak ditemukan
   }
 
@@ -52,10 +48,10 @@ export default async function EditPembimbingPage({
       <Card className="max-w-2xl mx-auto shadow-lg rounded-xl">
         <CardHeader className="border-b pb-4">
           <CardTitle className="text-2xl font-bold text-gray-900">
-            Ubah Pembimbing Mahasiswa
+            Ganti Pembimbing Mahasiswa
           </CardTitle>
           <CardDescription className="text-gray-600">
-            Perbarui informasi pembimbing untuk{" "}
+            Perbarui informasi pembimbing untuk
             <span className="font-semibold text-primary-600">
               {mahasiswaData.namaMahasiswa} ({mahasiswaData.usernameMahasiswa})
             </span>

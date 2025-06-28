@@ -1,6 +1,5 @@
 "use client";
 
-import { getDetailPengguna } from "@/app/_lib/actions/penggunaActions";
 import { getNameInitials } from "@/service/getNameInitials";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -35,10 +34,10 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useState } from "react";
-import { hapusPenggunaDariBimbingan } from "@/app/_lib/actions/bimbinganActions";
 import { toast } from "sonner";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { getDetailPengguna } from "@/app/_lib/queries/penggunaQueries";
 
 type Props = {
   dataPengguna: Awaited<ReturnType<typeof getDetailPengguna>>;
@@ -66,45 +65,8 @@ export default function MahasiswaBimbinganCard({ dataPengguna }: Props) {
     setSelectedId(id);
   }
 
-  async function handleHapus() {
-    setLoading(true);
-    const updateAction = await hapusPenggunaDariBimbingan(selectedId);
-
-    if (updateAction.success) {
-      toast.warning("Bimbingan Diakhiri", {
-        description:
-          "Mahasiswa telah berhasil dilepaskan dari daftar bimbingan Anda.",
-        icon: <UserXIcon className="text-red-500" />,
-      });
-    } else {
-      toast.error(updateAction.error as string);
-    }
-
-    setLoading(false);
-    setOpen(false);
-  }
-
   return (
     <Card>
-      <AlertDialog open={open} onOpenChange={setOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Apakah Anda Yakin?</AlertDialogTitle>
-            <AlertDialogDescription>
-              Tindakan ini tidak dapat dibatalkan. Tindakan ini akan menghapus
-              mahasiswa dari daftar bimbingan anda.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Batalkan</AlertDialogCancel>
-            <Button onClick={handleHapus} disabled={loading}>
-              {loading && <Loader className="animate-spin" />}
-              Yakin
-            </Button>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-
       <CardHeader className="flex items-center gap-5 w-full">
         <CardTitle>Daftar Mahasiswa Bimbingan</CardTitle>
       </CardHeader>

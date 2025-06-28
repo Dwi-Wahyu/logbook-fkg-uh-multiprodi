@@ -102,6 +102,7 @@ export async function getAllDosen() {
       id: true, // ID dari model Dosen
       pengguna: {
         select: {
+          id: true,
           nama: true,
         },
       },
@@ -133,6 +134,22 @@ export async function getDetailPengguna(id: string) {
           tempatTanggalLahir: true,
           mulaiMasukPendidikan: true,
           tahunLulus: true,
+          pembimbing: {
+            select: {
+              pengguna: {
+                select: {
+                  nama: true,
+                  username: true,
+                  avatar: true,
+                  programStudi: {
+                    select: {
+                      displayName: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
           pengguna: {
             select: {
               nama: true,

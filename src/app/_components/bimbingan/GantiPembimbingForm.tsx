@@ -27,30 +27,25 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { CustomToast } from "@/components/toast";
-import {
-  updatePembimbing,
-  TUpdatePembimbingSchema,
-  updatePembimbingSchema, // Import schema from actions
-} from "@/app/_lib/actions/bimbinganActions"; // Import server action and schema
+import { updatePembimbing } from "@/app/_lib/actions/bimbinganActions"; // Import server action and schema
 import Link from "next/link"; // For the "Kembali" button
+import {
+  TUpdatePembimbingSchema,
+  updatePembimbingSchema,
+} from "@/schema/BimbinganSchema";
+import { getAllDosen } from "@/app/_lib/queries/penggunaQueries";
 
-// Define types for data fetched from server (matching getMahasiswaWithPembimbing and getAllDosen return types)
 type MahasiswaData = {
   id: string;
   namaMahasiswa: string;
-  usernameMahasiswa: string; // Added username
+  usernameMahasiswa: string;
   pembimbingId: string | null;
   pembimbingNama: string;
 };
 
-type DosenOption = {
-  id: string;
-  nama: string;
-};
-
 interface GantiPembimbingFormProps {
   mahasiswa: MahasiswaData;
-  allDosen: DosenOption[];
+  allDosen: Awaited<ReturnType<typeof getAllDosen>>;
 }
 
 export default function GantiPembimbingForm({
@@ -68,6 +63,8 @@ export default function GantiPembimbingForm({
       alasan: "",
     },
   });
+
+  console.log(allDosen);
 
   async function onSubmit(values: TUpdatePembimbingSchema) {
     setLoading(true);
@@ -136,8 +133,6 @@ export default function GantiPembimbingForm({
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="">-- Tidak Ditentukan --</SelectItem>{" "}
-                  {/* Option for no selection */}
                   {allDosen.map((dosen) => (
                     <SelectItem key={dosen.id} value={dosen.id}>
                       {dosen.nama}
@@ -154,8 +149,6 @@ export default function GantiPembimbingForm({
         />
 
         <div className="flex justify-end gap-3 pt-4 border-t mt-6 -mx-6 px-6 pb-6">
-          {" "}
-          {/* Added padding and margin adjustments */}
           <Button
             type="button"
             variant="outline"

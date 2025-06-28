@@ -129,7 +129,7 @@ export async function getDataPembimbing(id: string) {
 
 export async function getMahasiswaWithPembimbing(mahasiswaId: string) {
   const mahasiswa = await prisma.mahasiswa.findUnique({
-    where: { id: mahasiswaId },
+    where: { penggunaId: mahasiswaId },
     select: {
       id: true,
       pengguna: {

@@ -4,14 +4,14 @@ import { getNameInitials } from "@/service/getNameInitials";
 import { UserX } from "lucide-react";
 
 type UserData = {
-  pembimbingType: string;
+  programStudi: string;
   avatar: string;
   nama: string;
   username: string;
 };
 
 export default function PembimbingHero({
-  pembimbingType,
+  programStudi,
   avatar,
   nama,
   username,
@@ -20,7 +20,7 @@ export default function PembimbingHero({
     return (
       <div className="w-full gap-3 flex-col items-center justify-center flex p-3 border rounded-xl ">
         <UserX width={30} height={30} />
-        <h1>Belum memilih {pembimbingType}</h1>
+        <h1>Belum Ditetapkan Pembimbing</h1>
       </div>
     );
   }
@@ -40,7 +40,7 @@ export default function PembimbingHero({
         <h1 className="font-semibold">{nama}</h1>
         <h1>{username}</h1>
 
-        <Badge variant={"secondary"}>{pembimbingType}</Badge>
+        <Badge variant={"secondary"}>{programStudi}</Badge>
       </div>
     </div>
   );

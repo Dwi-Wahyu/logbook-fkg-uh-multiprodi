@@ -129,7 +129,7 @@ export default async function DetailPengguna({
 
       {isDosen && <MahasiswaBimbinganCard dataPengguna={dataPengguna} />}
 
-      {isAdmin && !isDosen && <PembimbingCard dataPengguna={dataPengguna} />}
+      {!isDosen && <PembimbingCard dataPengguna={dataPengguna} />}
     </Suspense>
   );
 }
