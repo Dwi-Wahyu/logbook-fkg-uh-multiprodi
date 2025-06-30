@@ -16,6 +16,8 @@ generated_logbook/*
 public/image/signature/*
 !public/image/signature/.gitkeep
 
+/src/generated/
+
 public/image/profile-picture/*
 !public/image/profile-picture/.gitkeep
 
