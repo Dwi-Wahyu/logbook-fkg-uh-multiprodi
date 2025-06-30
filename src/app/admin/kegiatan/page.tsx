@@ -5,12 +5,13 @@ import { SearchParams } from "nuqs/server"; // Import SearchParams from nuqs/ser
 import {
   getKegiatan,
   getAllMataKuliah,
-} from "@/app/_lib/queries/kegiatanQueries";
+  getAllJenisKegiatan,
+} from "@/app/_lib/queries/kegiatanQueries"; // Import updated queries
 import { auth } from "@/config/auth";
 import { redirect } from "next/navigation";
 import KegiatanTable from "@/app/_components/kegiatan/KegiatanTable";
-import { kegiatanSearchParams } from "@/app/_lib/validations/kegiatanSearchParams"; // Import the new search params schema
-import { DatatableSkeleton } from "@/components/datatable/datatable-skeleton"; // Assuming you have this skeleton component
+import { kegiatanSearchParams } from "@/app/_lib/validations/kegiatanSearchParams";
+import { DatatableSkeleton } from "@/components/datatable/datatable-skeleton";
 
 // Update the interface to use SearchParams from nuqs/server
 interface KegiatanListPageProps {
@@ -18,13 +19,16 @@ interface KegiatanListPageProps {
 }
 
 export default async function KegiatanListPage({
-  searchParams: searchParamsPromise, // Rename to avoid conflict with parsed searchParams
+  searchParams: searchParamsPromise,
 }: KegiatanListPageProps) {
   const session = await auth();
 
   if (!session || !session.user || !session.user.id) {
-    redirect("/auth/login"); // Redirect if no session
+    redirect("/auth/login");
   }
+
+  // Ambil programStudiId dari sesi user, jika ada
+  const userProgramStudiId = session.user.programStudiId || null;
 
   // Await and parse the searchParams using nuqs/server cache
   const rawSearchParams = await searchParamsPromise;
@@ -38,16 +42,17 @@ export default async function KegiatanListPage({
   } = await getKegiatan({
     page: search.page,
     perPage: search.perPage,
-    judul: search.judul, // Use parsed judul
-    status: search.status, // Use parsed status
-    mataKuliahId: search.mataKuliahId, // Use parsed mataKuliahId
+    judul: search.judul,
+    status: search.status,
+    mataKuliahId: search.mataKuliahId,
     semester: search.semester,
+    jenisKegiatanId: search.jenisKegiatanId,
   });
-
-  console.log(kegiatanList);
 
   // Ambil semua mata kuliah untuk filter dropdown
   const allMataKuliah = await getAllMataKuliah();
+  // Ambil semua jenis kegiatan untuk filter dropdown, filter berdasarkan Program Studi user
+  const allJenisKegiatan = await getAllJenisKegiatan(userProgramStudiId);
 
   return (
     <div className="container mx-auto">
@@ -57,6 +62,7 @@ export default async function KegiatanListPage({
           initialPageCount={pageCount}
           initialFilteredCount={filtered}
           allMataKuliah={allMataKuliah}
+          allJenisKegiatan={allJenisKegiatan}
           currentSearchParams={rawSearchParams}
         />
       </Suspense>

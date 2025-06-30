@@ -14,12 +14,10 @@ export const kegiatanSearchParams = createSearchParamsCache({
     clearOnDefault: true,
   }),
   mataKuliahId: parseAsString.withDefault(""),
-  // --- Perbaikan field semester di sini ---
-  // `parseAsInteger` secara default mengembalikan `number | null`,
-  // jadi `.optional()` tidak diperlukan. `withOptions` diterapkan langsung.
   semester: parseAsInteger.withOptions({
-    clearOnDefault: true, // Akan menghapus dari URL jika default (null)
+    clearOnDefault: true,
   }),
+  jenisKegiatanId: parseAsString.withDefault(""), // <-- TAMBAHKAN INI
 });
 
 export type TKegiatanSearchParams = {
@@ -28,6 +26,6 @@ export type TKegiatanSearchParams = {
   judul: string;
   status: "DIAJUKAN" | "DISETUJUI" | "DITOLAK" | undefined | null;
   mataKuliahId: string;
-  // --- Tambahkan tipe semester di sini ---
-  semester: number | null; // `parseAsInteger` akan menghasilkan `number | null`
+  semester: number | null;
+  jenisKegiatanId: string; // <-- TAMBAHKAN INI
 };

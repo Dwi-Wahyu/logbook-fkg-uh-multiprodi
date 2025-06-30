@@ -50,16 +50,17 @@ export default function TambahMataKuliahForm({
   allProgramStudi: ProgramStudi;
 }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const router = useRouter();
 
-  const auth = useSession();
+  const session = useSession();
+
+  let programStudiId = session.data?.user.programStudiId ?? "";
 
   const form = useForm<TTambahMataKuliahSchema>({
     resolver: zodResolver(tambahMataKuliahSchema),
     defaultValues: {
       judul: "",
       semester: 1,
-      programStudiId: "",
+      programStudiId,
     },
   });
 
@@ -148,6 +149,7 @@ export default function TambahMataKuliahForm({
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
+                    disabled={session.data?.user.programStudiId !== ""}
                   >
                     <FormControl>
                       <SelectTrigger className="w-full">
@@ -167,7 +169,10 @@ export default function TambahMataKuliahForm({
               )}
             />
 
-            <div className="flex gap-2">
+            <div className="flex gap-2 justify-end">
+              <Link href="/admin/pengaturan/mata-kuliah">
+                <Button variant="outline">Batal</Button>
+              </Link>
               <Button type="submit" disabled={isSubmitting}>
                 {isSubmitting ? (
                   <>
@@ -178,9 +183,6 @@ export default function TambahMataKuliahForm({
                   "Submit"
                 )}
               </Button>
-              <Link href="/admin/pengaturan/mata-kuliah">
-                <Button variant="outline">Batal</Button>
-              </Link>
             </div>
           </form>
         </Form>

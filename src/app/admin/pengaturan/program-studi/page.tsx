@@ -1,14 +1,7 @@
 // src/app/admin/program-studi/page.tsx
 import { Suspense } from "react";
 import Link from "next/link";
-import {
-  PlusCircle,
-  Loader2,
-  Eye,
-  Edit,
-  Trash2,
-  LayoutGrid,
-} from "lucide-react"; // Import new icons
+import { Loader2, Eye, SquarePen } from "lucide-react"; // Import new icons
 
 import {
   Card,
@@ -46,6 +39,12 @@ export default async function DaftarProgramStudi() {
 
   if (!session || !session.user || !session.user.id) {
     redirect("/auth/login"); // Redirect if no session
+  }
+
+  if (session.user.peran === "ADMIN" && session.user.peran) {
+    redirect(
+      "/admin/pengaturan/program-studi/detail/" + session.user.programStudiId
+    );
   }
 
   // Check user role for authorization to view this page
@@ -94,33 +93,48 @@ export default async function DaftarProgramStudi() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {programStudiList.map((programStudi, index) => (
-                      <TableRow
-                        key={programStudi.id}
-                        className="hover:bg-gray-50 transition-colors"
-                      >
-                        <TableCell className="font-medium text-gray-800">
-                          {index + 1}
-                        </TableCell>
-                        <TableCell className="text-gray-800">
-                          {programStudi.nama}
-                        </TableCell>
+                    {programStudiList.map((programStudi, index) => {
+                      const canEditProgramStudi =
+                        session.user.programStudiId === programStudi.id ||
+                        session.user.peran === "SUPERADMIN";
 
-                        <TableCell className="text-center">
-                          <div className="flex justify-center space-x-2">
-                            {/* Buttons in a flex container */}
-                            <Link
-                              href={`/admin/pengaturan/program-studi/${programStudi.id}`}
-                            >
-                              <Button variant="outline">
-                                <Eye className="h-4 w-4" />
-                                Lihat Daftar Pengguna
-                              </Button>
-                            </Link>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                      return (
+                        <TableRow
+                          key={programStudi.id}
+                          className="hover:bg-gray-50 transition-colors"
+                        >
+                          <TableCell className="font-medium text-gray-800">
+                            {index + 1}
+                          </TableCell>
+                          <TableCell className="text-gray-800">
+                            {programStudi.nama}
+                          </TableCell>
+
+                          <TableCell className="text-center">
+                            <div className="flex justify-center space-x-2">
+                              <Link
+                                href={`/admin/pengaturan/program-studi/detail/${programStudi.id}`}
+                              >
+                                <Button variant="outline">
+                                  <Eye className="h-4 w-4" />
+                                  Detail
+                                </Button>
+                              </Link>
+                              {canEditProgramStudi && (
+                                <Link
+                                  href={`/admin/pengaturan/program-studi/edit/${programStudi.id}`}
+                                >
+                                  <Button variant="outline">
+                                    <SquarePen className="h-4 w-4" />
+                                    Edit
+                                  </Button>
+                                </Link>
+                              )}
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
                   </TableBody>
                 </Table>
               </div>

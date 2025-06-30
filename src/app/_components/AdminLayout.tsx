@@ -17,14 +17,11 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
-import { Fragment } from "react";
+import { Fragment, JSX } from "react";
 import Link from "next/link";
 import { AdminSidebar } from "@/components/ui/admin-sidebar";
 
 function capitalize(str: string): string {
-  if (str.length > 35) {
-    return "Edit";
-  }
   if (str.includes("-")) {
     const splitWord = str.split("-");
     const capitalizeEachWord = splitWord.map((val) => capitalize(val));
@@ -58,27 +55,58 @@ export default function ClientAdminLayout({
               <Separator orientation="vertical" className="mr-2 h-4" />
               <Breadcrumb>
                 <BreadcrumbList>
-                  {segments.map((segment, idx) => {
-                    const isLast = idx === segments.length - 1;
-                    const href =
-                      "/admin/" + segments.slice(0, idx + 1).join("/");
-                    const label = capitalize(segment);
+                  {(() => {
+                    const items: JSX.Element[] = [];
 
-                    return (
-                      <Fragment key={href}>
-                        <BreadcrumbItem>
-                          {isLast ? (
-                            <BreadcrumbPage>{label}</BreadcrumbPage>
-                          ) : (
-                            <BreadcrumbLink asChild>
-                              <Link href={href}>{label}</Link>
-                            </BreadcrumbLink>
-                          )}
-                        </BreadcrumbItem>
-                        {!isLast && <BreadcrumbSeparator />}
-                      </Fragment>
-                    );
-                  })}
+                    segments.forEach((segment, idx) => {
+                      const isLast = idx === segments.length - 1;
+                      const href =
+                        "/admin/" + segments.slice(0, idx + 1).join("/");
+
+                      // Deteksi segment 'detail' atau 'edit'
+                      if (segment === "detail" || segment === "edit") {
+                        const entity = capitalize(segments[idx - 1] || "");
+                        const label = `${capitalize(segment)} ${entity}`;
+
+                        items.push(
+                          <Fragment key={href}>
+                            <BreadcrumbItem>
+                              <BreadcrumbPage>{label}</BreadcrumbPage>
+                            </BreadcrumbItem>
+                          </Fragment>
+                        );
+
+                        // Skip UUID di belakang "detail" atau "edit"
+                        return;
+                      }
+
+                      // Deteksi UUID (anggap segmen 36 karakter dan mengandung -)
+                      if (segment.length === 36 && segment.includes("-")) {
+                        // Lewati segmen UUID
+                        return;
+                      }
+
+                      const label = capitalize(segment);
+                      const item = (
+                        <Fragment key={href}>
+                          <BreadcrumbItem>
+                            {isLast ? (
+                              <BreadcrumbPage>{label}</BreadcrumbPage>
+                            ) : (
+                              <BreadcrumbLink asChild>
+                                <Link href={href}>{label}</Link>
+                              </BreadcrumbLink>
+                            )}
+                          </BreadcrumbItem>
+                          {!isLast && <BreadcrumbSeparator />}
+                        </Fragment>
+                      );
+
+                      items.push(item);
+                    });
+
+                    return items;
+                  })()}
                 </BreadcrumbList>
               </Breadcrumb>
             </div>

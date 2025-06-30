@@ -10,6 +10,7 @@ declare module "next-auth" {
       avatar: string;
       programStudiId: string;
       programStudi: string;
+      semester?: number;
     };
   }
 
@@ -21,5 +22,6 @@ declare module "next-auth" {
     avatar: string | null;
     programStudiId: string;
     programStudi: string;
+    semester?: number;
   }
 }

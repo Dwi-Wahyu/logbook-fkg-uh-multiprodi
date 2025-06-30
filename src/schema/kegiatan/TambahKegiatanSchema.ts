@@ -1,4 +1,5 @@
 // src/schema/kegiatan/TambahKegiatanSchema.ts
+
 import { z } from "zod";
 
 export const kegiatanStatusEnum = z.enum(["DIAJUKAN", "DISETUJUI", "DITOLAK"], {
@@ -15,15 +16,25 @@ export const validLampiranExtensions = [
   "docx",
 ];
 
+// Skema untuk satu FieldValue dari form
+const fieldValueSchema = z.object({
+  jenisKegiatanFieldId: z.string().min(1, { message: "Field ID is required." }),
+  value: z.any().optional().nullable(), // Gunakan z.any() karena tipe data sebenarnya akan divalidasi di backend
+});
+
 export const tambahKegiatanSchema = z.object({
-  mata_kuliahId: z.string().min(1, { message: "Mata kuliah wajib dipilih." }),
-  pengajuId: z.string().min(1, { message: "ID pengaju tidak valid." }),
+  // mata_kuliahId sekarang opsional
+  mata_kuliahId: z.string().optional().nullable(),
+  pengajuId: z.string().min(1, { message: "ID pengaju tidak valid." }), // <-- DIKEMBALIKAN KE SKEMA
+  jenisKegiatanId: z
+    .string()
+    .min(1, { message: "Jenis Kegiatan wajib dipilih." }),
   lampiran: z
     .array(z.instanceof(File))
     .max(3, { message: "Maksimal 3 lampiran." })
     .optional(),
   status: kegiatanStatusEnum.default("DIAJUKAN").optional(),
-  fieldsData: z.record(z.string(), z.any()),
+  fieldValues: z.array(fieldValueSchema).optional(),
 });
 
 export type TTambahKegiatan = z.infer<typeof tambahKegiatanSchema>;

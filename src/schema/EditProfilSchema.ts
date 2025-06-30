@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 const validExtensions = ["png", "jpeg", "jpg"];
-const maxFileSize = 10 * 1024 * 1024; // 10 MB
+const maxFileSize = 50 * 1024 * 1024; // 50 MB
 
 const fileSchema = z
   .custom<File>((val) => val instanceof File, {

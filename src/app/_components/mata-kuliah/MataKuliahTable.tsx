@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
-import { Loader2, Trash } from "lucide-react";
+import { Loader2, SquarePen, Trash } from "lucide-react";
 
 import {
   AlertDialog,
@@ -25,6 +25,7 @@ import { useSession } from "next-auth/react";
 import { CustomToast } from "@/components/toast";
 import { getMataKuliah } from "@/app/_lib/queries/mataKuliahQueries";
 import { deleteMataKuliah } from "@/app/_lib/actions/mataKuliahActions";
+import Link from "next/link";
 
 type TableType = Awaited<ReturnType<typeof getMataKuliah>>;
 
@@ -73,11 +74,15 @@ export function MataKuliahTable({ promises }: TableProps) {
     cell: ({ row }: { row: any }) => {
       return (
         <>
-          {/* <EditMataKuliahDialog
-            id={row.original.id}
-            judul={row.original.judul}
-            semester={row.original.semester}
-          /> */}
+          <Link
+            href={`/admin/pengaturan/mata-kuliah/edit/${row.original.id}`}
+            passHref
+          >
+            <Button size={"sm"}>
+              <SquarePen />
+              Edit
+            </Button>
+          </Link>
           <Button
             onClick={() => toggleOpenDialog(row.original.id, "delete")}
             size={"sm"}

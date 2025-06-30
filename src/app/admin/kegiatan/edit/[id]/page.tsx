@@ -1,18 +1,21 @@
 // src/app/admin/kegiatan/edit/[id]/page.tsx
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import {
   getKegiatanById,
-  getAllMataKuliah,
+  getAllMataKuliah, // Import untuk mendapatkan daftar Mata Kuliah
 } from "@/app/_lib/queries/kegiatanQueries"; // Server-only queries
 import { auth } from "@/config/auth";
-import { redirect } from "next/navigation";
 import KegiatanEditForm from "@/app/_components/kegiatan/KegiatanEditForm";
-
-interface KegiatanEditPageProps {
-  params: {
-    id: string; // ID kegiatan dari URL
-  };
-}
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card"; // Import Card for not found UI
+import { Frown, Home } from "lucide-react"; // Import icons for not found UI
+import Link from "next/link"; // Import Link for navigation button
+import { Button } from "@/components/ui/button"; // Import Button for navigation button
 
 export default async function KegiatanEditPage({
   params,
@@ -27,51 +30,48 @@ export default async function KegiatanEditPage({
     redirect("/auth/login");
   }
 
-  // Fetch data kegiatan berdasarkan ID dari Server Component
-  const kegiatan = await getKegiatanById(id);
+  // Fetch data kegiatan berdasarkan ID dan semua mata kuliah secara paralel
+  const [kegiatan, allMataKuliah] = await Promise.all([
+    getKegiatanById(id),
+    getAllMataKuliah(), // Ambil semua mata kuliah
+  ]);
 
   if (!kegiatan) {
-    notFound(); // Tampilkan halaman 404 jika kegiatan tidak ditemukan
-  }
-
-  // Ambil semua mata kuliah untuk dropdown Select
-  const allMataKuliah = await getAllMataKuliah();
-
-  // Kita perlu mendapatkan definisi fields dari Program Studi terkait Mata Kuliah ini
-  // untuk mengisi form dinamis.
-  let programStudiFields: Array<{
-    id: string;
-    fieldName: string;
-    fieldType: string;
-    isRequired: boolean;
-    order: number;
-  }> = [];
-  if (kegiatan.MataKuliah?.ProgramStudi?.fields) {
-    programStudiFields = kegiatan.MataKuliah.ProgramStudi.fields.map(
-      (field) => ({
-        id: field.id, // Perlu ID untuk key di map
-        fieldName: field.fieldName,
-        fieldType: field.fieldType,
-        isRequired: field.isRequired,
-        order: field.order,
-      })
+    // Tampilan UI ketika kegiatan tidak ditemukan
+    return (
+      <div className="container mx-auto py-8">
+        <Card className="w-full max-w-xl mx-auto text-center shadow-lg rounded-xl border border-gray-200">
+          <CardHeader className="pb-4">
+            <Frown className="h-20 w-20 text-red-500 mx-auto mb-4" />
+            <CardTitle className="text-3xl font-bold text-gray-900 mb-2">
+              Kegiatan Tidak Ditemukan
+            </CardTitle>
+            <CardDescription className="text-lg text-gray-700">
+              Maaf, Kegiatan dengan ID "{id}" tidak dapat ditemukan di database
+              kami. Mungkin ID tersebut salah atau Kegiatan telah dihapus.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="pt-4">
+            <Link href="/admin/kegiatan">
+              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3 rounded-md flex items-center mx-auto">
+                <Home className="mr-2 h-5 w-5" /> Kembali ke Daftar Kegiatan
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
+      </div>
     );
-    // Urutkan berdasarkan order
-    programStudiFields.sort((a, b) => a.order - b.order);
   }
+
+  // SetBreadcrumbSegment (jika digunakan, asumsikan diimpor di sini)
+  // const activityTitle = kegiatan.jenisKegiatan.nama; // Atau ambil dari fieldValues jika ada templateKey 'judul'
+  // <SetBreadcrumbSegment pathSegment={id} displayName={`Edit ${activityTitle}`} />
 
   return (
-    <div className="container mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">
-        Edit Kegiatan Akademik
-      </h1>
-      <p className="text-lg text-center text-gray-600 mb-8">
-        Perbarui informasi kegiatan ini.
-      </p>
+    <div className="">
       <KegiatanEditForm
-        kegiatan={JSON.parse(JSON.stringify(kegiatan))} // Pastikan data terserialisasi
-        allMataKuliah={allMataKuliah}
-        programStudiFields={programStudiFields} // Teruskan fieldsDefinition ke Client Component
+        kegiatan={kegiatan} // Teruskan objek kegiatan lengkap
+        allMataKuliah={allMataKuliah} // Teruskan daftar mata kuliah
       />
     </div>
   );

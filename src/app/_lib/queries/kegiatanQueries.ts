@@ -2,22 +2,37 @@
 import "server-only";
 
 import { prisma } from "@/lib/prisma";
-import { Prisma } from "@/generated/prisma";
 import { TKegiatanSearchParams } from "../validations/kegiatanSearchParams";
 import { auth } from "@/config/auth";
+import { Prisma } from "@/generated/prisma";
 
+// Tipe untuk data field kustom beserta nilainya
+export type FieldValueWithDefinition = Prisma.FieldKegiatanValuesGetPayload<{
+  include: {
+    jenisKegiatanField: {
+      select: {
+        id: true;
+        fieldName: true;
+        fieldType: true;
+        templateKey: true;
+        isRequired: true;
+        order: true;
+      };
+    };
+  };
+}>;
+
+// Tipe lengkap Kegiatan dengan semua relasi yang diperlukan untuk tampilan dan logika
 export type KegiatanWithRelations = Prisma.KegiatanGetPayload<{
   include: {
     MataKuliah: {
       select: {
+        id: true; // Tambahkan id
         judul: true;
         semester: true;
         ProgramStudi: {
-          select: {
-            id: true;
-            nama: true;
-            fields: true;
-          };
+          // Termasuk ProgramStudi jika diperlukan
+          select: { id: true; nama: true; displayName: true };
         };
       };
     };
@@ -26,29 +41,52 @@ export type KegiatanWithRelations = Prisma.KegiatanGetPayload<{
         mahasiswa: {
           include: {
             pengguna: {
+              select: { id: true; nama: true; username: true; avatar: true };
+            };
+            pembimbing: {
+              // Tambahkan pembimbing untuk detail
               select: {
-                id: true;
-                nama: true;
-                username: true;
-                avatar: true;
+                pengguna: { select: { id: true; nama: true; username: true } };
               };
             };
           };
         };
       };
     };
-    lampiran: {
+    jenisKegiatan: {
+      // Termasuk JenisKegiatan
       select: {
         id: true;
-        namaFile: true;
-        url: true;
+        nama: true;
+        templateIdentifier: true;
+        isMataKuliahRequired: true;
+        fields: {
+          // Termasuk definisi field kustom untuk jenis kegiatan ini
+          orderBy: { order: "asc" };
+        };
       };
     };
+    fieldValues: {
+      // Termasuk FieldKegiatanValues dengan definisi field-nya
+      include: {
+        jenisKegiatanField: {
+          select: {
+            id: true;
+            fieldName: true;
+            fieldType: true;
+            templateKey: true;
+            isRequired: true;
+            order: true;
+          };
+        };
+      };
+    };
+    lampiran: true; // true akan meng-include semua field Lampiran
   };
 }>;
 
 export async function getKegiatan(input: TKegiatanSearchParams) {
-  const session = await auth(); // Get the current user session
+  const session = await auth();
 
   if (!session || !session.user || !session.user.id) {
     console.warn(
@@ -57,30 +95,31 @@ export async function getKegiatan(input: TKegiatanSearchParams) {
     return { data: [], pageCount: 0, filtered: 0 };
   }
 
-  // Definisikan array untuk menyimpan semua kondisi filter
   const filters: Prisma.KegiatanWhereInput[] = [];
 
   // Filter berdasarkan peran pengguna yang login
   if (session.user.peran === "MAHASISWA") {
-    // Filter kegiatan yang logbook-nya terkait dengan mahasiswa yang sedang login
+    const mahasiswa = await prisma.mahasiswa.findUnique({
+      where: { penggunaId: session.user.id },
+      select: { id: true },
+    });
+    if (!mahasiswa) {
+      console.warn(
+        "Mahasiswa record not found for logged-in user ID:",
+        session.user.id
+      );
+      return { data: [], pageCount: 0, filtered: 0 };
+    }
     filters.push({
       logbook: {
-        mahasiswa: {
-          penggunaId: session.user.id, // Gunakan perbandingan langsung (equals) untuk ID
-        },
+        mahasiswaId: mahasiswa.id,
       },
     });
   } else if (session.user.peran === "DOSEN") {
-    // 1. Dapatkan ID Dosen dari ID Pengguna yang login
     const dosen = await prisma.dosen.findUnique({
-      where: {
-        penggunaId: session.user.id,
-      },
-      select: {
-        id: true,
-      },
+      where: { penggunaId: session.user.id },
+      select: { id: true },
     });
-
     if (!dosen) {
       console.warn(
         "Dosen record not found for logged-in user ID:",
@@ -88,8 +127,6 @@ export async function getKegiatan(input: TKegiatanSearchParams) {
       );
       return { data: [], pageCount: 0, filtered: 0 };
     }
-
-    // 2. Filter kegiatan yang logbook-nya terkait dengan mahasiswa yang pembimbingId-nya adalah ID Dosen yang login
     filters.push({
       logbook: {
         mahasiswa: {
@@ -98,85 +135,67 @@ export async function getKegiatan(input: TKegiatanSearchParams) {
       },
     });
   }
-  // Untuk ADMIN/SUPERADMIN, jika mereka harus melihat semua kegiatan,
-  // tidak perlu menambahkan filter peran ke array `filters`.
-  // `filters` akan tetap kosong pada awalnya, sehingga query akan mengambil semua.
 
-  // Filter berdasarkan judul di fieldsData (jika ada input.judul)
-  // Perlu diingat bahwa ini adalah filter pada JSON field, pastikan 'judul' ada di root JSON.
-  // if (input.judul) {
-  //   filters.push({
-  //     fieldsData: {
-  //       path: ['$.judul'],
-  //       string_contains: input.judul,
-  //       mode: 'insensitive' // Untuk pencarian tidak peka huruf besar/kecil
-  //     } as Prisma.JsonFilter,
-  //   });
-  // }
-
+  // Filter berdasarkan status
   if (input.status) {
-    // Ini akan secara otomatis mengecualikan null dan undefined
-    filters.push({
-      status: input.status,
-    });
+    filters.push({ status: input.status });
   }
 
-  // Filter berdasarkan status (jika ada input.status dan bukan 'all' atau null)
-  if (input.status && input.status !== null) {
-    filters.push({
-      status: input.status,
-    });
-  }
-
-  // Filter berdasarkan mataKuliahId (jika ada input.mataKuliahId dan bukan 'all' atau '0')
+  // Filter berdasarkan mataKuliahId
   if (
     input.mataKuliahId &&
     input.mataKuliahId !== "all" &&
     input.mataKuliahId !== "0"
   ) {
-    filters.push({
-      mataKuliahId: parseInt(input.mataKuliahId),
-    });
+    filters.push({ mataKuliahId: parseInt(input.mataKuliahId) });
   }
 
+  // Filter berdasarkan semester
+  // Jika input.semester didefinisikan, filter kegiatan yang MataKuliah-nya punya semester tsb.
+  // ATAU kegiatan yang mataKuliahId-nya null (untuk tidak mengecualikan mereka).
   if (input.semester !== undefined && input.semester !== null) {
     filters.push({
-      logbook: {
-        mahasiswa: {
-          semester: input.semester,
+      OR: [
+        {
+          // Kegiatan yang memiliki MataKuliah dan semester-nya cocok
+          MataKuliah: {
+            semester: input.semester,
+          },
         },
-      },
+        {
+          // Kegiatan yang tidak memiliki MataKuliah (mataKuliahId adalah null)
+          mataKuliahId: null,
+        },
+      ],
     });
   }
 
-  // Gabungkan semua filter menggunakan operator AND dari Prisma
-  // Jika array filters kosong, berarti tidak ada filter yang diterapkan (mengambil semua data).
+  // Filter berdasarkan jenisKegiatanId
+  if (
+    input.jenisKegiatanId &&
+    input.jenisKegiatanId !== "all" &&
+    input.jenisKegiatanId !== ""
+  ) {
+    filters.push({ jenisKegiatanId: input.jenisKegiatanId });
+  }
+
   const finalWhereClause: Prisma.KegiatanWhereInput =
     filters.length > 0 ? { AND: filters } : {};
 
-  const filtered = await prisma.kegiatan.count({
-    where: finalWhereClause, // Gunakan finalWhereClause
-  });
+  const filtered = await prisma.kegiatan.count({ where: finalWhereClause });
 
   const data: KegiatanWithRelations[] = await prisma.kegiatan.findMany({
-    take: input.perPage, // nuqs/server sudah memberikan default value
-    skip: (input.page - 1) * input.perPage, // nuqs/server sudah memberikan default value
-    where: finalWhereClause, // Gunakan finalWhereClause
-    orderBy: {
-      createdAt: "desc",
-    },
+    take: input.perPage,
+    skip: (input.page - 1) * input.perPage,
+    where: finalWhereClause,
+    orderBy: { createdAt: "desc" },
     include: {
       MataKuliah: {
         select: {
+          id: true,
           judul: true,
           semester: true,
-          ProgramStudi: {
-            select: {
-              id: true,
-              nama: true,
-              fields: true,
-            },
-          },
+          ProgramStudi: { select: { id: true, nama: true, displayName: true } },
         },
       },
       logbook: {
@@ -184,33 +203,54 @@ export async function getKegiatan(input: TKegiatanSearchParams) {
           mahasiswa: {
             include: {
               pengguna: {
+                select: { id: true, nama: true, username: true, avatar: true },
+              },
+              pembimbing: {
                 select: {
-                  id: true,
-                  nama: true,
-                  username: true,
-                  avatar: true,
+                  pengguna: {
+                    select: { id: true, nama: true, username: true },
+                  },
                 },
               },
             },
           },
         },
       },
-      lampiran: {
+      jenisKegiatan: {
         select: {
           id: true,
-          namaFile: true,
-          url: true,
+          nama: true,
+          templateIdentifier: true,
+          isMataKuliahRequired: true,
+          fields: { orderBy: { order: "asc" } }, // Include field definitions
         },
       },
+      fieldValues: {
+        include: {
+          jenisKegiatanField: {
+            select: {
+              fieldName: true,
+              fieldType: true,
+              templateKey: true,
+              isRequired: true,
+              order: true,
+            },
+          },
+        },
+      },
+      lampiran: true,
     },
   });
 
-  const pageCount = Math.ceil(filtered / input.perPage); // Gunakan input.perPage yang sudah memiliki default
+  const pageCount = Math.ceil(filtered / input.perPage);
 
   return { data, pageCount, filtered };
 }
 
-export async function getKegiatanById(id: string) {
+// Mengubah getKegiatanById untuk mendapatkan data fieldValues dan jenisKegiatan
+export async function getKegiatanById(
+  id: string
+): Promise<KegiatanWithRelations | null> {
   if (!id) return null;
 
   const kegiatan = await prisma.kegiatan.findUnique({
@@ -222,11 +262,7 @@ export async function getKegiatanById(id: string) {
           judul: true,
           semester: true,
           ProgramStudi: {
-            select: {
-              id: true,
-              nama: true,
-              fields: true, // Untuk mengetahui struktur fieldsData saat menampilkan
-            },
+            select: { id: true, nama: true, displayName: true },
           },
         },
       },
@@ -234,25 +270,40 @@ export async function getKegiatanById(id: string) {
         include: {
           mahasiswa: {
             include: {
+              pengguna: {
+                select: { id: true, nama: true, username: true, avatar: true },
+              },
               pembimbing: {
                 select: {
                   pengguna: {
-                    select: {
-                      id: true,
-                      nama: true,
-                      username: true,
-                    },
+                    select: { id: true, nama: true, username: true },
                   },
                 },
               },
-              pengguna: {
-                select: {
-                  id: true,
-                  nama: true,
-                  username: true,
-                  avatar: true,
-                },
-              },
+            },
+          },
+        },
+      },
+      jenisKegiatan: {
+        select: {
+          id: true,
+          nama: true,
+          templateIdentifier: true,
+          isMataKuliahRequired: true,
+          fields: { orderBy: { order: "asc" } }, // Sertakan definisi field kustom
+        },
+      },
+      fieldValues: {
+        // Sertakan FieldKegiatanValues dengan definisi field-nya
+        include: {
+          jenisKegiatanField: {
+            select: {
+              id: true, // Ambil ID fieldValue untuk penggunaan di frontend (opsional)
+              fieldName: true,
+              fieldType: true,
+              templateKey: true,
+              isRequired: true,
+              order: true,
             },
           },
         },
@@ -263,120 +314,57 @@ export async function getKegiatanById(id: string) {
   return kegiatan;
 }
 
-export async function getAllMataKuliah() {
-  const allMataKuliah = await prisma.mataKuliah.findMany({
+// NEW Query: getAllJenisKegiatan (untuk dropdown di Tambah Kegiatan Form)
+export async function getAllJenisKegiatan(programStudiId?: string | null) {
+  // Jika programStudiId diberikan, filter berdasarkan itu
+  const whereClause: Prisma.JenisKegiatanWhereInput = programStudiId
+    ? { programStudiId: programStudiId }
+    : {};
+
+  const jenisKegiatanList = await prisma.jenisKegiatan.findMany({
+    where: whereClause,
     select: {
       id: true,
-      judul: true,
-      semester: true,
-      programStudiId: true, // Sertakan ini untuk mengambil ProgramStudiField nantinya
+      nama: true,
+      isMataKuliahRequired: true,
+      programStudiId: true,
+      fields: {
+        // Include fields definition for frontend dynamic rendering
+        select: {
+          id: true,
+          fieldName: true,
+          fieldType: true,
+          isRequired: true,
+          order: true,
+          templateKey: true,
+        },
+        orderBy: { order: "asc" },
+      },
     },
-    orderBy: {
-      judul: "asc",
-    },
+    orderBy: { nama: "asc" },
+  });
+  return jenisKegiatanList;
+}
+
+// getAllMataKuliah (tetap sama)
+export async function getAllMataKuliah() {
+  const allMataKuliah = await prisma.mataKuliah.findMany({
+    select: { id: true, judul: true, semester: true, programStudiId: true },
+    orderBy: { judul: "asc" },
   });
   return allMataKuliah;
 }
 
-// Hapus getProgramStudiFields dari sini, karena sudah dipindahkan ke actions
-// export async function getProgramStudiFields(programStudiId: string) { ... }
-
-// Keep this one if it's used elsewhere
+// getPenanggungJawabMahasiswa (tetap sama)
 export async function getPenanggungJawabMahasiswa(mahasiswaId: string) {
   const mahasiswa = await prisma.mahasiswa.findUnique({
     where: { id: mahasiswaId },
     select: {
-      pengguna: {
-        select: {
-          nama: true,
-          username: true,
-        },
-      },
+      pengguna: { select: { nama: true, username: true } },
       pembimbing: {
-        select: {
-          pengguna: {
-            select: {
-              nama: true,
-              username: true,
-            },
-          },
-        },
+        select: { pengguna: { select: { nama: true, username: true } } },
       },
     },
   });
   return mahasiswa;
-}
-
-// =============================================================
-// QUERY: getKegiatanById (Menggantikan getOneKegiatan)
-// =============================================================
-export async function getKegiatanEach(id: string) {
-  if (!id) return null;
-
-  const kegiatan = await prisma.kegiatan.findUnique({
-    where: { id },
-    include: {
-      MataKuliah: {
-        select: {
-          id: true, // Tambahkan ID mata kuliah
-          judul: true,
-          semester: true,
-          ProgramStudi: {
-            // Sertakan program studi untuk mendapatkan fields definition
-            select: {
-              id: true,
-              nama: true,
-              fields: true, // Dapatkan definisi fields ProgramStudiField
-            },
-          },
-        },
-      },
-      logbook: {
-        include: {
-          mahasiswa: {
-            include: {
-              pengguna: {
-                select: {
-                  id: true,
-                  nama: true,
-                  username: true,
-                  avatar: true,
-                },
-              },
-            },
-          },
-        },
-      },
-      lampiran: {
-        // Sertakan lampiran dengan detail yang dibutuhkan
-        select: {
-          id: true,
-          namaFile: true,
-          url: true,
-          // Anda mungkin perlu ekstensi file di sini untuk `lampiranImageExtensions`
-          // Jika `ext` tidak ada di model Lampiran, Anda harus menghitungnya di frontend
-        },
-      },
-    },
-  });
-
-  // Jika Anda perlu 'ext' di objek lampiran dan tidak ada di Prisma model Lampiran,
-  // Anda bisa menghitungnya di sini.
-  if (kegiatan) {
-    // Kloning objek kegiatan untuk menghindari mutasi langsung dari Prisma client result
-    const serializableKegiatan = JSON.parse(JSON.stringify(kegiatan));
-
-    serializableKegiatan.lampiran = kegiatan.lampiran.map((lamp) => {
-      const parts = lamp.namaFile.split(".");
-      const ext = parts.length > 1 ? "." + parts.pop() : ""; // Ambil ekstensi dengan titik
-      return {
-        ...lamp,
-        ext: ext, // Tambahkan properti ext
-        path: lamp.namaFile, // Asumsi path di server adalah namaFile itu sendiri setelah upload
-      };
-    });
-    return serializableKegiatan;
-  }
-
-  return kegiatan;
 }

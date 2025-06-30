@@ -46,9 +46,3 @@ export type PenggunaWithRelations = Prisma.PenggunaGetPayload<{
     };
   };
 }>;
-
-export type ProgramStudiWithFields = Prisma.ProgramStudiGetPayload<{
-  include: {
-    fields: true;
-  };
-}>;

@@ -49,7 +49,7 @@ import {
 } from "@/components/ui/select";
 import {
   tambahKegiatan,
-  fetchProgramStudiFieldsAction,
+  // fetchJenisKegiatanFieldsAction, // TIDAK LAGI DIPERLUKAN
 } from "@/app/_lib/actions/kegiatanActions";
 import { toast } from "sonner";
 
@@ -59,137 +59,162 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 
-type MataKuliahWithProgramStudiId = {
-  id: number;
-  judul: string;
-  semester: number;
-  programStudiId: string | null;
-};
+import {
+  getAllJenisKegiatan,
+  getAllMataKuliah,
+} from "@/app/_lib/queries/kegiatanQueries";
 
-type ProgramStudiField = {
-  id: string;
-  fieldName: string;
-  fieldType: string;
-  isRequired: boolean;
-  order: number;
-};
+type MataKuliahOption = Awaited<ReturnType<typeof getAllMataKuliah>>[number];
+type JenisKegiatanOption = Awaited<
+  ReturnType<typeof getAllJenisKegiatan>
+>[number];
+type JenisKegiatanField = JenisKegiatanOption["fields"][number];
 
 export default function TambahKegiatanForm({
   allMataKuliah,
+  allJenisKegiatan,
   pengajuId,
 }: {
-  allMataKuliah: MataKuliahWithProgramStudiId[];
+  allMataKuliah: MataKuliahOption[];
+  allJenisKegiatan: JenisKegiatanOption[];
   pengajuId: string;
 }) {
   const [loading, setLoading] = useState(false);
-  const [selectedMataKuliahId, setSelectedMataKuliahId] = useState<
+  const [selectedJenisKegiatanId, setSelectedJenisKegiatanId] = useState<
     string | null
   >(null);
-  const [programStudiFields, setProgramStudiFields] = useState<
-    ProgramStudiField[]
-  >([]);
-  const [loadingFields, setLoadingFields] = useState(false);
+  const [selectedJenisKegiatanData, setSelectedJenisKegiatanData] =
+    useState<JenisKegiatanOption | null>(null);
+  const [loadingFields, setLoadingFields] = useState(false); // Tetap gunakan loadingFields untuk indikator
   const router = useRouter();
 
   const form = useForm<TTambahKegiatan>({
     resolver: zodResolver(tambahKegiatanSchema),
     defaultValues: {
-      mata_kuliahId: "0",
+      mata_kuliahId: null,
       pengajuId,
+      jenisKegiatanId: "",
       lampiran: [],
       status: "DIAJUKAN",
-      fieldsData: {}, // Inisialisasi fieldsData kosong
+      fieldValues: [],
     },
   });
 
+  // Effect untuk mengelola field kustom dan mata kuliah berdasarkan Jenis Kegiatan yang dipilih
   useEffect(() => {
-    async function fetchFields() {
-      if (selectedMataKuliahId && selectedMataKuliahId !== "0") {
-        setLoadingFields(true);
-        const selectedMataKuliah = allMataKuliah.find(
-          (mk) => mk.id.toString() === selectedMataKuliahId
-        );
-        if (selectedMataKuliah?.programStudiId) {
-          const fields = await fetchProgramStudiFieldsAction(
-            selectedMataKuliah.programStudiId
-          );
-          setProgramStudiFields(fields);
+    async function updateFormFieldsAndMataKuliah() {
+      if (selectedJenisKegiatanId && selectedJenisKegiatanId !== "") {
+        setLoadingFields(true); // Mulai loading
 
-          // Inisialisasi fieldsData dengan nilai default yang terdefinisi
-          const newFieldsData: { [key: string]: any } = {};
+        const jenisKegiatan = allJenisKegiatan.find(
+          (jk) => jk.id === selectedJenisKegiatanId
+        );
+
+        setSelectedJenisKegiatanData(jenisKegiatan || null);
+
+        if (jenisKegiatan) {
+          const fields = jenisKegiatan.fields; // Ambil fields langsung dari objek jenisKegiatan
+
+          const newFieldValues: { jenisKegiatanFieldId: string; value: any }[] =
+            [];
           fields.forEach((fieldDef) => {
-            if (
-              fieldDef.fieldType === "TEXT" ||
-              fieldDef.fieldType === "TEXTAREA"
-            ) {
-              newFieldsData[fieldDef.fieldName] = "";
-            } else if (fieldDef.fieldType === "NUMBER") {
-              newFieldsData[fieldDef.fieldName] = 0; // Atau null, tapi pastikan komponen input bisa handle null
-            } else if (fieldDef.fieldType === "DATE") {
-              newFieldsData[fieldDef.fieldName] = undefined; // DatePickerWithRange handles undefined for initial state, adjust if using native input
-            } else if (fieldDef.fieldType === "BOOLEAN") {
-              newFieldsData[fieldDef.fieldName] = false;
-            }
-            // Tambahkan tipe lain jika ada
+            newFieldValues.push({
+              jenisKegiatanFieldId: fieldDef.id,
+              value:
+                fieldDef.fieldType === "TEXT" ||
+                fieldDef.fieldType === "TEXTAREA"
+                  ? ""
+                  : fieldDef.fieldType === "NUMBER"
+                  ? null
+                  : fieldDef.fieldType === "DATE"
+                  ? undefined
+                  : fieldDef.fieldType === "BOOLEAN"
+                  ? false
+                  : null,
+            });
           });
-          form.setValue("fieldsData", newFieldsData); // Set nilai default yang terdefinisi
+          form.setValue("fieldValues", newFieldValues);
+
+          // Kelola Mata Kuliah field
+          if (!jenisKegiatan.isMataKuliahRequired) {
+            form.setValue("mata_kuliahId", null); // Set ke null jika tidak wajib
+          } else {
+            // Jika wajib dan belum ada nilai terpilih, atur default ke "0" (placeholder)
+            if (form.getValues("mata_kuliahId") === null) {
+              form.setValue("mata_kuliahId", "0");
+            }
+          }
         } else {
-          setProgramStudiFields([]);
-          form.setValue("fieldsData", {});
+          // Reset jika jenis kegiatan tidak ditemukan
+          setSelectedJenisKegiatanData(null);
+          form.setValue("fieldValues", []);
+          form.setValue("mata_kuliahId", null);
         }
-        setLoadingFields(false);
+        setLoadingFields(false); // Selesai loading
       } else {
-        setProgramStudiFields([]);
-        form.setValue("fieldsData", {});
+        // Reset jika tidak ada jenis kegiatan yang dipilih
+        setSelectedJenisKegiatanData(null);
+        form.setValue("fieldValues", []);
+        form.setValue("mata_kuliahId", null);
+        setLoadingFields(false); // Pastikan loading state direset
       }
     }
-    fetchFields();
-  }, [selectedMataKuliahId, allMataKuliah, form]);
+    updateFormFieldsAndMataKuliah();
+  }, [selectedJenisKegiatanId, allJenisKegiatan, form]);
 
   async function onSubmit(values: TTambahKegiatan) {
     setLoading(true);
 
-    // KARENA 'tanggal' SUDAH TIDAK DI SCHEMATA, ANDA HARUS MENGAMBILNYA DARI FIELDSDATA JIKA ADA
-    // Misalnya jika Anda punya field bernama 'tanggal_mulai' dan 'tanggal_selesai' di fieldsData
-    const tanggalMulaiValue = values.fieldsData["Tanggal Mulai"]
-      ? new Date(values.fieldsData["Tanggal Mulai"])
-      : undefined;
-    const tanggalSelesaiValue = values.fieldsData["Tanggal Selesai"]
-      ? new Date(values.fieldsData["Tanggal Selesai"])
-      : undefined;
+    const actionResult = await tambahKegiatan(values);
 
-    // Anda perlu menyesuaikan payload yang dikirim ke action jika formatnya berbeda
-    const payloadToSend = {
-      ...values,
-      // Jika tanggalMulai/Selesai tidak lagi di fieldsData tapi terpisah, Anda harus memasukannya ke sini
-      // Contoh: tanggal: { from: tanggalMulaiValue, to: tanggalSelesaiValue },
-      // Namun, jika schema.prisma Anda tidak punya tanggalMulai/Selesai, maka tetap kosongkan.
-      // Jika fieldsData diharapkan menyimpan tanggal, maka fieldsData sudah benar.
-    };
-
-    const action = await tambahKegiatan(payloadToSend);
-
-    if (action.success) {
+    if (actionResult.success) {
       toast.custom(() => (
         <CustomToast
           title="Kegiatan Berhasil Ditambahkan"
-          description="Rincian kegiatan Anda telah berhasil dicatat dalam sistem."
+          description={
+            actionResult.message ||
+            "Rincian kegiatan Anda telah berhasil dicatat dalam sistem."
+          }
           variant="success"
         />
       ));
-      form.reset();
+      form.reset({
+        mata_kuliahId: null,
+        pengajuId: pengajuId,
+        jenisKegiatanId: "",
+        lampiran: [],
+        status: "DIAJUKAN",
+        fieldValues: [],
+      });
+      setSelectedJenisKegiatanId(null);
+      setSelectedJenisKegiatanData(null);
+      router.push("/admin/kegiatan");
+      router.refresh();
     } else {
+      console.error(
+        "Failed to add activity:",
+        actionResult.message,
+        actionResult.error
+      );
       toast.custom(() => (
         <CustomToast
           title="Gagal Menambahkan Kegiatan"
           description={
+            actionResult.message ||
             "Terjadi kesalahan yang tidak diketahui. Mohon coba lagi."
           }
           variant="destructive"
         />
       ));
+      if (
+        actionResult.validationErrors &&
+        actionResult.validationErrors.length > 0
+      ) {
+        actionResult.validationErrors.forEach((err) => {
+          console.warn(`Validation Error for ${err.path}: ${err.message}`);
+        });
+      }
     }
-
     setLoading(false);
   }
 
@@ -200,7 +225,7 @@ export default function TambahKegiatanForm({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <Card className="w-full shadow-lg">
+        <Card className="w-full shadow-lg rounded-xl">
           <CardHeader className="pb-4">
             <CardTitle className="text-xl font-bold text-gray-800">
               Formulir Pengajuan Kegiatan
@@ -217,41 +242,38 @@ export default function TambahKegiatanForm({
               </p>
             )}
 
-            {/* Pastikan tidak ada FormField untuk 'tanggal' jika sudah tidak di schema */}
-            {/* Jika Anda ingin DatePickerWithRange, maka fieldsData['Tanggal Mulai'] dan fieldsData['Tanggal Selesai']
-                harus di-handle di DatePickerWithRange component itu sendiri, dan DatePickerWithRange harus
-                mengupdate fieldsData secara langsung. */}
-
+            {/* Field untuk memilih Jenis Kegiatan */}
             <FormField
               control={form.control}
-              name="mata_kuliahId"
+              name="jenisKegiatanId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Mata Kuliah Terkait</FormLabel>
+                  <FormLabel>
+                    Jenis Kegiatan <span className="text-red-500">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Select
                       onValueChange={(value) => {
                         field.onChange(value);
-                        setSelectedMataKuliahId(value);
+                        setSelectedJenisKegiatanId(value); // Pemicu useEffect
                       }}
-                      defaultValue={field.value}
+                      value={field.value || ""} // Gunakan value prop dan pastikan string kosong untuk default
+                      disabled={loading}
                     >
                       <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Pilih Mata Kuliah yang relevan" />
+                        <SelectValue placeholder="Pilih Jenis Kegiatan" />
                       </SelectTrigger>
                       <SelectContent>
-                        {allMataKuliah.length > 0 ? (
-                          allMataKuliah.map((value) => (
-                            <SelectItem
-                              key={value.id}
-                              value={value.id.toString()}
-                            >
-                              {value.judul} (Semester {value.semester})
+                        {/* Opsi placeholder */}
+                        {allJenisKegiatan.length > 0 ? (
+                          allJenisKegiatan.map((jk) => (
+                            <SelectItem key={jk.id} value={jk.id}>
+                              {jk.nama}
                             </SelectItem>
                           ))
                         ) : (
-                          <SelectItem value="no-mata-kuliah" disabled>
-                            Tidak ada mata kuliah tersedia
+                          <SelectItem value="no-jenis-kegiatan" disabled>
+                            Tidak ada jenis kegiatan tersedia
                           </SelectItem>
                         )}
                       </SelectContent>
@@ -262,114 +284,166 @@ export default function TambahKegiatanForm({
               )}
             />
 
-            {/* Bagian Form Dinamis untuk fieldsData */}
-            {selectedMataKuliahId && selectedMataKuliahId !== "0" && (
-              <div className="space-y-6 p-4 border rounded-md bg-gray-50">
-                <h3 className="text-lg font-semibold text-gray-700">
-                  Detail Kegiatan
-                </h3>
-                {loadingFields ? (
-                  <div className="flex justify-center items-center h-20">
-                    <Loader2 className="animate-spin mr-2" /> Memuat detail
-                    form...
-                  </div>
-                ) : programStudiFields.length > 0 ? (
-                  programStudiFields.map((fieldDef) => (
-                    <FormField
-                      key={fieldDef.id}
-                      control={form.control}
-                      name={`fieldsData.${fieldDef.fieldName}`}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>
-                            {fieldDef.fieldName}{" "}
-                            {fieldDef.isRequired && (
-                              <span className="text-red-500">*</span>
-                            )}
-                          </FormLabel>
-                          <FormControl>
-                            {fieldDef.fieldType === "TEXT" ? (
-                              <Input
-                                placeholder={`Masukkan ${fieldDef.fieldName.toLowerCase()}`}
-                                {...field}
-                                // Pastikan nilai selalu string
-                                value={field.value ?? ""}
-                              />
-                            ) : fieldDef.fieldType === "TEXTAREA" ? (
-                              <Textarea
-                                placeholder={`Masukkan ${fieldDef.fieldName.toLowerCase()}`}
-                                {...field}
-                                // Pastikan nilai selalu string
-                                value={field.value ?? ""}
-                              />
-                            ) : fieldDef.fieldType === "NUMBER" ? (
-                              <Input
-                                type="number"
-                                placeholder={`Masukkan ${fieldDef.fieldName.toLowerCase()}`}
-                                {...field}
-                                // Pastikan nilai selalu number atau string kosong untuk input type="number"
-                                value={field.value ?? ""}
-                                onChange={(e) =>
-                                  field.onChange(
-                                    // Mengubah ke number atau null jika kosong
-                                    e.target.value === ""
-                                      ? null
-                                      : parseFloat(e.target.value)
-                                  )
-                                }
-                              />
-                            ) : fieldDef.fieldType === "DATE" ? (
-                              <Input
-                                type="date"
-                                placeholder={`Pilih tanggal ${fieldDef.fieldName.toLowerCase()}`}
-                                {...field}
-                                // Pastikan nilai selalu string format YYYY-MM-DD atau ""
-                                value={
-                                  field.value
-                                    ? new Date(field.value)
-                                        .toISOString()
-                                        .split("T")[0]
-                                    : ""
-                                }
-                                onChange={(e) =>
-                                  field.onChange(
-                                    e.target.value
-                                      ? new Date(e.target.value)
-                                      : undefined // Tetap undefined jika tidak ada nilai
-                                  )
-                                }
-                              />
-                            ) : fieldDef.fieldType === "BOOLEAN" ? (
-                              <div className="flex items-center space-x-2">
-                                <Checkbox
-                                  checked={field.value === true} // Pastikan field.value adalah boolean
-                                  onCheckedChange={(checked) =>
-                                    field.onChange(checked)
-                                  }
-                                />
-                                <Label>{fieldDef.fieldName}</Label>
-                              </div>
-                            ) : (
-                              <Input
-                                placeholder={`Tipe input '${fieldDef.fieldType}' tidak didukung`}
-                                disabled
-                                value={field.value ?? ""} // Fallback value
-                              />
-                            )}
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  ))
-                ) : (
-                  <p className="text-gray-500 text-sm">
-                    Tidak ada field kustom yang ditentukan untuk Program Studi
-                    ini.
-                  </p>
+            {/* Field untuk Mata Kuliah (Kondisional berdasarkan Jenis Kegiatan) */}
+            {selectedJenisKegiatanData?.isMataKuliahRequired && (
+              <FormField
+                control={form.control}
+                name="mata_kuliahId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Mata Kuliah Terkait{" "}
+                      <span className="text-red-500">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Select
+                        onValueChange={(value) => {
+                          field.onChange(value === "0" ? null : value); // Convert "0" to null
+                        }}
+                        value={field.value || "0"} // Display "0" if value is null
+                        disabled={loading}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Pilih Mata Kuliah yang relevan" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="0">Pilih Mata Kuliah</SelectItem>{" "}
+                          {/* Opsi placeholder */}
+                          {allMataKuliah.length > 0 ? (
+                            allMataKuliah.map((value) => (
+                              <SelectItem
+                                key={value.id}
+                                value={value.id.toString()}
+                              >
+                                {value.judul} (Semester {value.semester})
+                              </SelectItem>
+                            ))
+                          ) : (
+                            <SelectItem value="no-mata-kuliah" disabled>
+                              Tidak ada mata kuliah tersedia
+                            </SelectItem>
+                          )}
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )}
-              </div>
+              />
             )}
+
+            {/* Bagian Form Dinamis untuk fieldValues */}
+            {selectedJenisKegiatanData &&
+              selectedJenisKegiatanData.fields.length > 0 && (
+                <div className="space-y-6 p-4 border rounded-md bg-gray-50">
+                  <h3 className="text-lg font-semibold text-gray-700">
+                    Detail Kegiatan
+                  </h3>
+                  {loadingFields ? (
+                    <div className="flex justify-center items-center h-20">
+                      <Loader2 className="animate-spin mr-2" /> Memuat detail
+                      form...
+                    </div>
+                  ) : (
+                    selectedJenisKegiatanData.fields.map(
+                      (
+                        fieldDef,
+                        index // Use index for formField name if fieldValues is array
+                      ) => (
+                        <FormField
+                          key={fieldDef.id} // Gunakan ID fieldDef sebagai key
+                          control={form.control}
+                          // Akses value di dalam fieldValues array
+                          name={`fieldValues.${index}.value`} // Gunakan index, bukan fieldDef.fieldName
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>
+                                {fieldDef.fieldName}{" "}
+                                {fieldDef.isRequired && (
+                                  <span className="text-red-500">*</span>
+                                )}
+                              </FormLabel>
+                              <FormControl>
+                                {fieldDef.fieldType === "TEXT" ? (
+                                  <Input
+                                    placeholder={`Masukkan ${fieldDef.fieldName.toLowerCase()}`}
+                                    {...field}
+                                    value={field.value ?? ""}
+                                    disabled={loading}
+                                  />
+                                ) : fieldDef.fieldType === "TEXTAREA" ? (
+                                  <Textarea
+                                    placeholder={`Masukkan ${fieldDef.fieldName.toLowerCase()}`}
+                                    {...field}
+                                    value={field.value ?? ""}
+                                    disabled={loading}
+                                  />
+                                ) : fieldDef.fieldType === "NUMBER" ? (
+                                  <Input
+                                    type="number"
+                                    placeholder={`Masukkan ${fieldDef.fieldName.toLowerCase()}`}
+                                    {...field}
+                                    value={
+                                      field.value === null ? "" : field.value
+                                    }
+                                    onChange={(e) =>
+                                      field.onChange(
+                                        e.target.value === ""
+                                          ? null
+                                          : parseFloat(e.target.value)
+                                      )
+                                    }
+                                    disabled={loading}
+                                  />
+                                ) : fieldDef.fieldType === "DATE" ? (
+                                  <Input
+                                    type="date"
+                                    placeholder={`Pilih tanggal ${fieldDef.fieldName.toLowerCase()}`}
+                                    {...field}
+                                    value={
+                                      field.value
+                                        ? new Date(field.value)
+                                            .toISOString()
+                                            .split("T")[0]
+                                        : ""
+                                    }
+                                    onChange={(e) =>
+                                      field.onChange(
+                                        e.target.value
+                                          ? new Date(e.target.value)
+                                          : undefined
+                                      )
+                                    }
+                                    disabled={loading}
+                                  />
+                                ) : fieldDef.fieldType === "BOOLEAN" ? (
+                                  <div className="flex items-center space-x-2">
+                                    <Checkbox
+                                      checked={field.value === true}
+                                      onCheckedChange={(checked) =>
+                                        field.onChange(checked)
+                                      }
+                                      disabled={loading}
+                                    />
+                                    <Label>{fieldDef.fieldName}</Label>
+                                  </div>
+                                ) : (
+                                  <Input
+                                    placeholder={`Tipe input '${fieldDef.fieldType}' tidak didukung`}
+                                    disabled
+                                    value={field.value ?? ""}
+                                  />
+                                )}
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      )
+                    )
+                  )}
+                </div>
+              )}
 
             <FormField
               control={form.control}
@@ -379,7 +453,9 @@ export default function TambahKegiatanForm({
                   <FormLabel>Lampiran Pendukung</FormLabel>
                   <FormControl>
                     <FileUpload
-                      onValueChange={field.onChange}
+                      onValueChange={(files) => {
+                        field.onChange(files);
+                      }}
                       accept={validLampiranExtensions
                         .map((ext) => {
                           switch (ext) {
@@ -401,15 +477,11 @@ export default function TambahKegiatanForm({
                         .join(",")}
                       maxFiles={3}
                       maxSize={50 * 1024 * 1024}
-                      onFileReject={(_, message) => {
-                        form.setError("lampiran", {
-                          message,
-                        });
-                      }}
                       multiple
+                      disabled={loading}
                     >
-                      <FileUploadDropzone className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-gray-300 rounded-md text-center text-gray-600 hover:border-blue-500 transition-colors">
-                        <CloudUpload className="size-8 text-blue-500 mb-2" />
+                      <FileUploadDropzone className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-gray-300 rounded-md text-center text-gray-600 hover:border-primary transition-colors">
+                        <CloudUpload className="size-8 text-primary mb-2" />
                         <p className="font-semibold mb-1">
                           Seret & Lepas file di sini atau
                         </p>
@@ -417,7 +489,7 @@ export default function TambahKegiatanForm({
                           <Button
                             variant="link"
                             size="sm"
-                            className="p-0 text-blue-600 hover:text-blue-800"
+                            className="p-0 text-primary hover:text-primary"
                           >
                             Pilih File dari Komputer Anda
                           </Button>
@@ -463,6 +535,7 @@ export default function TambahKegiatanForm({
               type="button"
               variant="outline"
               className="px-6 py-2"
+              disabled={loading}
             >
               Kembali
             </Button>

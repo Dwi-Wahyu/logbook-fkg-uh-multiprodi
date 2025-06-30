@@ -1,6 +1,9 @@
 // src/app/admin/kegiatan/detail/[id]/page.tsx
 import { notFound, redirect } from "next/navigation";
-import { getKegiatanById } from "@/app/_lib/queries/kegiatanQueries";
+import {
+  getKegiatanById,
+  KegiatanWithRelations,
+} from "@/app/_lib/queries/kegiatanQueries"; // Import type and query
 import { auth } from "@/config/auth";
 import KegiatanDetailClient from "@/app/_components/kegiatan/KegiatanDetailClient";
 
@@ -23,41 +26,51 @@ export default async function KegiatanDetailPage({
 
   const { id } = await params;
 
-  const kegiatan = await getKegiatanById(id);
+  // getKegiatanById sekarang mengembalikan KegiatanWithRelations yang sudah mencakup jenisKegiatan dan fieldValues
+  const kegiatan: KegiatanWithRelations | null = await getKegiatanById(id);
 
   if (!kegiatan) {
-    notFound();
+    notFound(); // Tampilkan 404 jika kegiatan tidak ditemukan
   }
 
-  let programStudiFields: Array<{
-    fieldName: string;
-    fieldType: string;
-    order: number;
-  }> = [];
-
-  if (kegiatan.MataKuliah?.ProgramStudi?.fields) {
-    programStudiFields = kegiatan.MataKuliah.ProgramStudi.fields.map(
-      (field) => ({
-        fieldName: field.fieldName,
-        fieldType: field.fieldType,
-        order: field.order,
-      })
-    );
-    programStudiFields.sort((a, b) => a.order - b.order);
+  // Set dynamic breadcrumb for this page. Use the 'nama' of jenisKegiatan or a default title.
+  // The ID is the dynamic segment, and the display name should be a human-readable title.
+  // For 'Detail Kegiatan', the specific activity's title might be more appropriate.
+  const activityTitle = kegiatan.jenisKegiatan.nama || "Detail Kegiatan"; // Use jenisKegiatan nama as default breadcrumb
+  // You could also try to get a 'judul' field from fieldValues if it exists
+  const judulField = kegiatan.fieldValues.find(
+    (fv) =>
+      fv.jenisKegiatanField.templateKey === "judul" ||
+      fv.jenisKegiatanField.fieldName.toLowerCase() === "judul"
+  );
+  if (judulField && judulField.value) {
+    // If a 'judul' field value exists, use it for the breadcrumb display name
+    // It's good practice to truncate long titles for breadcrumbs
+    const displayJudul =
+      judulField.value.length > 30
+        ? `${judulField.value.substring(0, 27)}...`
+        : judulField.value;
+    // SetBreadcrumbSegment pathSegment={id} displayName={displayJudul}
   }
+
+  // Tidak perlu lagi memproses programStudiFields secara terpisah di sini
+  // karena field definitions sekarang ada di kegiatan.jenisKegiatan.fields dan fieldValues di kegiatan.fieldValues
 
   return (
-    <div className="container mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-2 text-center text-gray-800">
-        Detail Kegiatan
-      </h1>
-      <p className="text-lg text-center text-gray-600 mb-8">
-        Informasi lengkap mengenai kegiatan yang diajukan.
-      </p>
-      <KegiatanDetailClient
-        kegiatan={JSON.parse(JSON.stringify(kegiatan))}
-        programStudiFields={programStudiFields}
-      />
-    </div>
+    <>
+      <div className="container mx-auto p-6">
+        <h1 className="text-3xl font-bold mb-2 text-center text-gray-800">
+          Detail Kegiatan
+        </h1>
+        <p className="text-lg text-center text-gray-600 mb-8">
+          Informasi lengkap mengenai kegiatan yang diajukan.
+        </p>
+        <KegiatanDetailClient
+          // Teruskan objek kegiatan lengkap, yang sudah memiliki semua relasi yang diperlukan
+          kegiatan={kegiatan}
+          // programStudiFields tidak lagi diperlukan sebagai prop terpisah
+        />
+      </div>
+    </>
   );
 }

@@ -35,9 +35,31 @@ import {
   Edit,
   Eye,
   LucideSquareDashedMousePointer,
+  Filter, // Import Filter icon
 } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+
+import {
+  Dialog, // Import Dialog for the filter modal
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter,
+} from "@/components/ui/dialog";
 
 import {
   deleteKegiatan,
@@ -47,9 +69,13 @@ import { toast } from "sonner";
 import { CustomToast } from "@/components/toast";
 import Link from "next/link";
 
-import { KegiatanWithRelations } from "@/app/_lib/queries/kegiatanQueries";
+import {
+  KegiatanWithRelations,
+  FieldValueWithDefinition,
+  getAllJenisKegiatan,
+} from "@/app/_lib/queries/kegiatanQueries";
 import { useSession } from "next-auth/react";
-import { type SearchParams } from "nuqs/server"; // Import SearchParams type for currentSearchParams
+import { type SearchParams } from "nuqs/server";
 
 type MataKuliahOption = {
   id: number;
@@ -57,13 +83,17 @@ type MataKuliahOption = {
   semester: number;
 };
 
+type JenisKegiatanOption = Awaited<
+  ReturnType<typeof getAllJenisKegiatan>
+>[number];
+
 interface KegiatanTableProps {
   initialKegiatanList: KegiatanWithRelations[];
   initialPageCount: number;
   initialFilteredCount: number;
   allMataKuliah: MataKuliahOption[];
-  // Perbarui tipe currentSearchParams untuk menyertakan 'semester'
-  currentSearchParams: SearchParams; // Gunakan SearchParams dari nuqs/server untuk mencakup semua parameter
+  allJenisKegiatan: JenisKegiatanOption[];
+  currentSearchParams: SearchParams;
 }
 
 export default function KegiatanTable({
@@ -71,6 +101,7 @@ export default function KegiatanTable({
   initialPageCount,
   initialFilteredCount,
   allMataKuliah,
+  allJenisKegiatan,
   currentSearchParams,
 }: KegiatanTableProps) {
   const router = useRouter();
@@ -80,7 +111,15 @@ export default function KegiatanTable({
   const [pageCount, setPageCount] = useState(initialPageCount);
   const [filteredCount, setFilteredCount] = useState(initialFilteredCount);
 
-  // State untuk filter dan pagination
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [kegiatanToDeleteId, setKegiatanToDeleteId] = useState<string | null>(
+    null
+  );
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  // State untuk kontrol Dialog Filter
+  const [isFilterDialogOpen, setIsFilterDialogOpen] = useState(false);
+
   const [page, setPage] = useState(
     parseInt(currentSearchParams.page?.toString() || "1")
   );
@@ -88,14 +127,20 @@ export default function KegiatanTable({
     parseInt(currentSearchParams.perPage?.toString() || "10")
   );
   const [statusFilter, setStatusFilter] = useState(
-    currentSearchParams.status?.toString() || "all" // status bisa string atau array string, pastikan .toString()
+    currentSearchParams.status?.toString() === "null"
+      ? "all"
+      : currentSearchParams.status?.toString() || "all"
   );
   const [mataKuliahFilter, setMataKuliahFilter] = useState(
     currentSearchParams.mataKuliahId?.toString() || "all"
   );
-  // --- Tambahkan state untuk semesterFilter ---
   const [semesterFilter, setSemesterFilter] = useState(
-    currentSearchParams.semester?.toString() || "all" // Pastikan semester juga diinisialisasi
+    currentSearchParams.semester?.toString() === "null"
+      ? "all"
+      : currentSearchParams.semester?.toString() || "all"
+  );
+  const [jenisKegiatanFilter, setJenisKegiatanFilter] = useState(
+    currentSearchParams.jenisKegiatanId?.toString() || "all"
   );
 
   useEffect(() => {
@@ -105,16 +150,18 @@ export default function KegiatanTable({
     setPage(parseInt(currentSearchParams.page?.toString() || "1"));
     setPerPage(parseInt(currentSearchParams.perPage?.toString() || "10"));
     setStatusFilter(
-      currentSearchParams.status?.toString() === "null" // nuqs bisa mengembalikan string "null"
+      currentSearchParams.status?.toString() === "null"
         ? "all"
         : currentSearchParams.status?.toString() || "all"
     );
     setMataKuliahFilter(currentSearchParams.mataKuliahId?.toString() || "all");
-    // --- Update useEffect untuk semesterFilter ---
     setSemesterFilter(
       currentSearchParams.semester?.toString() === "null"
         ? "all"
         : currentSearchParams.semester?.toString() || "all"
+    );
+    setJenisKegiatanFilter(
+      currentSearchParams.jenisKegiatanId?.toString() || "all"
     );
   }, [
     initialKegiatanList,
@@ -129,32 +176,48 @@ export default function KegiatanTable({
       params.set("page", page.toString());
       params.set("perPage", perPage.toString());
 
-      if (statusFilter && statusFilter !== "all") {
+      if (statusFilter && statusFilter !== "all")
         params.set("status", statusFilter);
-      } else {
-        params.delete("status");
-      }
+      else params.delete("status");
 
-      if (mataKuliahFilter && mataKuliahFilter !== "all") {
+      if (mataKuliahFilter && mataKuliahFilter !== "all")
         params.set("mataKuliahId", mataKuliahFilter);
-      } else {
-        params.delete("mataKuliahId");
-      }
+      else params.delete("mataKuliahId");
 
-      // --- Tambahkan logika untuk semesterFilter ---
-      if (semesterFilter && semesterFilter !== "all") {
+      if (semesterFilter && semesterFilter !== "all")
         params.set("semester", semesterFilter);
-      } else {
-        params.delete("semester");
-      }
+      else params.delete("semester");
+
+      if (jenisKegiatanFilter && jenisKegiatanFilter !== "all")
+        params.set("jenisKegiatanId", jenisKegiatanFilter);
+      else params.delete("jenisKegiatanId");
 
       router.push(`/admin/kegiatan?${params.toString()}`);
     });
   };
 
-  const handleSearch = () => {
-    setPage(1); // Reset to first page on new search
+  const handleApplyFilters = () => {
+    setPage(1); // Reset page to 1 when filters are applied
     applyFiltersAndNavigate();
+    setIsFilterDialogOpen(false); // Close the filter dialog
+  };
+
+  const handleResetFilters = () => {
+    setPage(1);
+    setPerPage(10);
+    setStatusFilter("all");
+    setMataKuliahFilter("all");
+    setSemesterFilter("all");
+    setJenisKegiatanFilter("all");
+
+    // Clear all params from URL
+    startTransition(() => {
+      const params = new URLSearchParams(); // Create empty params
+      params.set("page", "1");
+      params.set("perPage", "10");
+      router.push(`/admin/kegiatan?${params.toString()}`);
+      setIsFilterDialogOpen(false); // Close the filter dialog
+    });
   };
 
   const handlePageChange = (newPage: number) => {
@@ -162,35 +225,44 @@ export default function KegiatanTable({
     applyFiltersAndNavigate();
   };
 
-  // IMPORTANT: Replace confirm() with a custom modal UI as per guidelines
-  const handleDelete = async (id: string) => {
-    // Replace with a custom modal for confirmation
-    const isConfirmed = window.confirm(
-      "Apakah Anda yakin ingin menghapus kegiatan ini?"
-    ); // Placeholder for custom modal
-    if (isConfirmed) {
-      const result = await deleteKegiatan(id);
-      if (result.success) {
-        toast.custom(() => (
-          <CustomToast
-            title="Kegiatan Berhasil Dihapus"
-            description="Data kegiatan telah berhasil dihapus dari sistem."
-            variant="success"
-          />
-        ));
-        router.refresh();
-      } else {
-        toast.custom(() => (
-          <CustomToast
-            title="Gagal Menghapus Kegiatan"
-            description={
-              result.message || "Terjadi kesalahan saat menghapus kegiatan."
-            }
-            variant="destructive"
-          />
-        ));
-      }
+  const handleDeleteClick = (kegiatanId: string) => {
+    setKegiatanToDeleteId(kegiatanId);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!kegiatanToDeleteId) return;
+
+    setIsDeleting(true);
+    const result = await deleteKegiatan(kegiatanToDeleteId);
+    setIsDeleting(false);
+
+    if (result.success) {
+      toast.custom(() => (
+        <CustomToast
+          title="Kegiatan Berhasil Dihapus"
+          description={
+            result.message ||
+            "Data kegiatan telah berhasil dihapus dari sistem."
+          }
+          variant="success"
+        />
+      ));
+
+      window.location.reload();
+    } else {
+      toast.custom(() => (
+        <CustomToast
+          title="Gagal Menghapus Kegiatan"
+          description={
+            result.message || "Terjadi kesalahan saat menghapus kegiatan."
+          }
+          variant="destructive"
+        />
+      ));
     }
+    setIsDeleteDialogOpen(false);
+    setKegiatanToDeleteId(null);
   };
 
   const handleUpdateStatus = async (
@@ -199,8 +271,7 @@ export default function KegiatanTable({
   ) => {
     let alasanDitolak: string | undefined = undefined;
     if (newStatus === "DITOLAK") {
-      // IMPORTANT: Replace prompt() with a custom modal UI as per guidelines
-      const promptResult = window.prompt("Masukkan alasan penolakan:"); // Placeholder for custom modal
+      const promptResult = window.prompt("Masukkan alasan penolakan:");
       if (promptResult === null || promptResult === "") {
         toast.custom(() => (
           <CustomToast
@@ -232,7 +303,9 @@ export default function KegiatanTable({
       toast.custom(() => (
         <CustomToast
           title="Gagal Memperbarui Status"
-          description={"Terjadi kesalahan saat memperbarui status."}
+          description={
+            result.message || "Terjadi kesalahan saat memperbarui status."
+          }
           variant="destructive"
         />
       ));
@@ -240,15 +313,24 @@ export default function KegiatanTable({
   };
 
   const session = useSession();
-
   const isDosen = session.data?.user.peran === "DOSEN";
   const isMahasiswa = session.data?.user.peran === "MAHASISWA";
   const isAdminOrSuperadmin =
     session.data?.user.peran === "ADMIN" ||
     session.data?.user.peran === "SUPERADMIN";
 
-  // Generate semester options dynamically (e.g., from 1 to 14 for typical university semesters)
   const semesterOptions = Array.from({ length: 14 }, (_, i) => i + 1);
+
+  // Helper untuk mendapatkan nilai field kustom berdasarkan templateKey
+  const getFieldValue = (
+    kegiatan: KegiatanWithRelations,
+    templateKey: string
+  ) => {
+    const fieldValue = kegiatan.fieldValues.find(
+      (fv) => fv.jenisKegiatanField.templateKey === templateKey
+    );
+    return fieldValue?.value || "-";
+  };
 
   return (
     <Card className="w-full shadow-md">
@@ -256,79 +338,126 @@ export default function KegiatanTable({
         <CardTitle className="text-2xl font-semibold">
           Daftar Kegiatan
         </CardTitle>
-        <div className="flex flex-wrap items-center justify-between gap-4 pt-4">
-          <div className="flex flex-wrap items-center gap-3">
-            <Select
-              value={statusFilter}
-              onValueChange={(
-                value: string // Ubah tipe menjadi string karena 'all' juga mungkin
-              ) => setStatusFilter(value)}
-            >
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Filter Status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Semua Status</SelectItem>
-                <SelectItem value="DIAJUKAN">Diajukan</SelectItem>
-                <SelectItem value="DISETUJUI">Disetujui</SelectItem>
-                <SelectItem value="DITOLAK">Ditolak</SelectItem>
-              </SelectContent>
-            </Select>
-            <Select
-              value={mataKuliahFilter}
-              onValueChange={setMataKuliahFilter}
-            >
-              <SelectTrigger className="w-[200px]">
-                <SelectValue placeholder="Filter Mata Kuliah" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Semua Mata Kuliah</SelectItem>
-                {allMataKuliah.map((mk) => (
-                  <SelectItem key={mk.id} value={mk.id.toString()}>
-                    {mk.judul} (Sm. {mk.semester})
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+        <div className="flex items-center justify-between gap-4 pt-4 flex-wrap">
+          {/* Tombol Filter yang memicu Dialog */}
+          <Dialog
+            open={isFilterDialogOpen}
+            onOpenChange={setIsFilterDialogOpen}
+          >
+            <DialogTrigger asChild>
+              <Button variant="outline" className="flex items-center gap-2">
+                <Filter className="h-4 w-4" /> Filter Kegiatan
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px] rounded-xl p-6">
+              <DialogHeader>
+                <DialogTitle>Filter Kegiatan</DialogTitle>
+                <DialogDescription>
+                  Pilih kriteria untuk memfilter daftar kegiatan.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="grid gap-4 py-4">
+                {/* Status Filter */}
+                <Select value={statusFilter} onValueChange={setStatusFilter}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Filter Status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Semua Status</SelectItem>
+                    <SelectItem value="DIAJUKAN">Diajukan</SelectItem>
+                    <SelectItem value="DISETUJUI">Disetujui</SelectItem>
+                    <SelectItem value="DITOLAK">Ditolak</SelectItem>
+                  </SelectContent>
+                </Select>
 
-            {/* --- Tambahkan Select untuk Semester --- */}
-            {isMahasiswa && ( // Tampilkan hanya untuk mahasiswa jika semester hanya relevan bagi mereka
-              <Select
-                value={semesterFilter}
-                onValueChange={(value: string) => setSemesterFilter(value)}
-              >
-                <SelectTrigger className="w-[150px]">
-                  <SelectValue placeholder="Filter Semester" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Semua Semester</SelectItem>
-                  {semesterOptions.map((s) => (
-                    <SelectItem key={s} value={s.toString()}>
-                      Semester {s}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            )}
+                {/* Mata Kuliah Filter */}
+                <Select
+                  value={mataKuliahFilter}
+                  onValueChange={setMataKuliahFilter}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Filter Mata Kuliah" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Semua Mata Kuliah</SelectItem>
+                    <SelectItem value="0">Tidak Ada Mata Kuliah</SelectItem>
+                    {allMataKuliah.map((mk) => (
+                      <SelectItem key={mk.id} value={mk.id.toString()}>
+                        {mk.judul} (Sm. {mk.semester})
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
 
-            <Button onClick={handleSearch} disabled={isPending}>
-              {isPending ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              ) : null}
-              Terapkan Filter
-            </Button>
-          </div>
-          <Link href="/admin/kegiatan/tambah-kegiatan">
-            <Button>
-              <PlusCircle className="mr-2 h-4 w-4" /> Tambah Kegiatan
-            </Button>
-          </Link>
+                {/* Semester Filter */}
+                {(isMahasiswa || isDosen || isAdminOrSuperadmin) && (
+                  <Select
+                    value={semesterFilter}
+                    onValueChange={setSemesterFilter}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Filter Semester" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Semua Semester</SelectItem>
+                      {semesterOptions.map((s) => (
+                        <SelectItem key={s} value={s.toString()}>
+                          Semester {s}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
+
+                {/* Jenis Kegiatan Filter */}
+                <Select
+                  value={jenisKegiatanFilter}
+                  onValueChange={setJenisKegiatanFilter}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Filter Jenis Kegiatan" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Semua Jenis Kegiatan</SelectItem>
+                    {allJenisKegiatan.map((jk) => (
+                      <SelectItem key={jk.id} value={jk.id}>
+                        {jk.nama}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <DialogFooter>
+                <Button variant="outline" onClick={handleResetFilters}>
+                  Reset Filter
+                </Button>
+                <Button onClick={handleApplyFilters} disabled={isPending}>
+                  {isPending ? (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  ) : null}
+                  Terapkan Filter
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+
+          {/* Add Kegiatan Button */}
+          {isMahasiswa && (
+            <Link href="/admin/kegiatan/tambah-kegiatan">
+              <Button>
+                <PlusCircle className="mr-2 h-4 w-4" /> Tambah Kegiatan
+              </Button>
+            </Link>
+          )}
         </div>
       </CardHeader>
+
       <CardContent className="pt-0">
         <p className="text-sm text-gray-600 mb-4">
           Total Kegiatan: {filteredCount}
         </p>
+
+        {/* Loading / No Data State */}
         {isPending && data.length === 0 ? (
           <div className="flex justify-center items-center h-40">
             <Loader2 className="animate-spin" size={32} />
@@ -339,28 +468,32 @@ export default function KegiatanTable({
             Tidak ada kegiatan yang ditemukan.
           </div>
         ) : (
-          <div className="relative w-full overflow-auto">
+          // Data Table with horizontal scroll
+          <div className="relative w-full overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
             <Table className="min-w-full bg-white">
               <TableHeader>
                 <TableRow>
-                  <TableHead>No</TableHead>
-                  <TableHead>Mata Kuliah</TableHead>
-                  <TableHead>Pengaju</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Tanggal Dibuat</TableHead>
-                  <TableHead className="text-center">Aksi</TableHead>
+                  <TableHead className="">No</TableHead>
+                  <TableHead className="">Jenis Kegiatan</TableHead>
+                  <TableHead className="">Mata Kuliah</TableHead>
+                  <TableHead className="">Pengaju</TableHead>
+                  <TableHead className="">Status</TableHead>
+                  <TableHead className="">Tanggal Dibuat</TableHead>
+                  <TableHead className=" text-center">Aksi</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {data.map((kegiatan, index) => (
                   <TableRow key={kegiatan.id}>
                     <TableCell>{(page - 1) * perPage + index + 1}</TableCell>
+                    <TableCell>{kegiatan.jenisKegiatan.nama}</TableCell>
                     <TableCell>
-                      {kegiatan.MataKuliah.judul} (Sm.
-                      {kegiatan.MataKuliah.semester})
+                      {kegiatan.MataKuliah?.judul
+                        ? `${kegiatan.MataKuliah.judul} (Sm. ${kegiatan.MataKuliah.semester})`
+                        : "-"}
                     </TableCell>
                     <TableCell>
-                      {kegiatan.logbook.mahasiswa.pengguna.nama}
+                      {kegiatan.logbook.mahasiswa?.pengguna.nama || "-"}
                     </TableCell>
                     <TableCell>
                       <span
@@ -389,40 +522,40 @@ export default function KegiatanTable({
                       {new Date(kegiatan.createdAt).toLocaleDateString("id-ID")}
                     </TableCell>
                     <TableCell className="flex space-x-2 justify-center">
-                      {(isMahasiswa || isAdminOrSuperadmin) && ( // Mahasiswa atau Admin/Superadmin bisa melihat/mengedit
+                      {/* Actions for Mahasiswa or Admin/Superadmin */}
+                      {(isMahasiswa || isAdminOrSuperadmin) && (
                         <>
                           <Link href={`/admin/kegiatan/detail/${kegiatan.id}`}>
                             <Button variant="outline" size="sm" className="p-2">
                               <Eye className="h-4 w-4" />
                             </Button>
                           </Link>
-                          {isMahasiswa &&
-                            kegiatan.status === "DIAJUKAN" && ( // Hanya mahasiswa bisa edit jika status DIAJUKAN
-                              <Link
-                                href={`/admin/kegiatan/edit/${kegiatan.id}`}
+                          {isMahasiswa && kegiatan.status === "DIAJUKAN" && (
+                            <Link href={`/admin/kegiatan/edit/${kegiatan.id}`}>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="p-2"
                               >
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  className="p-2"
-                                >
-                                  <Edit className="h-4 w-4" />
-                                </Button>
-                              </Link>
-                            )}
+                                <Edit className="h-4 w-4" />
+                              </Button>
+                            </Link>
+                          )}
                           <Button
                             variant="destructive"
                             size="sm"
                             className="p-2"
-                            onClick={() => handleDelete(kegiatan.id)}
+                            onClick={() => handleDeleteClick(kegiatan.id)}
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>
                         </>
                       )}
-                      {(isDosen || isAdminOrSuperadmin) && ( // Dosen atau Admin/Superadmin bisa tanggapi
+
+                      {/* Actions for Dosen or Admin/Superadmin (without duplicating Detail if already present) */}
+                      {(isDosen || isAdminOrSuperadmin) && (
                         <>
-                          {!isMahasiswa && ( // Hindari duplikasi tombol detail jika mahasiswa dan dosen/admin
+                          {!(isMahasiswa || isAdminOrSuperadmin) && (
                             <Link
                               href={`/admin/kegiatan/detail/${kegiatan.id}`}
                             >
@@ -465,6 +598,8 @@ export default function KegiatanTable({
             </Table>
           </div>
         )}
+
+        {/* Pagination Controls */}
         <Pagination className="mt-4">
           <PaginationContent>
             <PaginationItem>
@@ -498,6 +633,47 @@ export default function KegiatanTable({
           </PaginationContent>
         </Pagination>
       </CardContent>
+
+      {/* AlertDialog for Delete Confirmation */}
+      <AlertDialog
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
+      >
+        <AlertDialogContent className="rounded-xl">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-xl font-bold text-gray-900">
+              Konfirmasi Menghapus Kegiatan
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-gray-700">
+              Anda yakin ingin menghapus kegiatan ini secara permanen? Tindakan
+              ini tidak dapat dibatalkan.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel asChild>
+              <Button variant="outline" className="px-5 py-2 rounded-md">
+                Batal
+              </Button>
+            </AlertDialogCancel>
+            <AlertDialogAction asChild>
+              <Button
+                onClick={handleConfirmDelete}
+                disabled={isDeleting}
+                className="px-5 py-2 rounded-md bg-red-600 hover:bg-red-700 text-white"
+              >
+                {isDeleting ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />{" "}
+                    Menghapus...
+                  </>
+                ) : (
+                  "Ya, Hapus"
+                )}
+              </Button>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </Card>
   );
 }

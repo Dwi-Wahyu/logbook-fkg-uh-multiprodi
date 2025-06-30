@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -49,224 +50,274 @@ import { CloudUpload, Loader2, X, Trash2, FileText } from "lucide-react";
 import {
   editKegiatan,
   deleteLampiran,
-} from "@/app/_lib/actions/kegiatanActions"; // Import editKegiatan dan deleteLampiran action
-import { validLampiranExtensions } from "@/schema/kegiatan/TambahKegiatanSchema"; // Re-use schema
+} from "@/app/_lib/actions/kegiatanActions";
+import { validLampiranExtensions } from "@/schema/kegiatan/TambahKegiatanSchema"; // Digunakan untuk validasi lampiran
 import { toast } from "sonner";
 import { CustomToast } from "@/components/toast";
 import {
   editKegiatanSchema,
   TEditKegiatan,
-} from "@/schema/kegiatan/UpdateKegiatanSchema";
-// import { DatePickerWithRange } from "../../_components/DatePickerWithRange"; // Hapus jika tidak ada field tanggal khusus
+} from "@/schema/kegiatan/UpdateKegiatanSchema"; // Schema untuk edit kegiatan
 
-// Definisikan ulang tipe kegiatan dari props
-type KegiatanProps = {
-  id: string;
-  fieldsData: Record<string, any> | null;
-  status: string;
-  createdAt: string;
-  updatedAt: string;
-  MataKuliah: {
-    id: number; // Perlu ID mata kuliah untuk default value select
-    judul: string;
-    semester: number;
-    programStudi: {
-      id: string;
-      nama: string;
-      fields: Array<{
-        id: string;
-        fieldName: string;
-        fieldType: string;
-        isRequired: boolean;
-        order: number;
-      }>;
-    };
-  };
-  logbook: {
-    mahasiswa: {
-      pengguna: {
-        nama: string;
-        username: string;
-      };
-    };
-  };
-  lampiran: Array<{
-    id: string;
-    namaFile: string;
-    url: string;
-  }>;
-};
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
-type MataKuliahOption = {
-  id: number;
-  judul: string;
-  semester: number;
-  programStudiId: string | null;
-};
+import {
+  KegiatanWithRelations, // Tipe kegiatan lengkap dari queries
+  getAllMataKuliah, // Untuk tipe allMataKuliah
+} from "@/app/_lib/queries/kegiatanQueries";
 
-type ProgramStudiField = {
-  id: string;
-  fieldName: string;
-  fieldType: string; // "TEXT", "NUMBER", "DATE", "BOOLEAN", "TEXTAREA"
-  isRequired: boolean;
-  order: number;
+// Inferensi tipe untuk MataKuliahOption
+type MataKuliahOption = Awaited<ReturnType<typeof getAllMataKuliah>>[number];
+
+// Tipe untuk fieldValues yang akan dikirim/dikelola
+type FieldValuePayload = {
+  jenisKegiatanFieldId: string;
+  value: any; // Akan divalidasi dan diubah tipenya di backend
 };
 
 interface KegiatanEditFormProps {
-  kegiatan: KegiatanProps;
+  kegiatan: KegiatanWithRelations; // Terima kegiatan lengkap
   allMataKuliah: MataKuliahOption[];
-  programStudiFields: ProgramStudiField[]; // Fields definisi dari server
 }
 
 export default function KegiatanEditForm({
   kegiatan,
   allMataKuliah,
-  programStudiFields,
 }: KegiatanEditFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  // State untuk melacak lampiran yang sudah ada dan yang baru diupload
   const [existingAttachments, setExistingAttachments] = useState(
     kegiatan.lampiran
   );
-  const [newlyUploadedFiles, setNewlyUploadedFiles] = useState<File[]>([]);
 
+  const [isDeleteAttachmentDialogOpen, setIsDeleteAttachmentDialogOpen] =
+    useState(false);
+  const [attachmentToDeleteId, setAttachmentToDeleteId] = useState<
+    string | null
+  >(null);
+  const [attachmentToDeleteName, setAttachmentToDeleteName] = useState<
+    string | null
+  >(null);
+
+  // Inisialisasi defaultValues untuk form
   const form = useForm<TEditKegiatan>({
     resolver: zodResolver(editKegiatanSchema),
     defaultValues: {
       id: kegiatan.id,
-      mata_kuliahId: kegiatan.MataKuliah.id.toString(),
+      // mata_kuliahId akan null jika tidak ada, atau string ID
+      mata_kuliahId: kegiatan.MataKuliah?.id?.toString() || null,
       status: kegiatan.status as
         | "DIAJUKAN"
         | "DISETUJUI"
         | "DITOLAK"
         | undefined,
-      // Inisialisasi fieldsData dengan nilai yang ada
-      fieldsData: kegiatan.fieldsData || {}, // Gunakan objek kosong jika null
-      // Jika Anda memiliki field tanggal terpisah di schema (seperti tanggalMulai, tanggalSelesai)
-      // maka perlu inisialisasi di sini:
-      // tanggal: {
-      //   from: kegiatan.tanggalMulai ? new Date(kegiatan.tanggalMulai) : undefined,
-      //   to: kegiatan.tanggalSelesai ? new Date(kegiatan.tanggalSelesai) : undefined,
-      // }
+      lampiran: [], // Untuk file baru
+      // fieldValues akan diinisialisasi di useEffect, sehingga tidak perlu di sini
+      fieldValues: [], // Default kosong, akan diisi di useEffect
     },
   });
 
-  // Effect untuk mengatur nilai default fieldsData setelah form dimuat dan fields definition ada
-  useEffect(() => {
-    const defaultFieldsData: Record<string, any> = {};
-    programStudiFields.forEach((fieldDef) => {
-      const existingValue = (kegiatan.fieldsData || {})[fieldDef.fieldName];
-      if (existingValue !== undefined && existingValue !== null) {
-        defaultFieldsData[fieldDef.fieldName] = existingValue;
-      } else {
-        // Berikan nilai default yang terdefinisi jika tidak ada nilai sebelumnya
-        if (
-          fieldDef.fieldType === "TEXT" ||
-          fieldDef.fieldType === "TEXTAREA"
-        ) {
-          defaultFieldsData[fieldDef.fieldName] = "";
-        } else if (fieldDef.fieldType === "NUMBER") {
-          defaultFieldsData[fieldDef.fieldName] = null; // Gunakan null untuk number opsional
-        } else if (fieldDef.fieldType === "DATE") {
-          defaultFieldsData[fieldDef.fieldName] = undefined; // Date component handle undefined
-        } else if (fieldDef.fieldType === "BOOLEAN") {
-          defaultFieldsData[fieldDef.fieldName] = false;
-        }
+  // Helper untuk menginisialisasi nilai field berdasarkan tipe
+  function initializeFieldValue(value: any, fieldType: string): any {
+    if (
+      value === null ||
+      value === undefined ||
+      (typeof value === "string" && value.trim() === "")
+    ) {
+      // Jika nilai kosong, berikan default berdasarkan tipe
+      switch (fieldType) {
+        case "TEXT":
+        case "TEXTAREA":
+          return "";
+        case "NUMBER":
+          return null; // null untuk NUMBER kosong
+        case "DATE":
+          return undefined; // undefined untuk DATE kosong
+        case "BOOLEAN":
+          return false;
+        default:
+          return null;
       }
-    });
-    form.reset({
-      ...form.getValues(), // Pertahankan nilai lain seperti id, mata_kuliahId, status
-      fieldsData: defaultFieldsData,
-    });
-  }, [programStudiFields, kegiatan.fieldsData, form]);
+    }
+    // Konversi ISO string Date kembali ke Date object jika diperlukan oleh input date,
+    // tapi untuk input type="date" kita akan memformatnya ke "YYYY-MM-DD"
+    if (fieldType === "DATE") {
+      try {
+        const dateObj = new Date(value);
+        return isNaN(dateObj.getTime()) ? undefined : dateObj;
+      } catch {
+        return undefined;
+      }
+    }
+    if (fieldType === "NUMBER") {
+      const numValue = parseFloat(value);
+      return isNaN(numValue) ? null : numValue;
+    }
+    if (fieldType === "BOOLEAN") {
+      // Handle boolean value stored as "true"/"false" string or actual boolean
+      return value === "true" || value === true;
+    }
+    return value; // Untuk TEXT, TEXTAREA, dan lainnya
+  }
+
+  // --- PERBAIKAN UTAMA DI SINI ---
+  useEffect(() => {
+    // Pastikan `kegiatan` dan `kegiatan.jenisKegiatan.fields` tersedia
+    if (kegiatan && kegiatan.jenisKegiatan && kegiatan.jenisKegiatan.fields) {
+      const initialFieldValuesForForm = kegiatan.jenisKegiatan.fields
+        .map((fieldDef) => {
+          // Cari nilai yang sudah ada untuk fieldDef ini di kegiatan.fieldValues
+          const existingValueEntry = kegiatan.fieldValues.find(
+            (fv) => fv.jenisKegiatanField.id === fieldDef.id
+          );
+
+          return {
+            jenisKegiatanFieldId: fieldDef.id,
+            // Inisialisasi nilai dengan yang sudah ada atau default, sesuai tipe
+            value: initializeFieldValue(
+              existingValueEntry?.value,
+              fieldDef.fieldType
+            ),
+          };
+        })
+        .sort((a, b) => {
+          // Urutkan fieldValues agar sesuai dengan order fieldDef
+          const fieldDefA = kegiatan.jenisKegiatan.fields.find(
+            (f) => f.id === a.jenisKegiatanFieldId
+          );
+          const fieldDefB = kegiatan.jenisKegiatan.fields.find(
+            (f) => f.id === b.jenisKegiatanFieldId
+          );
+          return (fieldDefA?.order ?? 0) - (fieldDefB?.order ?? 0);
+        });
+
+      // Reset form dengan semua nilai yang diperbarui
+      form.reset({
+        id: kegiatan.id,
+        mata_kuliahId: kegiatan.MataKuliah?.id?.toString() || null,
+        status: kegiatan.status as
+          | "DIAJUKAN"
+          | "DISETUJUI"
+          | "DITOLAK"
+          | undefined,
+        lampiran: [], // Lampiran baru selalu kosong saat reset
+        fieldValues: initialFieldValuesForForm,
+      });
+    }
+  }, [kegiatan, form]); // Efek akan berjalan ketika objek 'kegiatan' berubah atau form instance berubah
 
   const onSubmit = async (values: TEditKegiatan) => {
     setLoading(true);
 
-    // KARENA 'tanggal' SUDAH TIDAK DI SCHEMATA, ANDA HARUS MENGAMBILNYA DARI FIELDSDATA JIKA ADA
-    // Contoh jika Anda punya field bernama 'Tanggal Mulai' dan 'Tanggal Selesai' di fieldsData
-    const tanggalMulaiValue = values.fieldsData["Tanggal Mulai"]
-      ? new Date(values.fieldsData["Tanggal Mulai"])
-      : undefined;
-    const tanggalSelesaiValue = values.fieldsData["Tanggal Selesai"]
-      ? new Date(values.fieldsData["Tanggal Selesai"])
-      : undefined;
-
-    // Anda perlu menyesuaikan payload yang dikirim ke action jika formatnya berbeda
-    const payloadToSend = {
-      ...values,
-      // Jika tanggalMulai/Selesai tidak lagi di fieldsData tapi terpisah, Anda harus memasukannya ke sini
-      // Contoh: tanggal: { from: tanggalMulaiValue, to: tanggalSelesaiValue },
-      // Namun, jika schema.prisma Anda tidak punya tanggalMulai/Selesai, maka tetap kosongkan.
-      // Jika fieldsData diharapkan menyimpan tanggal, maka fieldsData sudah benar.
-    };
-
-    const actionResult = await editKegiatan(payloadToSend);
+    const actionResult = await editKegiatan(values);
 
     if (actionResult.success) {
       toast.custom(() => (
         <CustomToast
           title="Kegiatan Berhasil Diperbarui"
-          description="Rincian kegiatan telah berhasil disimpan."
+          description={
+            actionResult.message || "Rincian kegiatan telah berhasil disimpan."
+          }
           variant="success"
         />
       ));
-      // Karena lampiran baru tidak ditangani langsung oleh editKegiatan action,
-      // Anda perlu logika terpisah untuk mengunggah 'newlyUploadedFiles'
-      // Misalnya: await uploadLampiranToKegiatan(kegiatan.id, newlyUploadedFiles);
-      router.push(`/admin/kegiatan/detail/${kegiatan.id}`); // Redirect ke halaman detail
+      form.setValue("lampiran", []); // Clear new files from form state
+      window.location.reload(); // Paksa hard reload
     } else {
+      console.error(
+        "Failed to update activity:",
+        actionResult.message,
+        actionResult.error
+      );
       toast.custom(() => (
         <CustomToast
           title="Gagal Memperbarui Kegiatan"
           description={
+            actionResult.message ||
             "Terjadi kesalahan yang tidak diketahui. Mohon coba lagi."
           }
           variant="destructive"
         />
       ));
+      if (
+        actionResult.validationErrors &&
+        actionResult.validationErrors.length > 0
+      ) {
+        actionResult.validationErrors.forEach((err) => {
+          // Set error pada field spesifik jika diinginkan
+          // Pastikan path Zod cocok dengan name di formField. Contoh: 'fieldValues.0.value'
+          form.setError(err.path as any, { message: err.message });
+          console.warn(`Validation Error for ${err.path}: ${err.message}`);
+        });
+      }
     }
-
     setLoading(false);
   };
 
-  const handleRemoveExistingAttachment = async (lampiranId: string) => {
-    if (confirm("Apakah Anda yakin ingin menghapus lampiran ini?")) {
-      const result = await deleteLampiran(lampiranId);
-      if (result.success) {
-        setExistingAttachments((prev) =>
-          prev.filter((att) => att.id !== lampiranId)
-        );
-        toast.custom(() => (
-          <CustomToast
-            title="Lampiran Dihapus"
-            description="Lampiran berhasil dihapus."
-            variant="success"
-          />
-        ));
-      } else {
-        toast.custom(() => (
-          <CustomToast
-            title="Gagal Menghapus Lampiran"
-            description={
-              result.message || "Terjadi kesalahan saat menghapus lampiran."
-            }
-            variant="destructive"
-          />
-        ));
-      }
+  const handleDeleteAttachmentClick = (
+    lampiranId: string,
+    lampiranName: string
+  ) => {
+    setAttachmentToDeleteId(lampiranId);
+    setAttachmentToDeleteName(lampiranName);
+    setIsDeleteAttachmentDialogOpen(true);
+  };
+
+  const handleConfirmDeleteAttachment = async () => {
+    if (!attachmentToDeleteId) return;
+
+    setLoading(true);
+    const result = await deleteLampiran(attachmentToDeleteId);
+    setLoading(false);
+
+    if (result.success) {
+      setExistingAttachments((prev) =>
+        prev.filter((att) => att.id !== attachmentToDeleteId)
+      );
+      toast.custom(() => (
+        <CustomToast
+          title="Lampiran Dihapus"
+          description={result.message || "Lampiran berhasil dihapus."}
+          variant="success"
+        />
+      ));
+      router.refresh();
+    } else {
+      toast.custom(() => (
+        <CustomToast
+          title="Gagal Menghapus Lampiran"
+          description={
+            result.message || "Terjadi kesalahan saat menghapus lampiran."
+          }
+          variant="destructive"
+        />
+      ));
     }
+    setIsDeleteAttachmentDialogOpen(false);
+    setAttachmentToDeleteId(null);
+    setAttachmentToDeleteName(null);
   };
 
   function handleKembali() {
     router.back();
   }
 
+  // Tipe untuk field definitions (dari jenisKegiatan.fields)
+  type JenisKegiatanFieldDef = (typeof kegiatan.jenisKegiatan.fields)[number];
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <Card className="w-full shadow-lg max-w-4xl mx-auto">
+        <Card className="w-full shadow-lg max-w-4xl mx-auto rounded-xl">
           <CardHeader className="pb-4">
             <CardTitle className="text-3xl font-bold text-gray-800">
               Edit Data Kegiatan
@@ -282,133 +333,173 @@ export default function KegiatanEditForm({
               </p>
             )}
 
-            <FormField
-              control={form.control}
-              name="mata_kuliahId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Mata Kuliah Terkait</FormLabel>
-                  <FormControl>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Pilih Mata Kuliah yang relevan" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {allMataKuliah.length > 0 ? (
-                          allMataKuliah.map((value) => (
-                            <SelectItem
-                              key={value.id}
-                              value={value.id.toString()}
-                            >
-                              {value.judul} (Semester {value.semester})
-                            </SelectItem>
-                          ))
-                        ) : (
-                          <SelectItem value="no-mata-kuliah" disabled>
-                            Tidak ada mata kuliah tersedia
-                          </SelectItem>
-                        )}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {/* Display Jenis Kegiatan (Read-only) */}
+            <FormItem>
+              <FormLabel>Jenis Kegiatan</FormLabel>
+              <FormControl>
+                <Input
+                  value={kegiatan.jenisKegiatan.nama}
+                  disabled
+                  className="bg-gray-100 border-gray-200"
+                />
+              </FormControl>
+              <FormDescription>
+                Jenis kegiatan ini tidak dapat diubah setelah dibuat.
+              </FormDescription>
+            </FormItem>
 
-            {/* Bagian Form Dinamis untuk fieldsData */}
-            {programStudiFields && programStudiFields.length > 0 && (
+            {/* Field untuk Mata Kuliah (Kondisional) */}
+            {kegiatan.jenisKegiatan.isMataKuliahRequired && (
+              <FormField
+                control={form.control}
+                name="mata_kuliahId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Mata Kuliah Terkait{" "}
+                      <span className="text-red-500">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Select
+                        onValueChange={(value) => {
+                          field.onChange(value === "0" ? null : value);
+                        }}
+                        value={field.value || "0"}
+                        disabled={loading}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Pilih Mata Kuliah yang relevan" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="0">Pilih Mata Kuliah</SelectItem>
+                          {allMataKuliah.length > 0 ? (
+                            allMataKuliah.map((value) => (
+                              <SelectItem
+                                key={value.id}
+                                value={value.id.toString()}
+                              >
+                                {value.judul} (Semester {value.semester})
+                              </SelectItem>
+                            ))
+                          ) : (
+                            <SelectItem value="no-mata-kuliah" disabled>
+                              Tidak ada mata kuliah tersedia
+                            </SelectItem>
+                          )}
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+
+            {/* Bagian Form Dinamis untuk fieldValues */}
+            {kegiatan.jenisKegiatan.fields.length > 0 && (
               <div className="space-y-6 p-4 border rounded-md bg-gray-50">
                 <h3 className="text-lg font-semibold text-gray-700">
-                  Detail Kegiatan (Sesuai Program Studi)
+                  Detail Kegiatan (Field Kustom)
                 </h3>
-                {programStudiFields.map((fieldDef) => (
-                  <FormField
-                    key={fieldDef.id}
-                    control={form.control}
-                    name={`fieldsData.${fieldDef.fieldName}`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>
-                          {fieldDef.fieldName}{" "}
-                          {fieldDef.isRequired && (
-                            <span className="text-red-500">*</span>
-                          )}
-                        </FormLabel>
-                        <FormControl>
-                          {fieldDef.fieldType === "TEXT" ? (
-                            <Input
-                              placeholder={`Masukkan ${fieldDef.fieldName.toLowerCase()}`}
-                              {...field}
-                              value={field.value ?? ""}
-                            />
-                          ) : fieldDef.fieldType === "TEXTAREA" ? (
-                            <Textarea
-                              placeholder={`Masukkan ${fieldDef.fieldName.toLowerCase()}`}
-                              {...field}
-                              value={field.value ?? ""}
-                            />
-                          ) : fieldDef.fieldType === "NUMBER" ? (
-                            <Input
-                              type="number"
-                              placeholder={`Masukkan ${fieldDef.fieldName.toLowerCase()}`}
-                              {...field}
-                              value={field.value ?? ""}
-                              onChange={(e) =>
-                                field.onChange(
-                                  e.target.value === ""
-                                    ? null
-                                    : parseFloat(e.target.value)
-                                )
-                              }
-                            />
-                          ) : fieldDef.fieldType === "DATE" ? (
-                            <Input
-                              type="date"
-                              placeholder={`Pilih tanggal ${fieldDef.fieldName.toLowerCase()}`}
-                              {...field}
-                              value={
-                                field.value
-                                  ? new Date(field.value)
-                                      .toISOString()
-                                      .split("T")[0]
-                                  : ""
-                              }
-                              onChange={(e) =>
-                                field.onChange(
-                                  e.target.value
-                                    ? new Date(e.target.value)
-                                    : undefined
-                                )
-                              }
-                            />
-                          ) : fieldDef.fieldType === "BOOLEAN" ? (
-                            <div className="flex items-center space-x-2">
-                              <Checkbox
-                                checked={field.value === true}
-                                onCheckedChange={(checked) =>
-                                  field.onChange(checked)
-                                }
+                {kegiatan.jenisKegiatan.fields.map(
+                  (fieldDef: JenisKegiatanFieldDef, index) => (
+                    <FormField
+                      key={fieldDef.id} // Stable key
+                      control={form.control}
+                      // Menggunakan index dari map untuk path ke fieldValues
+                      // Ini mengasumsikan initialFormFieldsValues (dari useEffect)
+                      // sudah diurutkan dan memiliki indeks yang sama dengan fieldDef.
+                      name={`fieldValues.${index}.value`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>
+                            {fieldDef.fieldName}{" "}
+                            {fieldDef.isRequired && (
+                              <span className="text-red-500">*</span>
+                            )}
+                          </FormLabel>
+                          <FormControl>
+                            {fieldDef.fieldType === "TEXT" ? (
+                              <Input
+                                placeholder={`Masukkan ${fieldDef.fieldName.toLowerCase()}`}
+                                {...field}
+                                value={field.value ?? ""}
+                                disabled={loading}
                               />
-                              <Label>{fieldDef.fieldName}</Label>
-                            </div>
-                          ) : (
-                            <Input
-                              placeholder={`Tipe input '${fieldDef.fieldType}' tidak didukung`}
-                              disabled
-                              value={field.value ?? ""}
-                            />
-                          )}
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                ))}
+                            ) : fieldDef.fieldType === "TEXTAREA" ? (
+                              <Textarea
+                                placeholder={`Masukkan ${fieldDef.fieldName.toLowerCase()}`}
+                                {...field}
+                                value={field.value ?? ""}
+                                disabled={loading}
+                              />
+                            ) : fieldDef.fieldType === "NUMBER" ? (
+                              <Input
+                                type="number"
+                                placeholder={`Masukkan ${fieldDef.fieldName.toLowerCase()}`}
+                                {...field}
+                                value={field.value === null ? "" : field.value}
+                                onChange={(e) =>
+                                  field.onChange(
+                                    e.target.value === ""
+                                      ? null
+                                      : parseFloat(e.target.value)
+                                  )
+                                }
+                                disabled={loading}
+                              />
+                            ) : fieldDef.fieldType === "DATE" ? (
+                              <Input
+                                type="date"
+                                placeholder={`Pilih tanggal ${fieldDef.fieldName.toLowerCase()}`}
+                                {...field}
+                                value={
+                                  field.value
+                                    ? new Date(field.value)
+                                        .toISOString()
+                                        .split("T")[0]
+                                    : ""
+                                }
+                                onChange={(e) =>
+                                  field.onChange(
+                                    e.target.value
+                                      ? new Date(e.target.value)
+                                      : undefined
+                                  )
+                                }
+                                disabled={loading}
+                              />
+                            ) : fieldDef.fieldType === "BOOLEAN" ? (
+                              <div className="flex items-center space-x-2">
+                                <Checkbox
+                                  checked={field.value === true}
+                                  onCheckedChange={(checked) =>
+                                    field.onChange(checked)
+                                  }
+                                  disabled={loading}
+                                />
+                                <Label>{fieldDef.fieldName}</Label>
+                              </div>
+                            ) : (
+                              <Input
+                                placeholder={`Tipe input '${fieldDef.fieldType}' tidak didukung`}
+                                disabled
+                                value={field.value ?? ""}
+                              />
+                            )}
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  )
+                )}
               </div>
+            )}
+            {kegiatan.jenisKegiatan.fields.length === 0 && (
+              <p className="text-gray-500 text-sm p-4 border rounded-md bg-gray-50">
+                Tidak ada field kustom yang ditentukan untuk Jenis Kegiatan ini.
+              </p>
             )}
 
             {/* Lampiran yang Sudah Ada */}
@@ -437,9 +528,13 @@ export default function KegiatanEditForm({
                         size="icon"
                         className="size-8 text-red-500 hover:bg-red-100 ml-2"
                         onClick={() =>
-                          handleRemoveExistingAttachment(lampiran.id)
+                          handleDeleteAttachmentClick(
+                            lampiran.id,
+                            lampiran.namaFile
+                          )
                         }
-                        type="button" // Penting: type="button" agar tidak submit form
+                        type="button"
+                        disabled={loading}
                       >
                         <Trash2 className="h-4 w-4" />
                         <span className="sr-only">Hapus</span>
@@ -450,18 +545,17 @@ export default function KegiatanEditForm({
               </div>
             )}
 
-            {/* Unggah Lampiran Baru (opsional, jika Anda ingin menambah lebih banyak) */}
+            {/* Unggah Lampiran Baru */}
             <FormField
               control={form.control}
-              name="lampiran" // Menggunakan 'lampiran' dari schema untuk file baru
+              name="lampiran"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Unggah Lampiran Baru</FormLabel>
                   <FormControl>
                     <FileUpload
                       onValueChange={(files) => {
-                        field.onChange(files); // Update RHF value for Zod validation
-                        setNewlyUploadedFiles(files); // Simpan di state terpisah untuk upload nanti
+                        field.onChange(files);
                       }}
                       accept={validLampiranExtensions
                         .map((ext) => {
@@ -482,9 +576,10 @@ export default function KegiatanEditForm({
                           }
                         })
                         .join(",")}
-                      maxFiles={3} // Batasi total lampiran, atau hanya file baru
+                      maxFiles={3}
                       maxSize={50 * 1024 * 1024}
                       multiple
+                      disabled={loading}
                     >
                       <FileUploadDropzone className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-gray-300 rounded-md text-center text-gray-600 hover:border-primary transition-colors">
                         <CloudUpload className="size-8 text-primary mb-2" />
@@ -541,6 +636,7 @@ export default function KegiatanEditForm({
               type="button"
               variant="outline"
               className="px-6 py-2"
+              disabled={loading}
             >
               Kembali
             </Button>
@@ -556,6 +652,37 @@ export default function KegiatanEditForm({
           </CardFooter>
         </Card>
       </form>
+      {/* AlertDialog for delete attachment confirmation */}
+      <AlertDialog
+        open={isDeleteAttachmentDialogOpen}
+        onOpenChange={setIsDeleteAttachmentDialogOpen}
+      >
+        <AlertDialogContent className="rounded-xl">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Hapus Lampiran Ini?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Anda yakin ingin menghapus lampiran "
+              <span className="font-semibold">{attachmentToDeleteName}</span>"
+              ini? Tindakan ini tidak dapat dibatalkan.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={loading}>Batal</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleConfirmDeleteAttachment}
+              disabled={loading}
+              className="bg-red-600 hover:bg-red-700 text-white"
+            >
+              {loading ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <Trash2 className="mr-2 h-4 w-4" />
+              )}
+              Ya, Hapus
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </Form>
   );
 }

@@ -23,6 +23,17 @@ export const authConfig: NextAuthConfig = {
         const user = await prisma.pengguna.findFirst({
           where: { username },
           include: {
+            mahasiswa: {
+              select: {
+                id: true,
+                semester: true,
+              },
+            },
+            dosen: {
+              select: {
+                id: true,
+              },
+            },
             programStudi: {
               select: {
                 id: true,
@@ -32,9 +43,9 @@ export const authConfig: NextAuthConfig = {
           },
         });
 
-        console.log(user);
-
         if (!user) return null;
+
+        const semester = user.mahasiswa?.semester ?? 0;
 
         const isValid = compareSync(password, user.password);
         return isValid
@@ -46,6 +57,7 @@ export const authConfig: NextAuthConfig = {
               peran: user.peran,
               programStudi: user.programStudi.nama,
               programStudiId: user.programStudiId,
+              semester: semester,
             }
           : null;
       },
@@ -65,6 +77,7 @@ export const authConfig: NextAuthConfig = {
         session.user.avatar = token.avatar as string;
         session.user.programStudi = token.programStudi as string;
         session.user.programStudiId = token.programStudiId as string;
+        session.user.semester = token.semester as number;
       }
       return session;
     },
@@ -77,6 +90,7 @@ export const authConfig: NextAuthConfig = {
         token.avatar = user.avatar;
         token.programStudi = user.programStudi;
         token.programStudiId = user.programStudiId;
+        token.semester = user.semester;
       }
       return token;
     },

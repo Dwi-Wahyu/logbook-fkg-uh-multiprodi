@@ -44,6 +44,7 @@ import { CustomToast } from "@/components/toast";
 import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { getAllProgramStudi } from "@/app/_lib/queries/programStudiQueries";
+import UnauthorizedPage from "../UnauthorizedPage";
 
 type AllProgramStudiReturnType = Awaited<ReturnType<typeof getAllProgramStudi>>;
 
@@ -56,6 +57,16 @@ export default function TambahPenggunaForm({ allProgramStudi }: Props) {
 
   const session = useSession();
 
+  let programStudiId = session.data?.user.programStudiId ?? "";
+
+  if (session.data?.user.peran === "SUPERADMIN") {
+    programStudiId = "";
+  }
+
+  if (session.data?.user.peran === "MAHASISWA") {
+    return <UnauthorizedPage />;
+  }
+
   const form = useForm<TTambahPenggunaSchema>({
     resolver: zodResolver(tambahPenggunaSchema),
     defaultValues: {
@@ -63,7 +74,7 @@ export default function TambahPenggunaForm({ allProgramStudi }: Props) {
       username: "",
       password: "",
       peran: undefined,
-      programStudiId: "",
+      programStudiId,
     },
   });
 
@@ -190,6 +201,7 @@ export default function TambahPenggunaForm({ allProgramStudi }: Props) {
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
+                    disabled={session.data?.user.peran == "ADMIN"}
                   >
                     <FormControl>
                       <SelectTrigger className="w-full">

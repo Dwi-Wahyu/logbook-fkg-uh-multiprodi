@@ -6,8 +6,11 @@ import {
   TPenggunaSearchParams,
 } from "../validations/penggunaSearchParams";
 import { Prisma } from "@/generated/prisma";
+import { auth } from "@/config/auth";
 
 export async function getPengguna(input: TPenggunaSearchParams) {
+  const session = await auth();
+
   type WhereClause = Prisma.PenggunaWhereInput;
   let whereClause: WhereClause = {
     nama: {
@@ -17,6 +20,10 @@ export async function getPengguna(input: TPenggunaSearchParams) {
 
   if (input.peran) {
     whereClause["peran"] = input.peran;
+  }
+
+  if (session?.user.peran !== "SUPERADMIN") {
+    whereClause["programStudiId"] = session?.user.programStudiId;
   }
 
   const filtered = await prisma.pengguna.count({

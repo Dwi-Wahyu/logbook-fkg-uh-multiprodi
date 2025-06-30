@@ -105,11 +105,13 @@ export default function ProfilEditFormMahasiswa({
         toast.custom(() => (
           <CustomToast
             title="Profil Terupdate"
-            description="Perubahan data profil Anda telah berhasil disimpan."
+            description="Perubahan data profil Anda telah berhasil disimpan. Tolong login ulang agar perubahan bisa diterapkan dengan baik"
             variant="success"
           />
         ));
         setEditForm(false);
+
+        await fetch("/api/auth/refresh", { method: "POST" });
       } else {
         toast.custom(() => (
           <CustomToast

@@ -60,7 +60,7 @@ export function AdminSidebar({
     );
   }
 
-  const menuData = getSidebarMenu(session.user.peran);
+  const menuData = getSidebarMenu(session.user.peran, session.user.semester);
 
   return (
     <Sidebar {...props}>

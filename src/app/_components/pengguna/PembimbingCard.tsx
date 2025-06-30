@@ -118,7 +118,7 @@ export default function PembimbingCard({ dataPengguna, allDosen }: Props) {
 
   return (
     <Card className="shadow-lg rounded-xl">
-      <CardHeader className="pb-4">
+      <CardHeader className="">
         <CardTitle className="text-2xl font-bold text-gray-900">
           Pembimbing Mahasiswa
         </CardTitle>

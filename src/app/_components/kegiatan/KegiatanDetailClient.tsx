@@ -28,6 +28,9 @@ import {
   ShieldCheckIcon,
   Info,
   Loader2,
+  Hash, // For number field type
+  ToggleRight, // For boolean field type
+  Key, // For template key
 } from "lucide-react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
@@ -57,50 +60,18 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
+// Import type for KegiatanWithRelations from queries
+import {
+  KegiatanWithRelations,
+  FieldValueWithDefinition,
+} from "@/app/_lib/queries/kegiatanQueries";
+
 interface KegiatanDetailClientProps {
-  kegiatan: {
-    id: string;
-    fieldsData: Record<string, any> | null;
-    status: string;
-    createdAt: string;
-    updatedAt: string;
-    alasanDitolak?: string | null;
-    MataKuliah: {
-      judul: string;
-      semester: number;
-    };
-    logbook: {
-      mahasiswa: {
-        pembimbing: {
-          pengguna: {
-            id: string;
-            nama: string;
-            username: string;
-          };
-        };
-        pengguna: {
-          id: string;
-          nama: string;
-          username: string;
-        };
-      };
-    };
-    lampiran: Array<{
-      id: string;
-      namaFile: string;
-      url: string;
-    }>;
-  };
-  programStudiFields: Array<{
-    fieldName: string;
-    fieldType: string;
-    order: number;
-  }>;
+  kegiatan: KegiatanWithRelations; // Gunakan tipe KegiatanWithRelations yang sudah didefinisikan
 }
 
 export default function KegiatanDetailClient({
   kegiatan,
-  programStudiFields,
 }: KegiatanDetailClientProps) {
   const router = useRouter();
   const { data: session } = useSession();
@@ -122,44 +93,85 @@ export default function KegiatanDetailClient({
     }
   };
 
-  const formatFieldValue = (value: any, fieldType: string) => {
-    if (value === null || value === undefined || value === "") {
+  // Fungsi pembantu untuk memformat nilai berdasarkan fieldType
+  const formatValueBasedOnType = (value: any, fieldType: string): string => {
+    if (value === null || value === undefined || String(value).trim() === "") {
       return "-";
     }
     switch (fieldType) {
       case "DATE":
         try {
           const date = new Date(value);
+          // Periksa apakah tanggal valid sebelum memformat
+          if (isNaN(date.getTime())) {
+            return String(value); // Kembali ke string jika tanggal tidak valid
+          }
           return date.toLocaleDateString("id-ID", {
             year: "numeric",
             month: "long",
             day: "numeric",
           });
         } catch {
-          return String(value);
+          return String(value); // Fallback jika parsing tanggal gagal
         }
       case "NUMBER":
-        return Number(value).toLocaleString("id-ID");
+        return Number(value).toLocaleString("id-ID"); // Format angka dengan pemisah ribuan
       case "BOOLEAN":
-        return value ? "Ya" : "Tidak";
-      default:
+        // Handle boolean yang disimpan sebagai string "true" atau "false"
+        return value === "true" || value === true ? "Ya" : "Tidak";
+      case "TEXTAREA": // Handle textarea, mungkin dengan memecah baris jika perlu
+        return String(value);
+      default: // TEXT
         return String(value);
     }
   };
 
-  const judulKegiatan = kegiatan.fieldsData?.judul || "Judul Tidak Tersedia";
-  const lokasiKegiatan = kegiatan.fieldsData?.lokasi || "Lokasi Tidak Tersedia";
+  // Helper untuk mendapatkan nilai field dari fieldValues berdasarkan templateKey atau fieldName
+  const getFormattedFieldValue = (key: string): string => {
+    // Prioritaskan pencarian berdasarkan templateKey
+    let fieldValueEntry = kegiatan.fieldValues.find(
+      (fv) => fv.jenisKegiatanField.templateKey === key
+    );
+
+    // Jika tidak ditemukan berdasarkan templateKey, coba cari berdasarkan fieldName
+    if (!fieldValueEntry) {
+      fieldValueEntry = kegiatan.fieldValues.find(
+        (fv) =>
+          fv.jenisKegiatanField.fieldName?.toLowerCase() === key.toLowerCase()
+      );
+    }
+
+    if (
+      !fieldValueEntry ||
+      fieldValueEntry.value === null ||
+      fieldValueEntry.value === undefined ||
+      String(fieldValueEntry.value).trim() === ""
+    ) {
+      return "";
+    }
+
+    return formatValueBasedOnType(
+      fieldValueEntry.value,
+      fieldValueEntry.jenisKegiatanField.fieldType
+    );
+  };
+
+  // Ambil judul kegiatan dan lokasi dari fieldValues
+  const judulKegiatan =
+    getFormattedFieldValue("judul") ||
+    kegiatan.jenisKegiatan.nama ||
+    "Judul Tidak Tersedia";
+  const lokasiKegiatan =
+    getFormattedFieldValue("lokasi") || "Lokasi Tidak Tersedia"; // Asumsi ada field 'lokasi'
 
   const isMahasiswaPengaju =
-    session?.user.id === kegiatan.logbook.mahasiswa.pengguna.id;
+    session?.user.id === kegiatan.logbook.mahasiswa?.pengguna.id;
   const isDosenPembimbing =
-    session?.user.id === kegiatan.logbook.mahasiswa.pembimbing.pengguna.id;
+    session?.user.id === kegiatan.logbook.mahasiswa?.pembimbing?.pengguna.id;
   const isAdminOrSuperadmin =
     session?.user.peran === "ADMIN" || session?.user.peran === "SUPERADMIN";
 
   const canEditKegiatan = isMahasiswaPengaju && kegiatan.status === "DIAJUKAN";
-
-  // Tombol tanggapi akan selalu muncul jika user adalah dosen pembimbing atau admin/superadmin
   const canSeeTanggapiButtons = isDosenPembimbing || isAdminOrSuperadmin;
 
   const handleUpdateStatus = async (
@@ -197,7 +209,9 @@ export default function KegiatanDetailClient({
           title={`Gagal ${
             newStatus === "DISETUJUI" ? "Menyetujui" : "Menolak"
           } Kegiatan`}
-          description={"Terjadi kesalahan saat memperbarui status."}
+          description={
+            result.message || "Terjadi kesalahan saat memperbarui status."
+          }
           variant="destructive"
           icon={<XCircle width={50} height={50} />}
         />
@@ -209,16 +223,13 @@ export default function KegiatanDetailClient({
   const handleApprove = () => {
     setIsConfirmingApprove(true);
   };
-
   const handleReject = () => {
     setIsConfirmingReject(true);
   };
-
   const handleConfirmApprove = () => {
     handleUpdateStatus("DISETUJUI");
     setIsConfirmingApprove(false);
   };
-
   const handleConfirmReject = () => {
     if (!rejectionReason.trim()) {
       toast.custom(() => (
@@ -250,7 +261,7 @@ export default function KegiatanDetailClient({
 
           <div className="flex items-center space-x-2">
             {/* Edit button for student pengaju (if status is DIAJUKAN) */}
-            {canEditKegiatan && ( // Only show if student can edit
+            {canEditKegiatan && (
               <Link href={`/admin/kegiatan/edit/${kegiatan.id}`}>
                 <Button
                   variant="outline"
@@ -267,7 +278,7 @@ export default function KegiatanDetailClient({
               <>
                 <Button
                   onClick={handleApprove}
-                  disabled={loadingAction || kegiatan.status === "DISETUJUI"} // Disabled if loading or already APPROVED
+                  disabled={loadingAction || kegiatan.status === "DISETUJUI"}
                   className="px-4 py-2 flex items-center bg-green-600 hover:bg-green-700 text-white transition-colors rounded-md"
                 >
                   {loadingAction ? (
@@ -279,7 +290,7 @@ export default function KegiatanDetailClient({
                 </Button>
                 <Button
                   onClick={handleReject}
-                  disabled={loadingAction || kegiatan.status === "DITOLAK"} // Disabled if loading or already REJECTED
+                  disabled={loadingAction || kegiatan.status === "DITOLAK"}
                   variant="destructive"
                   className="px-4 py-2 flex items-center transition-colors rounded-md"
                 >
@@ -330,22 +341,35 @@ export default function KegiatanDetailClient({
       </CardHeader>
 
       <CardContent className="p-6 pt-0 space-y-6">
-        {/* Informasi Utama */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+        {/* Informasi Utama Kegiatan */}
+        <div className="grid grid-cols-1 gap-4">
           <div className="space-y-1">
-            <h3 className="font-semibold text-gray-700">Mata Kuliah Terkait</h3>
+            <h3 className="font-semibold text-gray-700">Jenis Kegiatan</h3>
             <p className="text-gray-900 flex items-center">
               <BookOpen className="h-4 w-4 mr-2 text-blue-500" />
-              {kegiatan.MataKuliah.judul} (Semester{" "}
-              {kegiatan.MataKuliah.semester})
+              {kegiatan.jenisKegiatan.nama}
             </p>
           </div>
+
+          {kegiatan.jenisKegiatan.isMataKuliahRequired &&
+            kegiatan.MataKuliah && (
+              <div className="space-y-1">
+                <h3 className="font-semibold text-gray-700">
+                  Mata Kuliah Terkait
+                </h3>
+                <p className="text-gray-900 flex items-center">
+                  <BookOpen className="h-4 w-4 mr-2 text-blue-500" />
+                  {kegiatan.MataKuliah.judul} (Semester{" "}
+                  {kegiatan.MataKuliah.semester})
+                </p>
+              </div>
+            )}
           <div className="space-y-1">
             <h3 className="font-semibold text-gray-700">Diajukan Oleh</h3>
             <p className="text-gray-900 flex items-center">
               <User className="h-4 w-4 mr-2 text-green-500" />
-              {kegiatan.logbook.mahasiswa.pengguna.nama} (NIM:{" "}
-              {kegiatan.logbook.mahasiswa.pengguna.username})
+              {kegiatan.logbook.mahasiswa?.pengguna.nama || "-"} (NIM:{" "}
+              {kegiatan.logbook.mahasiswa?.pengguna.username || "-"})
             </p>
           </div>
 
@@ -355,7 +379,7 @@ export default function KegiatanDetailClient({
             </h3>
             <p className="text-gray-900 flex items-center">
               <User className="h-4 w-4 mr-2 text-indigo-500" />
-              {kegiatan.logbook.mahasiswa.pembimbing?.pengguna.nama ||
+              {kegiatan.logbook.mahasiswa?.pembimbing?.pengguna.nama ||
                 "Belum Ditentukan"}
             </p>
           </div>
@@ -363,35 +387,63 @@ export default function KegiatanDetailClient({
 
         <Separator className="my-6" />
 
-        {/* Detail Dinamis dari fieldsData */}
-        {programStudiFields && programStudiFields.length > 0 && (
+        {/* Detail Dinamis dari fieldValues */}
+        {kegiatan.fieldValues.length > 0 ? (
           <div>
             <h2 className="text-xl font-semibold text-gray-800 mb-4">
               Detail Kegiatan
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {programStudiFields.map((fieldDef) => {
-                const value = kegiatan.fieldsData?.[fieldDef.fieldName];
-                if (
-                  value === undefined ||
-                  value === null ||
-                  String(value).trim() === ""
+              {/* Urutkan fieldValues berdasarkan order dari jenisKegiatanField-nya */}
+              {kegiatan.fieldValues
+                .sort(
+                  (a, b) =>
+                    a.jenisKegiatanField.order - b.jenisKegiatanField.order
                 )
-                  return null;
-
-                return (
-                  <div key={fieldDef.fieldName} className="space-y-1">
-                    <h3 className="font-semibold text-gray-700">
-                      {fieldDef.fieldName}
+                .map((fieldValueEntry) => (
+                  <div
+                    key={fieldValueEntry.jenisKegiatanField.templateKey}
+                    className="space-y-1 p-3 border rounded-md bg-white shadow-sm"
+                  >
+                    <h3 className="font-semibold text-gray-700 flex items-center">
+                      {/* Ikon berdasarkan Field Type */}
+                      {fieldValueEntry.jenisKegiatanField.fieldType ===
+                        "TEXT" && (
+                        <FileText className="h-4 w-4 mr-2 text-blue-500" />
+                      )}
+                      {fieldValueEntry.jenisKegiatanField.fieldType ===
+                        "NUMBER" && (
+                        <Hash className="h-4 w-4 mr-2 text-green-500" />
+                      )}
+                      {fieldValueEntry.jenisKegiatanField.fieldType ===
+                        "DATE" && (
+                        <Calendar className="h-4 w-4 mr-2 text-purple-500" />
+                      )}
+                      {fieldValueEntry.jenisKegiatanField.fieldType ===
+                        "BOOLEAN" && (
+                        <ToggleRight className="h-4 w-4 mr-2 text-orange-500" />
+                      )}
+                      {fieldValueEntry.jenisKegiatanField.fieldType ===
+                        "TEXTAREA" && (
+                        <FileText className="h-4 w-4 mr-2 text-yellow-500" />
+                      )}{" "}
+                      {/* Re-use FileText or add specific for TEXTAREA */}
+                      {fieldValueEntry.jenisKegiatanField.fieldName}
                     </h3>
                     <p className="text-gray-900 break-words text-sm">
-                      {formatFieldValue(value, fieldDef.fieldType)}
+                      {formatValueBasedOnType(
+                        fieldValueEntry.value,
+                        fieldValueEntry.jenisKegiatanField.fieldType
+                      )}
                     </p>
                   </div>
-                );
-              })}
+                ))}
             </div>
           </div>
+        ) : (
+          <p className="text-gray-500 text-sm">
+            Tidak ada field kustom untuk jenis kegiatan ini.
+          </p>
         )}
 
         <Separator className="my-6" />
@@ -438,9 +490,11 @@ export default function KegiatanDetailClient({
               Setujui Kegiatan Ini?
             </AlertDialogTitle>
             <AlertDialogDescription className="text-gray-700">
-              Anda akan menyetujui kegiatan yang diajukan oleh{" "}
+              Anda akan menyetujui kegiatan{" "}
+              <span className="font-semibold">{judulKegiatan}</span> yang
+              diajukan oleh{" "}
               <span className="font-semibold">
-                {kegiatan.logbook.mahasiswa.pengguna.nama}
+                {kegiatan.logbook.mahasiswa?.pengguna.nama || "-"}
               </span>
               . Tindakan ini akan mengubah status menjadi "DISETUJUI".
             </AlertDialogDescription>

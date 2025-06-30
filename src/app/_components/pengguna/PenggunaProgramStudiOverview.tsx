@@ -169,7 +169,7 @@ export default function PenggunaProgramStudiOverview({
   };
 
   return (
-    <CardContent className="pt-6">
+    <div>
       {/* Filter Section */}
       <div className="flex flex-col sm:flex-row flex-wrap items-center justify-start gap-4 mb-8">
         <div className="relative w-full sm:w-[200px]">
@@ -270,8 +270,6 @@ export default function PenggunaProgramStudiOverview({
                       className="border border-gray-100 rounded-lg p-4 bg-white flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow"
                     >
                       <div className="flex items-center space-x-3 mb-3">
-                        {getRoleIcon(pengguna.peran)}{" "}
-                        {/* Use specific user's role icon */}
                         <div>
                           <p className="font-semibold text-lg text-gray-900">
                             {pengguna.nama}
@@ -299,6 +297,6 @@ export default function PenggunaProgramStudiOverview({
           })}
         </div>
       )}
-    </CardContent>
+    </div>
   );
 }

@@ -144,6 +144,7 @@ exports.Prisma.MahasiswaScalarFieldEnum = {
   pekerjaan: 'pekerjaan',
   nomorTelpon: 'nomorTelpon',
   email: 'email',
+  jenisKelamin: 'jenisKelamin',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -163,24 +164,11 @@ exports.Prisma.LogbookScalarFieldEnum = {
   penggunaId: 'penggunaId'
 };
 
-exports.Prisma.RiwayatPerubahanPembimbingScalarFieldEnum = {
-  id: 'id',
-  mahasiswaId: 'mahasiswaId',
-  alasan: 'alasan',
-  pembimbingIdLama: 'pembimbingIdLama',
-  promotorIdLama: 'promotorIdLama',
-  koPromotorIdLama: 'koPromotorIdLama',
-  pembimbingIdBaru: 'pembimbingIdBaru',
-  promotorIdBaru: 'promotorIdBaru',
-  koPromotorIdBaru: 'koPromotorIdBaru',
-  changedAt: 'changedAt'
-};
-
 exports.Prisma.KegiatanScalarFieldEnum = {
   id: 'id',
   logbookId: 'logbookId',
   mataKuliahId: 'mataKuliahId',
-  fieldsData: 'fieldsData',
+  jenisKegiatanId: 'jenisKegiatanId',
   status: 'status',
   alasanDitolak: 'alasanDitolak',
   createdAt: 'createdAt',
@@ -235,25 +223,49 @@ exports.Prisma.ProgramStudiScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.ProgramStudiFieldScalarFieldEnum = {
+exports.Prisma.JenisKegiatanScalarFieldEnum = {
   id: 'id',
   programStudiId: 'programStudiId',
+  nama: 'nama',
+  templateIdentifier: 'templateIdentifier',
+  isMataKuliahRequired: 'isMataKuliahRequired',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.JenisKegiatanFieldScalarFieldEnum = {
+  id: 'id',
+  jenisKegiatanId: 'jenisKegiatanId',
   fieldName: 'fieldName',
   fieldType: 'fieldType',
+  templateKey: 'templateKey',
   isRequired: 'isRequired',
   order: 'order',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.FieldKegiatanValuesScalarFieldEnum = {
+  id: 'id',
+  kegiatanId: 'kegiatanId',
+  jenisKegiatanFieldId: 'jenisKegiatanFieldId',
+  value: 'value',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.RiwayatPerubahanPembimbingScalarFieldEnum = {
+  id: 'id',
+  mahasiswaId: 'mahasiswaId',
+  alasan: 'alasan',
+  pembimbingIdLama: 'pembimbingIdLama',
+  pembimbingIdBaru: 'pembimbingIdBaru',
+  changedAt: 'changedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
-};
-
-exports.Prisma.NullableJsonNullValueInput = {
-  DbNull: Prisma.DbNull,
-  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.NullsOrder = {
@@ -283,7 +295,8 @@ exports.Prisma.MahasiswaOrderByRelevanceFieldEnum = {
   tahunLulus: 'tahunLulus',
   pekerjaan: 'pekerjaan',
   nomorTelpon: 'nomorTelpon',
-  email: 'email'
+  email: 'email',
+  jenisKelamin: 'jenisKelamin'
 };
 
 exports.Prisma.DosenOrderByRelevanceFieldEnum = {
@@ -297,32 +310,10 @@ exports.Prisma.LogbookOrderByRelevanceFieldEnum = {
   penggunaId: 'penggunaId'
 };
 
-exports.Prisma.RiwayatPerubahanPembimbingOrderByRelevanceFieldEnum = {
-  id: 'id',
-  mahasiswaId: 'mahasiswaId',
-  alasan: 'alasan',
-  pembimbingIdLama: 'pembimbingIdLama',
-  promotorIdLama: 'promotorIdLama',
-  koPromotorIdLama: 'koPromotorIdLama',
-  pembimbingIdBaru: 'pembimbingIdBaru',
-  promotorIdBaru: 'promotorIdBaru',
-  koPromotorIdBaru: 'koPromotorIdBaru'
-};
-
-exports.Prisma.JsonNullValueFilter = {
-  DbNull: Prisma.DbNull,
-  JsonNull: Prisma.JsonNull,
-  AnyNull: Prisma.AnyNull
-};
-
-exports.Prisma.QueryMode = {
-  default: 'default',
-  insensitive: 'insensitive'
-};
-
 exports.Prisma.KegiatanOrderByRelevanceFieldEnum = {
   id: 'id',
   logbookId: 'logbookId',
+  jenisKegiatanId: 'jenisKegiatanId',
   status: 'status',
   alasanDitolak: 'alasanDitolak'
 };
@@ -361,11 +352,34 @@ exports.Prisma.ProgramStudiOrderByRelevanceFieldEnum = {
   displayName: 'displayName'
 };
 
-exports.Prisma.ProgramStudiFieldOrderByRelevanceFieldEnum = {
+exports.Prisma.JenisKegiatanOrderByRelevanceFieldEnum = {
   id: 'id',
   programStudiId: 'programStudiId',
+  nama: 'nama',
+  templateIdentifier: 'templateIdentifier'
+};
+
+exports.Prisma.JenisKegiatanFieldOrderByRelevanceFieldEnum = {
+  id: 'id',
+  jenisKegiatanId: 'jenisKegiatanId',
   fieldName: 'fieldName',
-  fieldType: 'fieldType'
+  fieldType: 'fieldType',
+  templateKey: 'templateKey'
+};
+
+exports.Prisma.FieldKegiatanValuesOrderByRelevanceFieldEnum = {
+  id: 'id',
+  kegiatanId: 'kegiatanId',
+  jenisKegiatanFieldId: 'jenisKegiatanFieldId',
+  value: 'value'
+};
+
+exports.Prisma.RiwayatPerubahanPembimbingOrderByRelevanceFieldEnum = {
+  id: 'id',
+  mahasiswaId: 'mahasiswaId',
+  alasan: 'alasan',
+  pembimbingIdLama: 'pembimbingIdLama',
+  pembimbingIdBaru: 'pembimbingIdBaru'
 };
 
 
@@ -374,14 +388,16 @@ exports.Prisma.ModelName = {
   Mahasiswa: 'Mahasiswa',
   Dosen: 'Dosen',
   Logbook: 'Logbook',
-  RiwayatPerubahanPembimbing: 'RiwayatPerubahanPembimbing',
   Kegiatan: 'Kegiatan',
   MataKuliah: 'MataKuliah',
   Lampiran: 'Lampiran',
   PermohonanBimbingan: 'PermohonanBimbingan',
   Notifikasi: 'Notifikasi',
   ProgramStudi: 'ProgramStudi',
-  ProgramStudiField: 'ProgramStudiField'
+  JenisKegiatan: 'JenisKegiatan',
+  JenisKegiatanField: 'JenisKegiatanField',
+  FieldKegiatanValues: 'FieldKegiatanValues',
+  RiwayatPerubahanPembimbing: 'RiwayatPerubahanPembimbing'
 };
 
 /**

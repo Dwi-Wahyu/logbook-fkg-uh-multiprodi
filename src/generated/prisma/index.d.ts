@@ -34,11 +34,6 @@ export type Dosen = $Result.DefaultSelection<Prisma.$DosenPayload>
  */
 export type Logbook = $Result.DefaultSelection<Prisma.$LogbookPayload>
 /**
- * Model RiwayatPerubahanPembimbing
- * 
- */
-export type RiwayatPerubahanPembimbing = $Result.DefaultSelection<Prisma.$RiwayatPerubahanPembimbingPayload>
-/**
  * Model Kegiatan
  * 
  */
@@ -69,10 +64,25 @@ export type Notifikasi = $Result.DefaultSelection<Prisma.$NotifikasiPayload>
  */
 export type ProgramStudi = $Result.DefaultSelection<Prisma.$ProgramStudiPayload>
 /**
- * Model ProgramStudiField
+ * Model JenisKegiatan
  * 
  */
-export type ProgramStudiField = $Result.DefaultSelection<Prisma.$ProgramStudiFieldPayload>
+export type JenisKegiatan = $Result.DefaultSelection<Prisma.$JenisKegiatanPayload>
+/**
+ * Model JenisKegiatanField
+ * 
+ */
+export type JenisKegiatanField = $Result.DefaultSelection<Prisma.$JenisKegiatanFieldPayload>
+/**
+ * Model FieldKegiatanValues
+ * 
+ */
+export type FieldKegiatanValues = $Result.DefaultSelection<Prisma.$FieldKegiatanValuesPayload>
+/**
+ * Model RiwayatPerubahanPembimbing
+ * 
+ */
+export type RiwayatPerubahanPembimbing = $Result.DefaultSelection<Prisma.$RiwayatPerubahanPembimbingPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -240,16 +250,6 @@ export class PrismaClient<
   get logbook(): Prisma.LogbookDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.riwayatPerubahanPembimbing`: Exposes CRUD operations for the **RiwayatPerubahanPembimbing** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more RiwayatPerubahanPembimbings
-    * const riwayatPerubahanPembimbings = await prisma.riwayatPerubahanPembimbing.findMany()
-    * ```
-    */
-  get riwayatPerubahanPembimbing(): Prisma.RiwayatPerubahanPembimbingDelegate<ExtArgs, ClientOptions>;
-
-  /**
    * `prisma.kegiatan`: Exposes CRUD operations for the **Kegiatan** model.
     * Example usage:
     * ```ts
@@ -310,14 +310,44 @@ export class PrismaClient<
   get programStudi(): Prisma.ProgramStudiDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.programStudiField`: Exposes CRUD operations for the **ProgramStudiField** model.
+   * `prisma.jenisKegiatan`: Exposes CRUD operations for the **JenisKegiatan** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more ProgramStudiFields
-    * const programStudiFields = await prisma.programStudiField.findMany()
+    * // Fetch zero or more JenisKegiatans
+    * const jenisKegiatans = await prisma.jenisKegiatan.findMany()
     * ```
     */
-  get programStudiField(): Prisma.ProgramStudiFieldDelegate<ExtArgs, ClientOptions>;
+  get jenisKegiatan(): Prisma.JenisKegiatanDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.jenisKegiatanField`: Exposes CRUD operations for the **JenisKegiatanField** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more JenisKegiatanFields
+    * const jenisKegiatanFields = await prisma.jenisKegiatanField.findMany()
+    * ```
+    */
+  get jenisKegiatanField(): Prisma.JenisKegiatanFieldDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.fieldKegiatanValues`: Exposes CRUD operations for the **FieldKegiatanValues** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more FieldKegiatanValues
+    * const fieldKegiatanValues = await prisma.fieldKegiatanValues.findMany()
+    * ```
+    */
+  get fieldKegiatanValues(): Prisma.FieldKegiatanValuesDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.riwayatPerubahanPembimbing`: Exposes CRUD operations for the **RiwayatPerubahanPembimbing** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more RiwayatPerubahanPembimbings
+    * const riwayatPerubahanPembimbings = await prisma.riwayatPerubahanPembimbing.findMany()
+    * ```
+    */
+  get riwayatPerubahanPembimbing(): Prisma.RiwayatPerubahanPembimbingDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -762,14 +792,16 @@ export namespace Prisma {
     Mahasiswa: 'Mahasiswa',
     Dosen: 'Dosen',
     Logbook: 'Logbook',
-    RiwayatPerubahanPembimbing: 'RiwayatPerubahanPembimbing',
     Kegiatan: 'Kegiatan',
     MataKuliah: 'MataKuliah',
     Lampiran: 'Lampiran',
     PermohonanBimbingan: 'PermohonanBimbingan',
     Notifikasi: 'Notifikasi',
     ProgramStudi: 'ProgramStudi',
-    ProgramStudiField: 'ProgramStudiField'
+    JenisKegiatan: 'JenisKegiatan',
+    JenisKegiatanField: 'JenisKegiatanField',
+    FieldKegiatanValues: 'FieldKegiatanValues',
+    RiwayatPerubahanPembimbing: 'RiwayatPerubahanPembimbing'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -788,7 +820,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "pengguna" | "mahasiswa" | "dosen" | "logbook" | "riwayatPerubahanPembimbing" | "kegiatan" | "mataKuliah" | "lampiran" | "permohonanBimbingan" | "notifikasi" | "programStudi" | "programStudiField"
+      modelProps: "pengguna" | "mahasiswa" | "dosen" | "logbook" | "kegiatan" | "mataKuliah" | "lampiran" | "permohonanBimbingan" | "notifikasi" | "programStudi" | "jenisKegiatan" | "jenisKegiatanField" | "fieldKegiatanValues" | "riwayatPerubahanPembimbing"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1053,72 +1085,6 @@ export namespace Prisma {
           count: {
             args: Prisma.LogbookCountArgs<ExtArgs>
             result: $Utils.Optional<LogbookCountAggregateOutputType> | number
-          }
-        }
-      }
-      RiwayatPerubahanPembimbing: {
-        payload: Prisma.$RiwayatPerubahanPembimbingPayload<ExtArgs>
-        fields: Prisma.RiwayatPerubahanPembimbingFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.RiwayatPerubahanPembimbingFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RiwayatPerubahanPembimbingPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.RiwayatPerubahanPembimbingFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RiwayatPerubahanPembimbingPayload>
-          }
-          findFirst: {
-            args: Prisma.RiwayatPerubahanPembimbingFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RiwayatPerubahanPembimbingPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.RiwayatPerubahanPembimbingFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RiwayatPerubahanPembimbingPayload>
-          }
-          findMany: {
-            args: Prisma.RiwayatPerubahanPembimbingFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RiwayatPerubahanPembimbingPayload>[]
-          }
-          create: {
-            args: Prisma.RiwayatPerubahanPembimbingCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RiwayatPerubahanPembimbingPayload>
-          }
-          createMany: {
-            args: Prisma.RiwayatPerubahanPembimbingCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          delete: {
-            args: Prisma.RiwayatPerubahanPembimbingDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RiwayatPerubahanPembimbingPayload>
-          }
-          update: {
-            args: Prisma.RiwayatPerubahanPembimbingUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RiwayatPerubahanPembimbingPayload>
-          }
-          deleteMany: {
-            args: Prisma.RiwayatPerubahanPembimbingDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.RiwayatPerubahanPembimbingUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          upsert: {
-            args: Prisma.RiwayatPerubahanPembimbingUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RiwayatPerubahanPembimbingPayload>
-          }
-          aggregate: {
-            args: Prisma.RiwayatPerubahanPembimbingAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateRiwayatPerubahanPembimbing>
-          }
-          groupBy: {
-            args: Prisma.RiwayatPerubahanPembimbingGroupByArgs<ExtArgs>
-            result: $Utils.Optional<RiwayatPerubahanPembimbingGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.RiwayatPerubahanPembimbingCountArgs<ExtArgs>
-            result: $Utils.Optional<RiwayatPerubahanPembimbingCountAggregateOutputType> | number
           }
         }
       }
@@ -1518,69 +1484,267 @@ export namespace Prisma {
           }
         }
       }
-      ProgramStudiField: {
-        payload: Prisma.$ProgramStudiFieldPayload<ExtArgs>
-        fields: Prisma.ProgramStudiFieldFieldRefs
+      JenisKegiatan: {
+        payload: Prisma.$JenisKegiatanPayload<ExtArgs>
+        fields: Prisma.JenisKegiatanFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.ProgramStudiFieldFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ProgramStudiFieldPayload> | null
+            args: Prisma.JenisKegiatanFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JenisKegiatanPayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.ProgramStudiFieldFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ProgramStudiFieldPayload>
+            args: Prisma.JenisKegiatanFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JenisKegiatanPayload>
           }
           findFirst: {
-            args: Prisma.ProgramStudiFieldFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ProgramStudiFieldPayload> | null
+            args: Prisma.JenisKegiatanFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JenisKegiatanPayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.ProgramStudiFieldFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ProgramStudiFieldPayload>
+            args: Prisma.JenisKegiatanFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JenisKegiatanPayload>
           }
           findMany: {
-            args: Prisma.ProgramStudiFieldFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ProgramStudiFieldPayload>[]
+            args: Prisma.JenisKegiatanFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JenisKegiatanPayload>[]
           }
           create: {
-            args: Prisma.ProgramStudiFieldCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ProgramStudiFieldPayload>
+            args: Prisma.JenisKegiatanCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JenisKegiatanPayload>
           }
           createMany: {
-            args: Prisma.ProgramStudiFieldCreateManyArgs<ExtArgs>
+            args: Prisma.JenisKegiatanCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           delete: {
-            args: Prisma.ProgramStudiFieldDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ProgramStudiFieldPayload>
+            args: Prisma.JenisKegiatanDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JenisKegiatanPayload>
           }
           update: {
-            args: Prisma.ProgramStudiFieldUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ProgramStudiFieldPayload>
+            args: Prisma.JenisKegiatanUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JenisKegiatanPayload>
           }
           deleteMany: {
-            args: Prisma.ProgramStudiFieldDeleteManyArgs<ExtArgs>
+            args: Prisma.JenisKegiatanDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.ProgramStudiFieldUpdateManyArgs<ExtArgs>
+            args: Prisma.JenisKegiatanUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           upsert: {
-            args: Prisma.ProgramStudiFieldUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ProgramStudiFieldPayload>
+            args: Prisma.JenisKegiatanUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JenisKegiatanPayload>
           }
           aggregate: {
-            args: Prisma.ProgramStudiFieldAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateProgramStudiField>
+            args: Prisma.JenisKegiatanAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateJenisKegiatan>
           }
           groupBy: {
-            args: Prisma.ProgramStudiFieldGroupByArgs<ExtArgs>
-            result: $Utils.Optional<ProgramStudiFieldGroupByOutputType>[]
+            args: Prisma.JenisKegiatanGroupByArgs<ExtArgs>
+            result: $Utils.Optional<JenisKegiatanGroupByOutputType>[]
           }
           count: {
-            args: Prisma.ProgramStudiFieldCountArgs<ExtArgs>
-            result: $Utils.Optional<ProgramStudiFieldCountAggregateOutputType> | number
+            args: Prisma.JenisKegiatanCountArgs<ExtArgs>
+            result: $Utils.Optional<JenisKegiatanCountAggregateOutputType> | number
+          }
+        }
+      }
+      JenisKegiatanField: {
+        payload: Prisma.$JenisKegiatanFieldPayload<ExtArgs>
+        fields: Prisma.JenisKegiatanFieldFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.JenisKegiatanFieldFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JenisKegiatanFieldPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.JenisKegiatanFieldFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JenisKegiatanFieldPayload>
+          }
+          findFirst: {
+            args: Prisma.JenisKegiatanFieldFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JenisKegiatanFieldPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.JenisKegiatanFieldFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JenisKegiatanFieldPayload>
+          }
+          findMany: {
+            args: Prisma.JenisKegiatanFieldFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JenisKegiatanFieldPayload>[]
+          }
+          create: {
+            args: Prisma.JenisKegiatanFieldCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JenisKegiatanFieldPayload>
+          }
+          createMany: {
+            args: Prisma.JenisKegiatanFieldCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.JenisKegiatanFieldDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JenisKegiatanFieldPayload>
+          }
+          update: {
+            args: Prisma.JenisKegiatanFieldUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JenisKegiatanFieldPayload>
+          }
+          deleteMany: {
+            args: Prisma.JenisKegiatanFieldDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.JenisKegiatanFieldUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.JenisKegiatanFieldUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JenisKegiatanFieldPayload>
+          }
+          aggregate: {
+            args: Prisma.JenisKegiatanFieldAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateJenisKegiatanField>
+          }
+          groupBy: {
+            args: Prisma.JenisKegiatanFieldGroupByArgs<ExtArgs>
+            result: $Utils.Optional<JenisKegiatanFieldGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.JenisKegiatanFieldCountArgs<ExtArgs>
+            result: $Utils.Optional<JenisKegiatanFieldCountAggregateOutputType> | number
+          }
+        }
+      }
+      FieldKegiatanValues: {
+        payload: Prisma.$FieldKegiatanValuesPayload<ExtArgs>
+        fields: Prisma.FieldKegiatanValuesFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.FieldKegiatanValuesFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FieldKegiatanValuesPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.FieldKegiatanValuesFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FieldKegiatanValuesPayload>
+          }
+          findFirst: {
+            args: Prisma.FieldKegiatanValuesFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FieldKegiatanValuesPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.FieldKegiatanValuesFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FieldKegiatanValuesPayload>
+          }
+          findMany: {
+            args: Prisma.FieldKegiatanValuesFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FieldKegiatanValuesPayload>[]
+          }
+          create: {
+            args: Prisma.FieldKegiatanValuesCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FieldKegiatanValuesPayload>
+          }
+          createMany: {
+            args: Prisma.FieldKegiatanValuesCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.FieldKegiatanValuesDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FieldKegiatanValuesPayload>
+          }
+          update: {
+            args: Prisma.FieldKegiatanValuesUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FieldKegiatanValuesPayload>
+          }
+          deleteMany: {
+            args: Prisma.FieldKegiatanValuesDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.FieldKegiatanValuesUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.FieldKegiatanValuesUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FieldKegiatanValuesPayload>
+          }
+          aggregate: {
+            args: Prisma.FieldKegiatanValuesAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFieldKegiatanValues>
+          }
+          groupBy: {
+            args: Prisma.FieldKegiatanValuesGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FieldKegiatanValuesGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.FieldKegiatanValuesCountArgs<ExtArgs>
+            result: $Utils.Optional<FieldKegiatanValuesCountAggregateOutputType> | number
+          }
+        }
+      }
+      RiwayatPerubahanPembimbing: {
+        payload: Prisma.$RiwayatPerubahanPembimbingPayload<ExtArgs>
+        fields: Prisma.RiwayatPerubahanPembimbingFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RiwayatPerubahanPembimbingFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RiwayatPerubahanPembimbingPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RiwayatPerubahanPembimbingFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RiwayatPerubahanPembimbingPayload>
+          }
+          findFirst: {
+            args: Prisma.RiwayatPerubahanPembimbingFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RiwayatPerubahanPembimbingPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RiwayatPerubahanPembimbingFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RiwayatPerubahanPembimbingPayload>
+          }
+          findMany: {
+            args: Prisma.RiwayatPerubahanPembimbingFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RiwayatPerubahanPembimbingPayload>[]
+          }
+          create: {
+            args: Prisma.RiwayatPerubahanPembimbingCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RiwayatPerubahanPembimbingPayload>
+          }
+          createMany: {
+            args: Prisma.RiwayatPerubahanPembimbingCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.RiwayatPerubahanPembimbingDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RiwayatPerubahanPembimbingPayload>
+          }
+          update: {
+            args: Prisma.RiwayatPerubahanPembimbingUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RiwayatPerubahanPembimbingPayload>
+          }
+          deleteMany: {
+            args: Prisma.RiwayatPerubahanPembimbingDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RiwayatPerubahanPembimbingUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.RiwayatPerubahanPembimbingUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RiwayatPerubahanPembimbingPayload>
+          }
+          aggregate: {
+            args: Prisma.RiwayatPerubahanPembimbingAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRiwayatPerubahanPembimbing>
+          }
+          groupBy: {
+            args: Prisma.RiwayatPerubahanPembimbingGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RiwayatPerubahanPembimbingGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RiwayatPerubahanPembimbingCountArgs<ExtArgs>
+            result: $Utils.Optional<RiwayatPerubahanPembimbingCountAggregateOutputType> | number
           }
         }
       }
@@ -1672,14 +1836,16 @@ export namespace Prisma {
     mahasiswa?: MahasiswaOmit
     dosen?: DosenOmit
     logbook?: LogbookOmit
-    riwayatPerubahanPembimbing?: RiwayatPerubahanPembimbingOmit
     kegiatan?: KegiatanOmit
     mataKuliah?: MataKuliahOmit
     lampiran?: LampiranOmit
     permohonanBimbingan?: PermohonanBimbinganOmit
     notifikasi?: NotifikasiOmit
     programStudi?: ProgramStudiOmit
-    programStudiField?: ProgramStudiFieldOmit
+    jenisKegiatan?: JenisKegiatanOmit
+    jenisKegiatanField?: JenisKegiatanFieldOmit
+    fieldKegiatanValues?: FieldKegiatanValuesOmit
+    riwayatPerubahanPembimbing?: RiwayatPerubahanPembimbingOmit
   }
 
   /* Types for Logging */
@@ -1934,10 +2100,12 @@ export namespace Prisma {
    */
 
   export type KegiatanCountOutputType = {
+    fieldValues: number
     lampiran: number
   }
 
   export type KegiatanCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    fieldValues?: boolean | KegiatanCountOutputTypeCountFieldValuesArgs
     lampiran?: boolean | KegiatanCountOutputTypeCountLampiranArgs
   }
 
@@ -1950,6 +2118,13 @@ export namespace Prisma {
      * Select specific fields to fetch from the KegiatanCountOutputType
      */
     select?: KegiatanCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * KegiatanCountOutputType without action
+   */
+  export type KegiatanCountOutputTypeCountFieldValuesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FieldKegiatanValuesWhereInput
   }
 
   /**
@@ -1997,13 +2172,13 @@ export namespace Prisma {
 
   export type ProgramStudiCountOutputType = {
     pengguna: number
-    fields: number
+    jenisKegiatan: number
     mataKuliah: number
   }
 
   export type ProgramStudiCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     pengguna?: boolean | ProgramStudiCountOutputTypeCountPenggunaArgs
-    fields?: boolean | ProgramStudiCountOutputTypeCountFieldsArgs
+    jenisKegiatan?: boolean | ProgramStudiCountOutputTypeCountJenisKegiatanArgs
     mataKuliah?: boolean | ProgramStudiCountOutputTypeCountMataKuliahArgs
   }
 
@@ -2028,8 +2203,8 @@ export namespace Prisma {
   /**
    * ProgramStudiCountOutputType without action
    */
-  export type ProgramStudiCountOutputTypeCountFieldsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ProgramStudiFieldWhereInput
+  export type ProgramStudiCountOutputTypeCountJenisKegiatanArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: JenisKegiatanWhereInput
   }
 
   /**
@@ -2037,6 +2212,77 @@ export namespace Prisma {
    */
   export type ProgramStudiCountOutputTypeCountMataKuliahArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: MataKuliahWhereInput
+  }
+
+
+  /**
+   * Count Type JenisKegiatanCountOutputType
+   */
+
+  export type JenisKegiatanCountOutputType = {
+    kegiatan: number
+    fields: number
+  }
+
+  export type JenisKegiatanCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    kegiatan?: boolean | JenisKegiatanCountOutputTypeCountKegiatanArgs
+    fields?: boolean | JenisKegiatanCountOutputTypeCountFieldsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * JenisKegiatanCountOutputType without action
+   */
+  export type JenisKegiatanCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the JenisKegiatanCountOutputType
+     */
+    select?: JenisKegiatanCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * JenisKegiatanCountOutputType without action
+   */
+  export type JenisKegiatanCountOutputTypeCountKegiatanArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: KegiatanWhereInput
+  }
+
+  /**
+   * JenisKegiatanCountOutputType without action
+   */
+  export type JenisKegiatanCountOutputTypeCountFieldsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: JenisKegiatanFieldWhereInput
+  }
+
+
+  /**
+   * Count Type JenisKegiatanFieldCountOutputType
+   */
+
+  export type JenisKegiatanFieldCountOutputType = {
+    fieldValues: number
+  }
+
+  export type JenisKegiatanFieldCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    fieldValues?: boolean | JenisKegiatanFieldCountOutputTypeCountFieldValuesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * JenisKegiatanFieldCountOutputType without action
+   */
+  export type JenisKegiatanFieldCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the JenisKegiatanFieldCountOutputType
+     */
+    select?: JenisKegiatanFieldCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * JenisKegiatanFieldCountOutputType without action
+   */
+  export type JenisKegiatanFieldCountOutputTypeCountFieldValuesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FieldKegiatanValuesWhereInput
   }
 
 
@@ -3156,6 +3402,7 @@ export namespace Prisma {
     pekerjaan: string | null
     nomorTelpon: string | null
     email: string | null
+    jenisKelamin: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -3175,6 +3422,7 @@ export namespace Prisma {
     pekerjaan: string | null
     nomorTelpon: string | null
     email: string | null
+    jenisKelamin: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -3194,6 +3442,7 @@ export namespace Prisma {
     pekerjaan: number
     nomorTelpon: number
     email: number
+    jenisKelamin: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -3223,6 +3472,7 @@ export namespace Prisma {
     pekerjaan?: true
     nomorTelpon?: true
     email?: true
+    jenisKelamin?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -3242,6 +3492,7 @@ export namespace Prisma {
     pekerjaan?: true
     nomorTelpon?: true
     email?: true
+    jenisKelamin?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -3261,6 +3512,7 @@ export namespace Prisma {
     pekerjaan?: true
     nomorTelpon?: true
     email?: true
+    jenisKelamin?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -3367,6 +3619,7 @@ export namespace Prisma {
     pekerjaan: string | null
     nomorTelpon: string | null
     email: string | null
+    jenisKelamin: string | null
     createdAt: Date
     updatedAt: Date
     _count: MahasiswaCountAggregateOutputType | null
@@ -3405,6 +3658,7 @@ export namespace Prisma {
     pekerjaan?: boolean
     nomorTelpon?: boolean
     email?: boolean
+    jenisKelamin?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     pengguna?: boolean | PenggunaDefaultArgs<ExtArgs>
@@ -3432,11 +3686,12 @@ export namespace Prisma {
     pekerjaan?: boolean
     nomorTelpon?: boolean
     email?: boolean
+    jenisKelamin?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type MahasiswaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "penggunaId" | "pembimbingId" | "semester" | "judulDisertasi" | "angkatan" | "tempatTanggalLahir" | "alamat" | "alamatKeluarga" | "tahunLulus" | "mulaiMasukPendidikan" | "pekerjaan" | "nomorTelpon" | "email" | "createdAt" | "updatedAt", ExtArgs["result"]["mahasiswa"]>
+  export type MahasiswaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "penggunaId" | "pembimbingId" | "semester" | "judulDisertasi" | "angkatan" | "tempatTanggalLahir" | "alamat" | "alamatKeluarga" | "tahunLulus" | "mulaiMasukPendidikan" | "pekerjaan" | "nomorTelpon" | "email" | "jenisKelamin" | "createdAt" | "updatedAt", ExtArgs["result"]["mahasiswa"]>
   export type MahasiswaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     pengguna?: boolean | PenggunaDefaultArgs<ExtArgs>
     logbook?: boolean | Mahasiswa$logbookArgs<ExtArgs>
@@ -3470,6 +3725,7 @@ export namespace Prisma {
       pekerjaan: string | null
       nomorTelpon: string | null
       email: string | null
+      jenisKelamin: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["mahasiswa"]>
@@ -3860,6 +4116,7 @@ export namespace Prisma {
     readonly pekerjaan: FieldRef<"Mahasiswa", 'String'>
     readonly nomorTelpon: FieldRef<"Mahasiswa", 'String'>
     readonly email: FieldRef<"Mahasiswa", 'String'>
+    readonly jenisKelamin: FieldRef<"Mahasiswa", 'String'>
     readonly createdAt: FieldRef<"Mahasiswa", 'DateTime'>
     readonly updatedAt: FieldRef<"Mahasiswa", 'DateTime'>
   }
@@ -5425,7 +5682,7 @@ export namespace Prisma {
 
   export type LogbookGroupByOutputType = {
     id: string
-    mahasiswaId: string
+    mahasiswaId: string | null
     createdAt: Date
     updatedAt: Date
     penggunaId: string | null
@@ -5454,7 +5711,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     penggunaId?: boolean
-    mahasiswa?: boolean | MahasiswaDefaultArgs<ExtArgs>
+    mahasiswa?: boolean | Logbook$mahasiswaArgs<ExtArgs>
     kegiatan?: boolean | Logbook$kegiatanArgs<ExtArgs>
     Pengguna?: boolean | Logbook$PenggunaArgs<ExtArgs>
     _count?: boolean | LogbookCountOutputTypeDefaultArgs<ExtArgs>
@@ -5472,7 +5729,7 @@ export namespace Prisma {
 
   export type LogbookOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "mahasiswaId" | "createdAt" | "updatedAt" | "penggunaId", ExtArgs["result"]["logbook"]>
   export type LogbookInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    mahasiswa?: boolean | MahasiswaDefaultArgs<ExtArgs>
+    mahasiswa?: boolean | Logbook$mahasiswaArgs<ExtArgs>
     kegiatan?: boolean | Logbook$kegiatanArgs<ExtArgs>
     Pengguna?: boolean | Logbook$PenggunaArgs<ExtArgs>
     _count?: boolean | LogbookCountOutputTypeDefaultArgs<ExtArgs>
@@ -5481,13 +5738,13 @@ export namespace Prisma {
   export type $LogbookPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Logbook"
     objects: {
-      mahasiswa: Prisma.$MahasiswaPayload<ExtArgs>
+      mahasiswa: Prisma.$MahasiswaPayload<ExtArgs> | null
       kegiatan: Prisma.$KegiatanPayload<ExtArgs>[]
       Pengguna: Prisma.$PenggunaPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      mahasiswaId: string
+      mahasiswaId: string | null
       createdAt: Date
       updatedAt: Date
       penggunaId: string | null
@@ -5831,7 +6088,7 @@ export namespace Prisma {
    */
   export interface Prisma__LogbookClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    mahasiswa<T extends MahasiswaDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MahasiswaDefaultArgs<ExtArgs>>): Prisma__MahasiswaClient<$Result.GetResult<Prisma.$MahasiswaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    mahasiswa<T extends Logbook$mahasiswaArgs<ExtArgs> = {}>(args?: Subset<T, Logbook$mahasiswaArgs<ExtArgs>>): Prisma__MahasiswaClient<$Result.GetResult<Prisma.$MahasiswaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     kegiatan<T extends Logbook$kegiatanArgs<ExtArgs> = {}>(args?: Subset<T, Logbook$kegiatanArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$KegiatanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     Pengguna<T extends Logbook$PenggunaArgs<ExtArgs> = {}>(args?: Subset<T, Logbook$PenggunaArgs<ExtArgs>>): Prisma__PenggunaClient<$Result.GetResult<Prisma.$PenggunaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
@@ -6211,6 +6468,25 @@ export namespace Prisma {
   }
 
   /**
+   * Logbook.mahasiswa
+   */
+  export type Logbook$mahasiswaArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Mahasiswa
+     */
+    select?: MahasiswaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Mahasiswa
+     */
+    omit?: MahasiswaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MahasiswaInclude<ExtArgs> | null
+    where?: MahasiswaWhereInput
+  }
+
+  /**
    * Logbook.kegiatan
    */
   export type Logbook$kegiatanArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6273,990 +6549,6 @@ export namespace Prisma {
 
 
   /**
-   * Model RiwayatPerubahanPembimbing
-   */
-
-  export type AggregateRiwayatPerubahanPembimbing = {
-    _count: RiwayatPerubahanPembimbingCountAggregateOutputType | null
-    _min: RiwayatPerubahanPembimbingMinAggregateOutputType | null
-    _max: RiwayatPerubahanPembimbingMaxAggregateOutputType | null
-  }
-
-  export type RiwayatPerubahanPembimbingMinAggregateOutputType = {
-    id: string | null
-    mahasiswaId: string | null
-    alasan: string | null
-    pembimbingIdLama: string | null
-    promotorIdLama: string | null
-    koPromotorIdLama: string | null
-    pembimbingIdBaru: string | null
-    promotorIdBaru: string | null
-    koPromotorIdBaru: string | null
-    changedAt: Date | null
-  }
-
-  export type RiwayatPerubahanPembimbingMaxAggregateOutputType = {
-    id: string | null
-    mahasiswaId: string | null
-    alasan: string | null
-    pembimbingIdLama: string | null
-    promotorIdLama: string | null
-    koPromotorIdLama: string | null
-    pembimbingIdBaru: string | null
-    promotorIdBaru: string | null
-    koPromotorIdBaru: string | null
-    changedAt: Date | null
-  }
-
-  export type RiwayatPerubahanPembimbingCountAggregateOutputType = {
-    id: number
-    mahasiswaId: number
-    alasan: number
-    pembimbingIdLama: number
-    promotorIdLama: number
-    koPromotorIdLama: number
-    pembimbingIdBaru: number
-    promotorIdBaru: number
-    koPromotorIdBaru: number
-    changedAt: number
-    _all: number
-  }
-
-
-  export type RiwayatPerubahanPembimbingMinAggregateInputType = {
-    id?: true
-    mahasiswaId?: true
-    alasan?: true
-    pembimbingIdLama?: true
-    promotorIdLama?: true
-    koPromotorIdLama?: true
-    pembimbingIdBaru?: true
-    promotorIdBaru?: true
-    koPromotorIdBaru?: true
-    changedAt?: true
-  }
-
-  export type RiwayatPerubahanPembimbingMaxAggregateInputType = {
-    id?: true
-    mahasiswaId?: true
-    alasan?: true
-    pembimbingIdLama?: true
-    promotorIdLama?: true
-    koPromotorIdLama?: true
-    pembimbingIdBaru?: true
-    promotorIdBaru?: true
-    koPromotorIdBaru?: true
-    changedAt?: true
-  }
-
-  export type RiwayatPerubahanPembimbingCountAggregateInputType = {
-    id?: true
-    mahasiswaId?: true
-    alasan?: true
-    pembimbingIdLama?: true
-    promotorIdLama?: true
-    koPromotorIdLama?: true
-    pembimbingIdBaru?: true
-    promotorIdBaru?: true
-    koPromotorIdBaru?: true
-    changedAt?: true
-    _all?: true
-  }
-
-  export type RiwayatPerubahanPembimbingAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which RiwayatPerubahanPembimbing to aggregate.
-     */
-    where?: RiwayatPerubahanPembimbingWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of RiwayatPerubahanPembimbings to fetch.
-     */
-    orderBy?: RiwayatPerubahanPembimbingOrderByWithRelationInput | RiwayatPerubahanPembimbingOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: RiwayatPerubahanPembimbingWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` RiwayatPerubahanPembimbings from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` RiwayatPerubahanPembimbings.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned RiwayatPerubahanPembimbings
-    **/
-    _count?: true | RiwayatPerubahanPembimbingCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: RiwayatPerubahanPembimbingMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: RiwayatPerubahanPembimbingMaxAggregateInputType
-  }
-
-  export type GetRiwayatPerubahanPembimbingAggregateType<T extends RiwayatPerubahanPembimbingAggregateArgs> = {
-        [P in keyof T & keyof AggregateRiwayatPerubahanPembimbing]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateRiwayatPerubahanPembimbing[P]>
-      : GetScalarType<T[P], AggregateRiwayatPerubahanPembimbing[P]>
-  }
-
-
-
-
-  export type RiwayatPerubahanPembimbingGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: RiwayatPerubahanPembimbingWhereInput
-    orderBy?: RiwayatPerubahanPembimbingOrderByWithAggregationInput | RiwayatPerubahanPembimbingOrderByWithAggregationInput[]
-    by: RiwayatPerubahanPembimbingScalarFieldEnum[] | RiwayatPerubahanPembimbingScalarFieldEnum
-    having?: RiwayatPerubahanPembimbingScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: RiwayatPerubahanPembimbingCountAggregateInputType | true
-    _min?: RiwayatPerubahanPembimbingMinAggregateInputType
-    _max?: RiwayatPerubahanPembimbingMaxAggregateInputType
-  }
-
-  export type RiwayatPerubahanPembimbingGroupByOutputType = {
-    id: string
-    mahasiswaId: string
-    alasan: string
-    pembimbingIdLama: string | null
-    promotorIdLama: string | null
-    koPromotorIdLama: string | null
-    pembimbingIdBaru: string | null
-    promotorIdBaru: string | null
-    koPromotorIdBaru: string | null
-    changedAt: Date
-    _count: RiwayatPerubahanPembimbingCountAggregateOutputType | null
-    _min: RiwayatPerubahanPembimbingMinAggregateOutputType | null
-    _max: RiwayatPerubahanPembimbingMaxAggregateOutputType | null
-  }
-
-  type GetRiwayatPerubahanPembimbingGroupByPayload<T extends RiwayatPerubahanPembimbingGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<RiwayatPerubahanPembimbingGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof RiwayatPerubahanPembimbingGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], RiwayatPerubahanPembimbingGroupByOutputType[P]>
-            : GetScalarType<T[P], RiwayatPerubahanPembimbingGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type RiwayatPerubahanPembimbingSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    mahasiswaId?: boolean
-    alasan?: boolean
-    pembimbingIdLama?: boolean
-    promotorIdLama?: boolean
-    koPromotorIdLama?: boolean
-    pembimbingIdBaru?: boolean
-    promotorIdBaru?: boolean
-    koPromotorIdBaru?: boolean
-    changedAt?: boolean
-    mahasiswa?: boolean | MahasiswaDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["riwayatPerubahanPembimbing"]>
-
-
-
-  export type RiwayatPerubahanPembimbingSelectScalar = {
-    id?: boolean
-    mahasiswaId?: boolean
-    alasan?: boolean
-    pembimbingIdLama?: boolean
-    promotorIdLama?: boolean
-    koPromotorIdLama?: boolean
-    pembimbingIdBaru?: boolean
-    promotorIdBaru?: boolean
-    koPromotorIdBaru?: boolean
-    changedAt?: boolean
-  }
-
-  export type RiwayatPerubahanPembimbingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "mahasiswaId" | "alasan" | "pembimbingIdLama" | "promotorIdLama" | "koPromotorIdLama" | "pembimbingIdBaru" | "promotorIdBaru" | "koPromotorIdBaru" | "changedAt", ExtArgs["result"]["riwayatPerubahanPembimbing"]>
-  export type RiwayatPerubahanPembimbingInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    mahasiswa?: boolean | MahasiswaDefaultArgs<ExtArgs>
-  }
-
-  export type $RiwayatPerubahanPembimbingPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "RiwayatPerubahanPembimbing"
-    objects: {
-      mahasiswa: Prisma.$MahasiswaPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      mahasiswaId: string
-      alasan: string
-      pembimbingIdLama: string | null
-      promotorIdLama: string | null
-      koPromotorIdLama: string | null
-      pembimbingIdBaru: string | null
-      promotorIdBaru: string | null
-      koPromotorIdBaru: string | null
-      changedAt: Date
-    }, ExtArgs["result"]["riwayatPerubahanPembimbing"]>
-    composites: {}
-  }
-
-  type RiwayatPerubahanPembimbingGetPayload<S extends boolean | null | undefined | RiwayatPerubahanPembimbingDefaultArgs> = $Result.GetResult<Prisma.$RiwayatPerubahanPembimbingPayload, S>
-
-  type RiwayatPerubahanPembimbingCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<RiwayatPerubahanPembimbingFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: RiwayatPerubahanPembimbingCountAggregateInputType | true
-    }
-
-  export interface RiwayatPerubahanPembimbingDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RiwayatPerubahanPembimbing'], meta: { name: 'RiwayatPerubahanPembimbing' } }
-    /**
-     * Find zero or one RiwayatPerubahanPembimbing that matches the filter.
-     * @param {RiwayatPerubahanPembimbingFindUniqueArgs} args - Arguments to find a RiwayatPerubahanPembimbing
-     * @example
-     * // Get one RiwayatPerubahanPembimbing
-     * const riwayatPerubahanPembimbing = await prisma.riwayatPerubahanPembimbing.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends RiwayatPerubahanPembimbingFindUniqueArgs>(args: SelectSubset<T, RiwayatPerubahanPembimbingFindUniqueArgs<ExtArgs>>): Prisma__RiwayatPerubahanPembimbingClient<$Result.GetResult<Prisma.$RiwayatPerubahanPembimbingPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one RiwayatPerubahanPembimbing that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {RiwayatPerubahanPembimbingFindUniqueOrThrowArgs} args - Arguments to find a RiwayatPerubahanPembimbing
-     * @example
-     * // Get one RiwayatPerubahanPembimbing
-     * const riwayatPerubahanPembimbing = await prisma.riwayatPerubahanPembimbing.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends RiwayatPerubahanPembimbingFindUniqueOrThrowArgs>(args: SelectSubset<T, RiwayatPerubahanPembimbingFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RiwayatPerubahanPembimbingClient<$Result.GetResult<Prisma.$RiwayatPerubahanPembimbingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first RiwayatPerubahanPembimbing that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {RiwayatPerubahanPembimbingFindFirstArgs} args - Arguments to find a RiwayatPerubahanPembimbing
-     * @example
-     * // Get one RiwayatPerubahanPembimbing
-     * const riwayatPerubahanPembimbing = await prisma.riwayatPerubahanPembimbing.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends RiwayatPerubahanPembimbingFindFirstArgs>(args?: SelectSubset<T, RiwayatPerubahanPembimbingFindFirstArgs<ExtArgs>>): Prisma__RiwayatPerubahanPembimbingClient<$Result.GetResult<Prisma.$RiwayatPerubahanPembimbingPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first RiwayatPerubahanPembimbing that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {RiwayatPerubahanPembimbingFindFirstOrThrowArgs} args - Arguments to find a RiwayatPerubahanPembimbing
-     * @example
-     * // Get one RiwayatPerubahanPembimbing
-     * const riwayatPerubahanPembimbing = await prisma.riwayatPerubahanPembimbing.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends RiwayatPerubahanPembimbingFindFirstOrThrowArgs>(args?: SelectSubset<T, RiwayatPerubahanPembimbingFindFirstOrThrowArgs<ExtArgs>>): Prisma__RiwayatPerubahanPembimbingClient<$Result.GetResult<Prisma.$RiwayatPerubahanPembimbingPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more RiwayatPerubahanPembimbings that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {RiwayatPerubahanPembimbingFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all RiwayatPerubahanPembimbings
-     * const riwayatPerubahanPembimbings = await prisma.riwayatPerubahanPembimbing.findMany()
-     * 
-     * // Get first 10 RiwayatPerubahanPembimbings
-     * const riwayatPerubahanPembimbings = await prisma.riwayatPerubahanPembimbing.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const riwayatPerubahanPembimbingWithIdOnly = await prisma.riwayatPerubahanPembimbing.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends RiwayatPerubahanPembimbingFindManyArgs>(args?: SelectSubset<T, RiwayatPerubahanPembimbingFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RiwayatPerubahanPembimbingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a RiwayatPerubahanPembimbing.
-     * @param {RiwayatPerubahanPembimbingCreateArgs} args - Arguments to create a RiwayatPerubahanPembimbing.
-     * @example
-     * // Create one RiwayatPerubahanPembimbing
-     * const RiwayatPerubahanPembimbing = await prisma.riwayatPerubahanPembimbing.create({
-     *   data: {
-     *     // ... data to create a RiwayatPerubahanPembimbing
-     *   }
-     * })
-     * 
-     */
-    create<T extends RiwayatPerubahanPembimbingCreateArgs>(args: SelectSubset<T, RiwayatPerubahanPembimbingCreateArgs<ExtArgs>>): Prisma__RiwayatPerubahanPembimbingClient<$Result.GetResult<Prisma.$RiwayatPerubahanPembimbingPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many RiwayatPerubahanPembimbings.
-     * @param {RiwayatPerubahanPembimbingCreateManyArgs} args - Arguments to create many RiwayatPerubahanPembimbings.
-     * @example
-     * // Create many RiwayatPerubahanPembimbings
-     * const riwayatPerubahanPembimbing = await prisma.riwayatPerubahanPembimbing.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends RiwayatPerubahanPembimbingCreateManyArgs>(args?: SelectSubset<T, RiwayatPerubahanPembimbingCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Delete a RiwayatPerubahanPembimbing.
-     * @param {RiwayatPerubahanPembimbingDeleteArgs} args - Arguments to delete one RiwayatPerubahanPembimbing.
-     * @example
-     * // Delete one RiwayatPerubahanPembimbing
-     * const RiwayatPerubahanPembimbing = await prisma.riwayatPerubahanPembimbing.delete({
-     *   where: {
-     *     // ... filter to delete one RiwayatPerubahanPembimbing
-     *   }
-     * })
-     * 
-     */
-    delete<T extends RiwayatPerubahanPembimbingDeleteArgs>(args: SelectSubset<T, RiwayatPerubahanPembimbingDeleteArgs<ExtArgs>>): Prisma__RiwayatPerubahanPembimbingClient<$Result.GetResult<Prisma.$RiwayatPerubahanPembimbingPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one RiwayatPerubahanPembimbing.
-     * @param {RiwayatPerubahanPembimbingUpdateArgs} args - Arguments to update one RiwayatPerubahanPembimbing.
-     * @example
-     * // Update one RiwayatPerubahanPembimbing
-     * const riwayatPerubahanPembimbing = await prisma.riwayatPerubahanPembimbing.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends RiwayatPerubahanPembimbingUpdateArgs>(args: SelectSubset<T, RiwayatPerubahanPembimbingUpdateArgs<ExtArgs>>): Prisma__RiwayatPerubahanPembimbingClient<$Result.GetResult<Prisma.$RiwayatPerubahanPembimbingPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more RiwayatPerubahanPembimbings.
-     * @param {RiwayatPerubahanPembimbingDeleteManyArgs} args - Arguments to filter RiwayatPerubahanPembimbings to delete.
-     * @example
-     * // Delete a few RiwayatPerubahanPembimbings
-     * const { count } = await prisma.riwayatPerubahanPembimbing.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends RiwayatPerubahanPembimbingDeleteManyArgs>(args?: SelectSubset<T, RiwayatPerubahanPembimbingDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more RiwayatPerubahanPembimbings.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {RiwayatPerubahanPembimbingUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many RiwayatPerubahanPembimbings
-     * const riwayatPerubahanPembimbing = await prisma.riwayatPerubahanPembimbing.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends RiwayatPerubahanPembimbingUpdateManyArgs>(args: SelectSubset<T, RiwayatPerubahanPembimbingUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one RiwayatPerubahanPembimbing.
-     * @param {RiwayatPerubahanPembimbingUpsertArgs} args - Arguments to update or create a RiwayatPerubahanPembimbing.
-     * @example
-     * // Update or create a RiwayatPerubahanPembimbing
-     * const riwayatPerubahanPembimbing = await prisma.riwayatPerubahanPembimbing.upsert({
-     *   create: {
-     *     // ... data to create a RiwayatPerubahanPembimbing
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the RiwayatPerubahanPembimbing we want to update
-     *   }
-     * })
-     */
-    upsert<T extends RiwayatPerubahanPembimbingUpsertArgs>(args: SelectSubset<T, RiwayatPerubahanPembimbingUpsertArgs<ExtArgs>>): Prisma__RiwayatPerubahanPembimbingClient<$Result.GetResult<Prisma.$RiwayatPerubahanPembimbingPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of RiwayatPerubahanPembimbings.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {RiwayatPerubahanPembimbingCountArgs} args - Arguments to filter RiwayatPerubahanPembimbings to count.
-     * @example
-     * // Count the number of RiwayatPerubahanPembimbings
-     * const count = await prisma.riwayatPerubahanPembimbing.count({
-     *   where: {
-     *     // ... the filter for the RiwayatPerubahanPembimbings we want to count
-     *   }
-     * })
-    **/
-    count<T extends RiwayatPerubahanPembimbingCountArgs>(
-      args?: Subset<T, RiwayatPerubahanPembimbingCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], RiwayatPerubahanPembimbingCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a RiwayatPerubahanPembimbing.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {RiwayatPerubahanPembimbingAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends RiwayatPerubahanPembimbingAggregateArgs>(args: Subset<T, RiwayatPerubahanPembimbingAggregateArgs>): Prisma.PrismaPromise<GetRiwayatPerubahanPembimbingAggregateType<T>>
-
-    /**
-     * Group by RiwayatPerubahanPembimbing.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {RiwayatPerubahanPembimbingGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends RiwayatPerubahanPembimbingGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: RiwayatPerubahanPembimbingGroupByArgs['orderBy'] }
-        : { orderBy?: RiwayatPerubahanPembimbingGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, RiwayatPerubahanPembimbingGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRiwayatPerubahanPembimbingGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the RiwayatPerubahanPembimbing model
-   */
-  readonly fields: RiwayatPerubahanPembimbingFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for RiwayatPerubahanPembimbing.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__RiwayatPerubahanPembimbingClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    mahasiswa<T extends MahasiswaDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MahasiswaDefaultArgs<ExtArgs>>): Prisma__MahasiswaClient<$Result.GetResult<Prisma.$MahasiswaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the RiwayatPerubahanPembimbing model
-   */
-  interface RiwayatPerubahanPembimbingFieldRefs {
-    readonly id: FieldRef<"RiwayatPerubahanPembimbing", 'String'>
-    readonly mahasiswaId: FieldRef<"RiwayatPerubahanPembimbing", 'String'>
-    readonly alasan: FieldRef<"RiwayatPerubahanPembimbing", 'String'>
-    readonly pembimbingIdLama: FieldRef<"RiwayatPerubahanPembimbing", 'String'>
-    readonly promotorIdLama: FieldRef<"RiwayatPerubahanPembimbing", 'String'>
-    readonly koPromotorIdLama: FieldRef<"RiwayatPerubahanPembimbing", 'String'>
-    readonly pembimbingIdBaru: FieldRef<"RiwayatPerubahanPembimbing", 'String'>
-    readonly promotorIdBaru: FieldRef<"RiwayatPerubahanPembimbing", 'String'>
-    readonly koPromotorIdBaru: FieldRef<"RiwayatPerubahanPembimbing", 'String'>
-    readonly changedAt: FieldRef<"RiwayatPerubahanPembimbing", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * RiwayatPerubahanPembimbing findUnique
-   */
-  export type RiwayatPerubahanPembimbingFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the RiwayatPerubahanPembimbing
-     */
-    select?: RiwayatPerubahanPembimbingSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the RiwayatPerubahanPembimbing
-     */
-    omit?: RiwayatPerubahanPembimbingOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RiwayatPerubahanPembimbingInclude<ExtArgs> | null
-    /**
-     * Filter, which RiwayatPerubahanPembimbing to fetch.
-     */
-    where: RiwayatPerubahanPembimbingWhereUniqueInput
-  }
-
-  /**
-   * RiwayatPerubahanPembimbing findUniqueOrThrow
-   */
-  export type RiwayatPerubahanPembimbingFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the RiwayatPerubahanPembimbing
-     */
-    select?: RiwayatPerubahanPembimbingSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the RiwayatPerubahanPembimbing
-     */
-    omit?: RiwayatPerubahanPembimbingOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RiwayatPerubahanPembimbingInclude<ExtArgs> | null
-    /**
-     * Filter, which RiwayatPerubahanPembimbing to fetch.
-     */
-    where: RiwayatPerubahanPembimbingWhereUniqueInput
-  }
-
-  /**
-   * RiwayatPerubahanPembimbing findFirst
-   */
-  export type RiwayatPerubahanPembimbingFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the RiwayatPerubahanPembimbing
-     */
-    select?: RiwayatPerubahanPembimbingSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the RiwayatPerubahanPembimbing
-     */
-    omit?: RiwayatPerubahanPembimbingOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RiwayatPerubahanPembimbingInclude<ExtArgs> | null
-    /**
-     * Filter, which RiwayatPerubahanPembimbing to fetch.
-     */
-    where?: RiwayatPerubahanPembimbingWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of RiwayatPerubahanPembimbings to fetch.
-     */
-    orderBy?: RiwayatPerubahanPembimbingOrderByWithRelationInput | RiwayatPerubahanPembimbingOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for RiwayatPerubahanPembimbings.
-     */
-    cursor?: RiwayatPerubahanPembimbingWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` RiwayatPerubahanPembimbings from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` RiwayatPerubahanPembimbings.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of RiwayatPerubahanPembimbings.
-     */
-    distinct?: RiwayatPerubahanPembimbingScalarFieldEnum | RiwayatPerubahanPembimbingScalarFieldEnum[]
-  }
-
-  /**
-   * RiwayatPerubahanPembimbing findFirstOrThrow
-   */
-  export type RiwayatPerubahanPembimbingFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the RiwayatPerubahanPembimbing
-     */
-    select?: RiwayatPerubahanPembimbingSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the RiwayatPerubahanPembimbing
-     */
-    omit?: RiwayatPerubahanPembimbingOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RiwayatPerubahanPembimbingInclude<ExtArgs> | null
-    /**
-     * Filter, which RiwayatPerubahanPembimbing to fetch.
-     */
-    where?: RiwayatPerubahanPembimbingWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of RiwayatPerubahanPembimbings to fetch.
-     */
-    orderBy?: RiwayatPerubahanPembimbingOrderByWithRelationInput | RiwayatPerubahanPembimbingOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for RiwayatPerubahanPembimbings.
-     */
-    cursor?: RiwayatPerubahanPembimbingWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` RiwayatPerubahanPembimbings from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` RiwayatPerubahanPembimbings.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of RiwayatPerubahanPembimbings.
-     */
-    distinct?: RiwayatPerubahanPembimbingScalarFieldEnum | RiwayatPerubahanPembimbingScalarFieldEnum[]
-  }
-
-  /**
-   * RiwayatPerubahanPembimbing findMany
-   */
-  export type RiwayatPerubahanPembimbingFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the RiwayatPerubahanPembimbing
-     */
-    select?: RiwayatPerubahanPembimbingSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the RiwayatPerubahanPembimbing
-     */
-    omit?: RiwayatPerubahanPembimbingOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RiwayatPerubahanPembimbingInclude<ExtArgs> | null
-    /**
-     * Filter, which RiwayatPerubahanPembimbings to fetch.
-     */
-    where?: RiwayatPerubahanPembimbingWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of RiwayatPerubahanPembimbings to fetch.
-     */
-    orderBy?: RiwayatPerubahanPembimbingOrderByWithRelationInput | RiwayatPerubahanPembimbingOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing RiwayatPerubahanPembimbings.
-     */
-    cursor?: RiwayatPerubahanPembimbingWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` RiwayatPerubahanPembimbings from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` RiwayatPerubahanPembimbings.
-     */
-    skip?: number
-    distinct?: RiwayatPerubahanPembimbingScalarFieldEnum | RiwayatPerubahanPembimbingScalarFieldEnum[]
-  }
-
-  /**
-   * RiwayatPerubahanPembimbing create
-   */
-  export type RiwayatPerubahanPembimbingCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the RiwayatPerubahanPembimbing
-     */
-    select?: RiwayatPerubahanPembimbingSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the RiwayatPerubahanPembimbing
-     */
-    omit?: RiwayatPerubahanPembimbingOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RiwayatPerubahanPembimbingInclude<ExtArgs> | null
-    /**
-     * The data needed to create a RiwayatPerubahanPembimbing.
-     */
-    data: XOR<RiwayatPerubahanPembimbingCreateInput, RiwayatPerubahanPembimbingUncheckedCreateInput>
-  }
-
-  /**
-   * RiwayatPerubahanPembimbing createMany
-   */
-  export type RiwayatPerubahanPembimbingCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many RiwayatPerubahanPembimbings.
-     */
-    data: RiwayatPerubahanPembimbingCreateManyInput | RiwayatPerubahanPembimbingCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * RiwayatPerubahanPembimbing update
-   */
-  export type RiwayatPerubahanPembimbingUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the RiwayatPerubahanPembimbing
-     */
-    select?: RiwayatPerubahanPembimbingSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the RiwayatPerubahanPembimbing
-     */
-    omit?: RiwayatPerubahanPembimbingOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RiwayatPerubahanPembimbingInclude<ExtArgs> | null
-    /**
-     * The data needed to update a RiwayatPerubahanPembimbing.
-     */
-    data: XOR<RiwayatPerubahanPembimbingUpdateInput, RiwayatPerubahanPembimbingUncheckedUpdateInput>
-    /**
-     * Choose, which RiwayatPerubahanPembimbing to update.
-     */
-    where: RiwayatPerubahanPembimbingWhereUniqueInput
-  }
-
-  /**
-   * RiwayatPerubahanPembimbing updateMany
-   */
-  export type RiwayatPerubahanPembimbingUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update RiwayatPerubahanPembimbings.
-     */
-    data: XOR<RiwayatPerubahanPembimbingUpdateManyMutationInput, RiwayatPerubahanPembimbingUncheckedUpdateManyInput>
-    /**
-     * Filter which RiwayatPerubahanPembimbings to update
-     */
-    where?: RiwayatPerubahanPembimbingWhereInput
-    /**
-     * Limit how many RiwayatPerubahanPembimbings to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * RiwayatPerubahanPembimbing upsert
-   */
-  export type RiwayatPerubahanPembimbingUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the RiwayatPerubahanPembimbing
-     */
-    select?: RiwayatPerubahanPembimbingSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the RiwayatPerubahanPembimbing
-     */
-    omit?: RiwayatPerubahanPembimbingOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RiwayatPerubahanPembimbingInclude<ExtArgs> | null
-    /**
-     * The filter to search for the RiwayatPerubahanPembimbing to update in case it exists.
-     */
-    where: RiwayatPerubahanPembimbingWhereUniqueInput
-    /**
-     * In case the RiwayatPerubahanPembimbing found by the `where` argument doesn't exist, create a new RiwayatPerubahanPembimbing with this data.
-     */
-    create: XOR<RiwayatPerubahanPembimbingCreateInput, RiwayatPerubahanPembimbingUncheckedCreateInput>
-    /**
-     * In case the RiwayatPerubahanPembimbing was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<RiwayatPerubahanPembimbingUpdateInput, RiwayatPerubahanPembimbingUncheckedUpdateInput>
-  }
-
-  /**
-   * RiwayatPerubahanPembimbing delete
-   */
-  export type RiwayatPerubahanPembimbingDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the RiwayatPerubahanPembimbing
-     */
-    select?: RiwayatPerubahanPembimbingSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the RiwayatPerubahanPembimbing
-     */
-    omit?: RiwayatPerubahanPembimbingOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RiwayatPerubahanPembimbingInclude<ExtArgs> | null
-    /**
-     * Filter which RiwayatPerubahanPembimbing to delete.
-     */
-    where: RiwayatPerubahanPembimbingWhereUniqueInput
-  }
-
-  /**
-   * RiwayatPerubahanPembimbing deleteMany
-   */
-  export type RiwayatPerubahanPembimbingDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which RiwayatPerubahanPembimbings to delete
-     */
-    where?: RiwayatPerubahanPembimbingWhereInput
-    /**
-     * Limit how many RiwayatPerubahanPembimbings to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * RiwayatPerubahanPembimbing without action
-   */
-  export type RiwayatPerubahanPembimbingDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the RiwayatPerubahanPembimbing
-     */
-    select?: RiwayatPerubahanPembimbingSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the RiwayatPerubahanPembimbing
-     */
-    omit?: RiwayatPerubahanPembimbingOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RiwayatPerubahanPembimbingInclude<ExtArgs> | null
-  }
-
-
-  /**
    * Model Kegiatan
    */
 
@@ -7280,6 +6572,7 @@ export namespace Prisma {
     id: string | null
     logbookId: string | null
     mataKuliahId: number | null
+    jenisKegiatanId: string | null
     status: string | null
     alasanDitolak: string | null
     createdAt: Date | null
@@ -7290,6 +6583,7 @@ export namespace Prisma {
     id: string | null
     logbookId: string | null
     mataKuliahId: number | null
+    jenisKegiatanId: string | null
     status: string | null
     alasanDitolak: string | null
     createdAt: Date | null
@@ -7300,7 +6594,7 @@ export namespace Prisma {
     id: number
     logbookId: number
     mataKuliahId: number
-    fieldsData: number
+    jenisKegiatanId: number
     status: number
     alasanDitolak: number
     createdAt: number
@@ -7321,6 +6615,7 @@ export namespace Prisma {
     id?: true
     logbookId?: true
     mataKuliahId?: true
+    jenisKegiatanId?: true
     status?: true
     alasanDitolak?: true
     createdAt?: true
@@ -7331,6 +6626,7 @@ export namespace Prisma {
     id?: true
     logbookId?: true
     mataKuliahId?: true
+    jenisKegiatanId?: true
     status?: true
     alasanDitolak?: true
     createdAt?: true
@@ -7341,7 +6637,7 @@ export namespace Prisma {
     id?: true
     logbookId?: true
     mataKuliahId?: true
-    fieldsData?: true
+    jenisKegiatanId?: true
     status?: true
     alasanDitolak?: true
     createdAt?: true
@@ -7438,8 +6734,8 @@ export namespace Prisma {
   export type KegiatanGroupByOutputType = {
     id: string
     logbookId: string
-    mataKuliahId: number
-    fieldsData: JsonValue | null
+    mataKuliahId: number | null
+    jenisKegiatanId: string
     status: string
     alasanDitolak: string | null
     createdAt: Date
@@ -7469,13 +6765,15 @@ export namespace Prisma {
     id?: boolean
     logbookId?: boolean
     mataKuliahId?: boolean
-    fieldsData?: boolean
+    jenisKegiatanId?: boolean
     status?: boolean
     alasanDitolak?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     logbook?: boolean | LogbookDefaultArgs<ExtArgs>
-    MataKuliah?: boolean | MataKuliahDefaultArgs<ExtArgs>
+    MataKuliah?: boolean | Kegiatan$MataKuliahArgs<ExtArgs>
+    jenisKegiatan?: boolean | JenisKegiatanDefaultArgs<ExtArgs>
+    fieldValues?: boolean | Kegiatan$fieldValuesArgs<ExtArgs>
     lampiran?: boolean | Kegiatan$lampiranArgs<ExtArgs>
     _count?: boolean | KegiatanCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["kegiatan"]>
@@ -7486,17 +6784,19 @@ export namespace Prisma {
     id?: boolean
     logbookId?: boolean
     mataKuliahId?: boolean
-    fieldsData?: boolean
+    jenisKegiatanId?: boolean
     status?: boolean
     alasanDitolak?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type KegiatanOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "logbookId" | "mataKuliahId" | "fieldsData" | "status" | "alasanDitolak" | "createdAt" | "updatedAt", ExtArgs["result"]["kegiatan"]>
+  export type KegiatanOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "logbookId" | "mataKuliahId" | "jenisKegiatanId" | "status" | "alasanDitolak" | "createdAt" | "updatedAt", ExtArgs["result"]["kegiatan"]>
   export type KegiatanInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     logbook?: boolean | LogbookDefaultArgs<ExtArgs>
-    MataKuliah?: boolean | MataKuliahDefaultArgs<ExtArgs>
+    MataKuliah?: boolean | Kegiatan$MataKuliahArgs<ExtArgs>
+    jenisKegiatan?: boolean | JenisKegiatanDefaultArgs<ExtArgs>
+    fieldValues?: boolean | Kegiatan$fieldValuesArgs<ExtArgs>
     lampiran?: boolean | Kegiatan$lampiranArgs<ExtArgs>
     _count?: boolean | KegiatanCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -7505,14 +6805,16 @@ export namespace Prisma {
     name: "Kegiatan"
     objects: {
       logbook: Prisma.$LogbookPayload<ExtArgs>
-      MataKuliah: Prisma.$MataKuliahPayload<ExtArgs>
+      MataKuliah: Prisma.$MataKuliahPayload<ExtArgs> | null
+      jenisKegiatan: Prisma.$JenisKegiatanPayload<ExtArgs>
+      fieldValues: Prisma.$FieldKegiatanValuesPayload<ExtArgs>[]
       lampiran: Prisma.$LampiranPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       logbookId: string
-      mataKuliahId: number
-      fieldsData: Prisma.JsonValue | null
+      mataKuliahId: number | null
+      jenisKegiatanId: string
       status: string
       alasanDitolak: string | null
       createdAt: Date
@@ -7858,7 +7160,9 @@ export namespace Prisma {
   export interface Prisma__KegiatanClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     logbook<T extends LogbookDefaultArgs<ExtArgs> = {}>(args?: Subset<T, LogbookDefaultArgs<ExtArgs>>): Prisma__LogbookClient<$Result.GetResult<Prisma.$LogbookPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    MataKuliah<T extends MataKuliahDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MataKuliahDefaultArgs<ExtArgs>>): Prisma__MataKuliahClient<$Result.GetResult<Prisma.$MataKuliahPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    MataKuliah<T extends Kegiatan$MataKuliahArgs<ExtArgs> = {}>(args?: Subset<T, Kegiatan$MataKuliahArgs<ExtArgs>>): Prisma__MataKuliahClient<$Result.GetResult<Prisma.$MataKuliahPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    jenisKegiatan<T extends JenisKegiatanDefaultArgs<ExtArgs> = {}>(args?: Subset<T, JenisKegiatanDefaultArgs<ExtArgs>>): Prisma__JenisKegiatanClient<$Result.GetResult<Prisma.$JenisKegiatanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    fieldValues<T extends Kegiatan$fieldValuesArgs<ExtArgs> = {}>(args?: Subset<T, Kegiatan$fieldValuesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FieldKegiatanValuesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     lampiran<T extends Kegiatan$lampiranArgs<ExtArgs> = {}>(args?: Subset<T, Kegiatan$lampiranArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LampiranPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -7892,7 +7196,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Kegiatan", 'String'>
     readonly logbookId: FieldRef<"Kegiatan", 'String'>
     readonly mataKuliahId: FieldRef<"Kegiatan", 'Int'>
-    readonly fieldsData: FieldRef<"Kegiatan", 'Json'>
+    readonly jenisKegiatanId: FieldRef<"Kegiatan", 'String'>
     readonly status: FieldRef<"Kegiatan", 'String'>
     readonly alasanDitolak: FieldRef<"Kegiatan", 'String'>
     readonly createdAt: FieldRef<"Kegiatan", 'DateTime'>
@@ -8237,6 +7541,49 @@ export namespace Prisma {
      * Limit how many Kegiatans to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Kegiatan.MataKuliah
+   */
+  export type Kegiatan$MataKuliahArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MataKuliah
+     */
+    select?: MataKuliahSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MataKuliah
+     */
+    omit?: MataKuliahOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MataKuliahInclude<ExtArgs> | null
+    where?: MataKuliahWhereInput
+  }
+
+  /**
+   * Kegiatan.fieldValues
+   */
+  export type Kegiatan$fieldValuesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FieldKegiatanValues
+     */
+    select?: FieldKegiatanValuesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FieldKegiatanValues
+     */
+    omit?: FieldKegiatanValuesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FieldKegiatanValuesInclude<ExtArgs> | null
+    where?: FieldKegiatanValuesWhereInput
+    orderBy?: FieldKegiatanValuesOrderByWithRelationInput | FieldKegiatanValuesOrderByWithRelationInput[]
+    cursor?: FieldKegiatanValuesWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FieldKegiatanValuesScalarFieldEnum | FieldKegiatanValuesScalarFieldEnum[]
   }
 
   /**
@@ -12339,7 +11686,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     pengguna?: boolean | ProgramStudi$penggunaArgs<ExtArgs>
-    fields?: boolean | ProgramStudi$fieldsArgs<ExtArgs>
+    jenisKegiatan?: boolean | ProgramStudi$jenisKegiatanArgs<ExtArgs>
     mataKuliah?: boolean | ProgramStudi$mataKuliahArgs<ExtArgs>
     _count?: boolean | ProgramStudiCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["programStudi"]>
@@ -12358,7 +11705,7 @@ export namespace Prisma {
   export type ProgramStudiOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nama" | "displayName" | "templateSingleFieldForDate" | "createdAt" | "updatedAt", ExtArgs["result"]["programStudi"]>
   export type ProgramStudiInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     pengguna?: boolean | ProgramStudi$penggunaArgs<ExtArgs>
-    fields?: boolean | ProgramStudi$fieldsArgs<ExtArgs>
+    jenisKegiatan?: boolean | ProgramStudi$jenisKegiatanArgs<ExtArgs>
     mataKuliah?: boolean | ProgramStudi$mataKuliahArgs<ExtArgs>
     _count?: boolean | ProgramStudiCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -12367,7 +11714,7 @@ export namespace Prisma {
     name: "ProgramStudi"
     objects: {
       pengguna: Prisma.$PenggunaPayload<ExtArgs>[]
-      fields: Prisma.$ProgramStudiFieldPayload<ExtArgs>[]
+      jenisKegiatan: Prisma.$JenisKegiatanPayload<ExtArgs>[]
       mataKuliah: Prisma.$MataKuliahPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -12718,7 +12065,7 @@ export namespace Prisma {
   export interface Prisma__ProgramStudiClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     pengguna<T extends ProgramStudi$penggunaArgs<ExtArgs> = {}>(args?: Subset<T, ProgramStudi$penggunaArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PenggunaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    fields<T extends ProgramStudi$fieldsArgs<ExtArgs> = {}>(args?: Subset<T, ProgramStudi$fieldsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProgramStudiFieldPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    jenisKegiatan<T extends ProgramStudi$jenisKegiatanArgs<ExtArgs> = {}>(args?: Subset<T, ProgramStudi$jenisKegiatanArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$JenisKegiatanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     mataKuliah<T extends ProgramStudi$mataKuliahArgs<ExtArgs> = {}>(args?: Subset<T, ProgramStudi$mataKuliahArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MataKuliahPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -13122,27 +12469,27 @@ export namespace Prisma {
   }
 
   /**
-   * ProgramStudi.fields
+   * ProgramStudi.jenisKegiatan
    */
-  export type ProgramStudi$fieldsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProgramStudi$jenisKegiatanArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ProgramStudiField
+     * Select specific fields to fetch from the JenisKegiatan
      */
-    select?: ProgramStudiFieldSelect<ExtArgs> | null
+    select?: JenisKegiatanSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ProgramStudiField
+     * Omit specific fields from the JenisKegiatan
      */
-    omit?: ProgramStudiFieldOmit<ExtArgs> | null
+    omit?: JenisKegiatanOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ProgramStudiFieldInclude<ExtArgs> | null
-    where?: ProgramStudiFieldWhereInput
-    orderBy?: ProgramStudiFieldOrderByWithRelationInput | ProgramStudiFieldOrderByWithRelationInput[]
-    cursor?: ProgramStudiFieldWhereUniqueInput
+    include?: JenisKegiatanInclude<ExtArgs> | null
+    where?: JenisKegiatanWhereInput
+    orderBy?: JenisKegiatanOrderByWithRelationInput | JenisKegiatanOrderByWithRelationInput[]
+    cursor?: JenisKegiatanWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: ProgramStudiFieldScalarFieldEnum | ProgramStudiFieldScalarFieldEnum[]
+    distinct?: JenisKegiatanScalarFieldEnum | JenisKegiatanScalarFieldEnum[]
   }
 
   /**
@@ -13189,399 +12536,363 @@ export namespace Prisma {
 
 
   /**
-   * Model ProgramStudiField
+   * Model JenisKegiatan
    */
 
-  export type AggregateProgramStudiField = {
-    _count: ProgramStudiFieldCountAggregateOutputType | null
-    _avg: ProgramStudiFieldAvgAggregateOutputType | null
-    _sum: ProgramStudiFieldSumAggregateOutputType | null
-    _min: ProgramStudiFieldMinAggregateOutputType | null
-    _max: ProgramStudiFieldMaxAggregateOutputType | null
+  export type AggregateJenisKegiatan = {
+    _count: JenisKegiatanCountAggregateOutputType | null
+    _min: JenisKegiatanMinAggregateOutputType | null
+    _max: JenisKegiatanMaxAggregateOutputType | null
   }
 
-  export type ProgramStudiFieldAvgAggregateOutputType = {
-    order: number | null
-  }
-
-  export type ProgramStudiFieldSumAggregateOutputType = {
-    order: number | null
-  }
-
-  export type ProgramStudiFieldMinAggregateOutputType = {
+  export type JenisKegiatanMinAggregateOutputType = {
     id: string | null
     programStudiId: string | null
-    fieldName: string | null
-    fieldType: string | null
-    isRequired: boolean | null
-    order: number | null
+    nama: string | null
+    templateIdentifier: string | null
+    isMataKuliahRequired: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
 
-  export type ProgramStudiFieldMaxAggregateOutputType = {
+  export type JenisKegiatanMaxAggregateOutputType = {
     id: string | null
     programStudiId: string | null
-    fieldName: string | null
-    fieldType: string | null
-    isRequired: boolean | null
-    order: number | null
+    nama: string | null
+    templateIdentifier: string | null
+    isMataKuliahRequired: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
 
-  export type ProgramStudiFieldCountAggregateOutputType = {
+  export type JenisKegiatanCountAggregateOutputType = {
     id: number
     programStudiId: number
-    fieldName: number
-    fieldType: number
-    isRequired: number
-    order: number
+    nama: number
+    templateIdentifier: number
+    isMataKuliahRequired: number
     createdAt: number
     updatedAt: number
     _all: number
   }
 
 
-  export type ProgramStudiFieldAvgAggregateInputType = {
-    order?: true
-  }
-
-  export type ProgramStudiFieldSumAggregateInputType = {
-    order?: true
-  }
-
-  export type ProgramStudiFieldMinAggregateInputType = {
+  export type JenisKegiatanMinAggregateInputType = {
     id?: true
     programStudiId?: true
-    fieldName?: true
-    fieldType?: true
-    isRequired?: true
-    order?: true
+    nama?: true
+    templateIdentifier?: true
+    isMataKuliahRequired?: true
     createdAt?: true
     updatedAt?: true
   }
 
-  export type ProgramStudiFieldMaxAggregateInputType = {
+  export type JenisKegiatanMaxAggregateInputType = {
     id?: true
     programStudiId?: true
-    fieldName?: true
-    fieldType?: true
-    isRequired?: true
-    order?: true
+    nama?: true
+    templateIdentifier?: true
+    isMataKuliahRequired?: true
     createdAt?: true
     updatedAt?: true
   }
 
-  export type ProgramStudiFieldCountAggregateInputType = {
+  export type JenisKegiatanCountAggregateInputType = {
     id?: true
     programStudiId?: true
-    fieldName?: true
-    fieldType?: true
-    isRequired?: true
-    order?: true
+    nama?: true
+    templateIdentifier?: true
+    isMataKuliahRequired?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
   }
 
-  export type ProgramStudiFieldAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type JenisKegiatanAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which ProgramStudiField to aggregate.
+     * Filter which JenisKegiatan to aggregate.
      */
-    where?: ProgramStudiFieldWhereInput
+    where?: JenisKegiatanWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of ProgramStudiFields to fetch.
+     * Determine the order of JenisKegiatans to fetch.
      */
-    orderBy?: ProgramStudiFieldOrderByWithRelationInput | ProgramStudiFieldOrderByWithRelationInput[]
+    orderBy?: JenisKegiatanOrderByWithRelationInput | JenisKegiatanOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: ProgramStudiFieldWhereUniqueInput
+    cursor?: JenisKegiatanWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` ProgramStudiFields from the position of the cursor.
+     * Take `±n` JenisKegiatans from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` ProgramStudiFields.
+     * Skip the first `n` JenisKegiatans.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned ProgramStudiFields
+     * Count returned JenisKegiatans
     **/
-    _count?: true | ProgramStudiFieldCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: ProgramStudiFieldAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: ProgramStudiFieldSumAggregateInputType
+    _count?: true | JenisKegiatanCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: ProgramStudiFieldMinAggregateInputType
+    _min?: JenisKegiatanMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: ProgramStudiFieldMaxAggregateInputType
+    _max?: JenisKegiatanMaxAggregateInputType
   }
 
-  export type GetProgramStudiFieldAggregateType<T extends ProgramStudiFieldAggregateArgs> = {
-        [P in keyof T & keyof AggregateProgramStudiField]: P extends '_count' | 'count'
+  export type GetJenisKegiatanAggregateType<T extends JenisKegiatanAggregateArgs> = {
+        [P in keyof T & keyof AggregateJenisKegiatan]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateProgramStudiField[P]>
-      : GetScalarType<T[P], AggregateProgramStudiField[P]>
+        : GetScalarType<T[P], AggregateJenisKegiatan[P]>
+      : GetScalarType<T[P], AggregateJenisKegiatan[P]>
   }
 
 
 
 
-  export type ProgramStudiFieldGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ProgramStudiFieldWhereInput
-    orderBy?: ProgramStudiFieldOrderByWithAggregationInput | ProgramStudiFieldOrderByWithAggregationInput[]
-    by: ProgramStudiFieldScalarFieldEnum[] | ProgramStudiFieldScalarFieldEnum
-    having?: ProgramStudiFieldScalarWhereWithAggregatesInput
+  export type JenisKegiatanGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: JenisKegiatanWhereInput
+    orderBy?: JenisKegiatanOrderByWithAggregationInput | JenisKegiatanOrderByWithAggregationInput[]
+    by: JenisKegiatanScalarFieldEnum[] | JenisKegiatanScalarFieldEnum
+    having?: JenisKegiatanScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: ProgramStudiFieldCountAggregateInputType | true
-    _avg?: ProgramStudiFieldAvgAggregateInputType
-    _sum?: ProgramStudiFieldSumAggregateInputType
-    _min?: ProgramStudiFieldMinAggregateInputType
-    _max?: ProgramStudiFieldMaxAggregateInputType
+    _count?: JenisKegiatanCountAggregateInputType | true
+    _min?: JenisKegiatanMinAggregateInputType
+    _max?: JenisKegiatanMaxAggregateInputType
   }
 
-  export type ProgramStudiFieldGroupByOutputType = {
+  export type JenisKegiatanGroupByOutputType = {
     id: string
     programStudiId: string
-    fieldName: string
-    fieldType: string
-    isRequired: boolean
-    order: number
+    nama: string
+    templateIdentifier: string | null
+    isMataKuliahRequired: boolean
     createdAt: Date
     updatedAt: Date
-    _count: ProgramStudiFieldCountAggregateOutputType | null
-    _avg: ProgramStudiFieldAvgAggregateOutputType | null
-    _sum: ProgramStudiFieldSumAggregateOutputType | null
-    _min: ProgramStudiFieldMinAggregateOutputType | null
-    _max: ProgramStudiFieldMaxAggregateOutputType | null
+    _count: JenisKegiatanCountAggregateOutputType | null
+    _min: JenisKegiatanMinAggregateOutputType | null
+    _max: JenisKegiatanMaxAggregateOutputType | null
   }
 
-  type GetProgramStudiFieldGroupByPayload<T extends ProgramStudiFieldGroupByArgs> = Prisma.PrismaPromise<
+  type GetJenisKegiatanGroupByPayload<T extends JenisKegiatanGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickEnumerable<ProgramStudiFieldGroupByOutputType, T['by']> &
+      PickEnumerable<JenisKegiatanGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof ProgramStudiFieldGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof JenisKegiatanGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], ProgramStudiFieldGroupByOutputType[P]>
-            : GetScalarType<T[P], ProgramStudiFieldGroupByOutputType[P]>
+              : GetScalarType<T[P], JenisKegiatanGroupByOutputType[P]>
+            : GetScalarType<T[P], JenisKegiatanGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type ProgramStudiFieldSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type JenisKegiatanSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     programStudiId?: boolean
-    fieldName?: boolean
-    fieldType?: boolean
-    isRequired?: boolean
-    order?: boolean
+    nama?: boolean
+    templateIdentifier?: boolean
+    isMataKuliahRequired?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     programStudi?: boolean | ProgramStudiDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["programStudiField"]>
+    kegiatan?: boolean | JenisKegiatan$kegiatanArgs<ExtArgs>
+    fields?: boolean | JenisKegiatan$fieldsArgs<ExtArgs>
+    _count?: boolean | JenisKegiatanCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["jenisKegiatan"]>
 
 
 
-  export type ProgramStudiFieldSelectScalar = {
+  export type JenisKegiatanSelectScalar = {
     id?: boolean
     programStudiId?: boolean
-    fieldName?: boolean
-    fieldType?: boolean
-    isRequired?: boolean
-    order?: boolean
+    nama?: boolean
+    templateIdentifier?: boolean
+    isMataKuliahRequired?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type ProgramStudiFieldOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "programStudiId" | "fieldName" | "fieldType" | "isRequired" | "order" | "createdAt" | "updatedAt", ExtArgs["result"]["programStudiField"]>
-  export type ProgramStudiFieldInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type JenisKegiatanOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "programStudiId" | "nama" | "templateIdentifier" | "isMataKuliahRequired" | "createdAt" | "updatedAt", ExtArgs["result"]["jenisKegiatan"]>
+  export type JenisKegiatanInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     programStudi?: boolean | ProgramStudiDefaultArgs<ExtArgs>
+    kegiatan?: boolean | JenisKegiatan$kegiatanArgs<ExtArgs>
+    fields?: boolean | JenisKegiatan$fieldsArgs<ExtArgs>
+    _count?: boolean | JenisKegiatanCountOutputTypeDefaultArgs<ExtArgs>
   }
 
-  export type $ProgramStudiFieldPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "ProgramStudiField"
+  export type $JenisKegiatanPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "JenisKegiatan"
     objects: {
       programStudi: Prisma.$ProgramStudiPayload<ExtArgs>
+      kegiatan: Prisma.$KegiatanPayload<ExtArgs>[]
+      fields: Prisma.$JenisKegiatanFieldPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       programStudiId: string
-      fieldName: string
-      fieldType: string
-      isRequired: boolean
-      order: number
+      nama: string
+      templateIdentifier: string | null
+      isMataKuliahRequired: boolean
       createdAt: Date
       updatedAt: Date
-    }, ExtArgs["result"]["programStudiField"]>
+    }, ExtArgs["result"]["jenisKegiatan"]>
     composites: {}
   }
 
-  type ProgramStudiFieldGetPayload<S extends boolean | null | undefined | ProgramStudiFieldDefaultArgs> = $Result.GetResult<Prisma.$ProgramStudiFieldPayload, S>
+  type JenisKegiatanGetPayload<S extends boolean | null | undefined | JenisKegiatanDefaultArgs> = $Result.GetResult<Prisma.$JenisKegiatanPayload, S>
 
-  type ProgramStudiFieldCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<ProgramStudiFieldFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: ProgramStudiFieldCountAggregateInputType | true
+  type JenisKegiatanCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<JenisKegiatanFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: JenisKegiatanCountAggregateInputType | true
     }
 
-  export interface ProgramStudiFieldDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ProgramStudiField'], meta: { name: 'ProgramStudiField' } }
+  export interface JenisKegiatanDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['JenisKegiatan'], meta: { name: 'JenisKegiatan' } }
     /**
-     * Find zero or one ProgramStudiField that matches the filter.
-     * @param {ProgramStudiFieldFindUniqueArgs} args - Arguments to find a ProgramStudiField
+     * Find zero or one JenisKegiatan that matches the filter.
+     * @param {JenisKegiatanFindUniqueArgs} args - Arguments to find a JenisKegiatan
      * @example
-     * // Get one ProgramStudiField
-     * const programStudiField = await prisma.programStudiField.findUnique({
+     * // Get one JenisKegiatan
+     * const jenisKegiatan = await prisma.jenisKegiatan.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUnique<T extends ProgramStudiFieldFindUniqueArgs>(args: SelectSubset<T, ProgramStudiFieldFindUniqueArgs<ExtArgs>>): Prisma__ProgramStudiFieldClient<$Result.GetResult<Prisma.$ProgramStudiFieldPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends JenisKegiatanFindUniqueArgs>(args: SelectSubset<T, JenisKegiatanFindUniqueArgs<ExtArgs>>): Prisma__JenisKegiatanClient<$Result.GetResult<Prisma.$JenisKegiatanPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find one ProgramStudiField that matches the filter or throw an error with `error.code='P2025'`
+     * Find one JenisKegiatan that matches the filter or throw an error with `error.code='P2025'`
      * if no matches were found.
-     * @param {ProgramStudiFieldFindUniqueOrThrowArgs} args - Arguments to find a ProgramStudiField
+     * @param {JenisKegiatanFindUniqueOrThrowArgs} args - Arguments to find a JenisKegiatan
      * @example
-     * // Get one ProgramStudiField
-     * const programStudiField = await prisma.programStudiField.findUniqueOrThrow({
+     * // Get one JenisKegiatan
+     * const jenisKegiatan = await prisma.jenisKegiatan.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUniqueOrThrow<T extends ProgramStudiFieldFindUniqueOrThrowArgs>(args: SelectSubset<T, ProgramStudiFieldFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ProgramStudiFieldClient<$Result.GetResult<Prisma.$ProgramStudiFieldPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends JenisKegiatanFindUniqueOrThrowArgs>(args: SelectSubset<T, JenisKegiatanFindUniqueOrThrowArgs<ExtArgs>>): Prisma__JenisKegiatanClient<$Result.GetResult<Prisma.$JenisKegiatanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first ProgramStudiField that matches the filter.
+     * Find the first JenisKegiatan that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ProgramStudiFieldFindFirstArgs} args - Arguments to find a ProgramStudiField
+     * @param {JenisKegiatanFindFirstArgs} args - Arguments to find a JenisKegiatan
      * @example
-     * // Get one ProgramStudiField
-     * const programStudiField = await prisma.programStudiField.findFirst({
+     * // Get one JenisKegiatan
+     * const jenisKegiatan = await prisma.jenisKegiatan.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirst<T extends ProgramStudiFieldFindFirstArgs>(args?: SelectSubset<T, ProgramStudiFieldFindFirstArgs<ExtArgs>>): Prisma__ProgramStudiFieldClient<$Result.GetResult<Prisma.$ProgramStudiFieldPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends JenisKegiatanFindFirstArgs>(args?: SelectSubset<T, JenisKegiatanFindFirstArgs<ExtArgs>>): Prisma__JenisKegiatanClient<$Result.GetResult<Prisma.$JenisKegiatanPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first ProgramStudiField that matches the filter or
+     * Find the first JenisKegiatan that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ProgramStudiFieldFindFirstOrThrowArgs} args - Arguments to find a ProgramStudiField
+     * @param {JenisKegiatanFindFirstOrThrowArgs} args - Arguments to find a JenisKegiatan
      * @example
-     * // Get one ProgramStudiField
-     * const programStudiField = await prisma.programStudiField.findFirstOrThrow({
+     * // Get one JenisKegiatan
+     * const jenisKegiatan = await prisma.jenisKegiatan.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirstOrThrow<T extends ProgramStudiFieldFindFirstOrThrowArgs>(args?: SelectSubset<T, ProgramStudiFieldFindFirstOrThrowArgs<ExtArgs>>): Prisma__ProgramStudiFieldClient<$Result.GetResult<Prisma.$ProgramStudiFieldPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends JenisKegiatanFindFirstOrThrowArgs>(args?: SelectSubset<T, JenisKegiatanFindFirstOrThrowArgs<ExtArgs>>): Prisma__JenisKegiatanClient<$Result.GetResult<Prisma.$JenisKegiatanPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more ProgramStudiFields that matches the filter.
+     * Find zero or more JenisKegiatans that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ProgramStudiFieldFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @param {JenisKegiatanFindManyArgs} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all ProgramStudiFields
-     * const programStudiFields = await prisma.programStudiField.findMany()
+     * // Get all JenisKegiatans
+     * const jenisKegiatans = await prisma.jenisKegiatan.findMany()
      * 
-     * // Get first 10 ProgramStudiFields
-     * const programStudiFields = await prisma.programStudiField.findMany({ take: 10 })
+     * // Get first 10 JenisKegiatans
+     * const jenisKegiatans = await prisma.jenisKegiatan.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const programStudiFieldWithIdOnly = await prisma.programStudiField.findMany({ select: { id: true } })
+     * const jenisKegiatanWithIdOnly = await prisma.jenisKegiatan.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends ProgramStudiFieldFindManyArgs>(args?: SelectSubset<T, ProgramStudiFieldFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProgramStudiFieldPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends JenisKegiatanFindManyArgs>(args?: SelectSubset<T, JenisKegiatanFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$JenisKegiatanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
-     * Create a ProgramStudiField.
-     * @param {ProgramStudiFieldCreateArgs} args - Arguments to create a ProgramStudiField.
+     * Create a JenisKegiatan.
+     * @param {JenisKegiatanCreateArgs} args - Arguments to create a JenisKegiatan.
      * @example
-     * // Create one ProgramStudiField
-     * const ProgramStudiField = await prisma.programStudiField.create({
+     * // Create one JenisKegiatan
+     * const JenisKegiatan = await prisma.jenisKegiatan.create({
      *   data: {
-     *     // ... data to create a ProgramStudiField
+     *     // ... data to create a JenisKegiatan
      *   }
      * })
      * 
      */
-    create<T extends ProgramStudiFieldCreateArgs>(args: SelectSubset<T, ProgramStudiFieldCreateArgs<ExtArgs>>): Prisma__ProgramStudiFieldClient<$Result.GetResult<Prisma.$ProgramStudiFieldPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends JenisKegiatanCreateArgs>(args: SelectSubset<T, JenisKegiatanCreateArgs<ExtArgs>>): Prisma__JenisKegiatanClient<$Result.GetResult<Prisma.$JenisKegiatanPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Create many ProgramStudiFields.
-     * @param {ProgramStudiFieldCreateManyArgs} args - Arguments to create many ProgramStudiFields.
+     * Create many JenisKegiatans.
+     * @param {JenisKegiatanCreateManyArgs} args - Arguments to create many JenisKegiatans.
      * @example
-     * // Create many ProgramStudiFields
-     * const programStudiField = await prisma.programStudiField.createMany({
+     * // Create many JenisKegiatans
+     * const jenisKegiatan = await prisma.jenisKegiatan.createMany({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      *     
      */
-    createMany<T extends ProgramStudiFieldCreateManyArgs>(args?: SelectSubset<T, ProgramStudiFieldCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    createMany<T extends JenisKegiatanCreateManyArgs>(args?: SelectSubset<T, JenisKegiatanCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Delete a ProgramStudiField.
-     * @param {ProgramStudiFieldDeleteArgs} args - Arguments to delete one ProgramStudiField.
+     * Delete a JenisKegiatan.
+     * @param {JenisKegiatanDeleteArgs} args - Arguments to delete one JenisKegiatan.
      * @example
-     * // Delete one ProgramStudiField
-     * const ProgramStudiField = await prisma.programStudiField.delete({
+     * // Delete one JenisKegiatan
+     * const JenisKegiatan = await prisma.jenisKegiatan.delete({
      *   where: {
-     *     // ... filter to delete one ProgramStudiField
+     *     // ... filter to delete one JenisKegiatan
      *   }
      * })
      * 
      */
-    delete<T extends ProgramStudiFieldDeleteArgs>(args: SelectSubset<T, ProgramStudiFieldDeleteArgs<ExtArgs>>): Prisma__ProgramStudiFieldClient<$Result.GetResult<Prisma.$ProgramStudiFieldPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends JenisKegiatanDeleteArgs>(args: SelectSubset<T, JenisKegiatanDeleteArgs<ExtArgs>>): Prisma__JenisKegiatanClient<$Result.GetResult<Prisma.$JenisKegiatanPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Update one ProgramStudiField.
-     * @param {ProgramStudiFieldUpdateArgs} args - Arguments to update one ProgramStudiField.
+     * Update one JenisKegiatan.
+     * @param {JenisKegiatanUpdateArgs} args - Arguments to update one JenisKegiatan.
      * @example
-     * // Update one ProgramStudiField
-     * const programStudiField = await prisma.programStudiField.update({
+     * // Update one JenisKegiatan
+     * const jenisKegiatan = await prisma.jenisKegiatan.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -13591,30 +12902,30 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends ProgramStudiFieldUpdateArgs>(args: SelectSubset<T, ProgramStudiFieldUpdateArgs<ExtArgs>>): Prisma__ProgramStudiFieldClient<$Result.GetResult<Prisma.$ProgramStudiFieldPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends JenisKegiatanUpdateArgs>(args: SelectSubset<T, JenisKegiatanUpdateArgs<ExtArgs>>): Prisma__JenisKegiatanClient<$Result.GetResult<Prisma.$JenisKegiatanPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Delete zero or more ProgramStudiFields.
-     * @param {ProgramStudiFieldDeleteManyArgs} args - Arguments to filter ProgramStudiFields to delete.
+     * Delete zero or more JenisKegiatans.
+     * @param {JenisKegiatanDeleteManyArgs} args - Arguments to filter JenisKegiatans to delete.
      * @example
-     * // Delete a few ProgramStudiFields
-     * const { count } = await prisma.programStudiField.deleteMany({
+     * // Delete a few JenisKegiatans
+     * const { count } = await prisma.jenisKegiatan.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
      */
-    deleteMany<T extends ProgramStudiFieldDeleteManyArgs>(args?: SelectSubset<T, ProgramStudiFieldDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    deleteMany<T extends JenisKegiatanDeleteManyArgs>(args?: SelectSubset<T, JenisKegiatanDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more ProgramStudiFields.
+     * Update zero or more JenisKegiatans.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ProgramStudiFieldUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {JenisKegiatanUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many ProgramStudiFields
-     * const programStudiField = await prisma.programStudiField.updateMany({
+     * // Update many JenisKegiatans
+     * const jenisKegiatan = await prisma.jenisKegiatan.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -13624,56 +12935,56 @@ export namespace Prisma {
      * })
      * 
      */
-    updateMany<T extends ProgramStudiFieldUpdateManyArgs>(args: SelectSubset<T, ProgramStudiFieldUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    updateMany<T extends JenisKegiatanUpdateManyArgs>(args: SelectSubset<T, JenisKegiatanUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create or update one ProgramStudiField.
-     * @param {ProgramStudiFieldUpsertArgs} args - Arguments to update or create a ProgramStudiField.
+     * Create or update one JenisKegiatan.
+     * @param {JenisKegiatanUpsertArgs} args - Arguments to update or create a JenisKegiatan.
      * @example
-     * // Update or create a ProgramStudiField
-     * const programStudiField = await prisma.programStudiField.upsert({
+     * // Update or create a JenisKegiatan
+     * const jenisKegiatan = await prisma.jenisKegiatan.upsert({
      *   create: {
-     *     // ... data to create a ProgramStudiField
+     *     // ... data to create a JenisKegiatan
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the ProgramStudiField we want to update
+     *     // ... the filter for the JenisKegiatan we want to update
      *   }
      * })
      */
-    upsert<T extends ProgramStudiFieldUpsertArgs>(args: SelectSubset<T, ProgramStudiFieldUpsertArgs<ExtArgs>>): Prisma__ProgramStudiFieldClient<$Result.GetResult<Prisma.$ProgramStudiFieldPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends JenisKegiatanUpsertArgs>(args: SelectSubset<T, JenisKegiatanUpsertArgs<ExtArgs>>): Prisma__JenisKegiatanClient<$Result.GetResult<Prisma.$JenisKegiatanPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
     /**
-     * Count the number of ProgramStudiFields.
+     * Count the number of JenisKegiatans.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ProgramStudiFieldCountArgs} args - Arguments to filter ProgramStudiFields to count.
+     * @param {JenisKegiatanCountArgs} args - Arguments to filter JenisKegiatans to count.
      * @example
-     * // Count the number of ProgramStudiFields
-     * const count = await prisma.programStudiField.count({
+     * // Count the number of JenisKegiatans
+     * const count = await prisma.jenisKegiatan.count({
      *   where: {
-     *     // ... the filter for the ProgramStudiFields we want to count
+     *     // ... the filter for the JenisKegiatans we want to count
      *   }
      * })
     **/
-    count<T extends ProgramStudiFieldCountArgs>(
-      args?: Subset<T, ProgramStudiFieldCountArgs>,
+    count<T extends JenisKegiatanCountArgs>(
+      args?: Subset<T, JenisKegiatanCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], ProgramStudiFieldCountAggregateOutputType>
+          : GetScalarType<T['select'], JenisKegiatanCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a ProgramStudiField.
+     * Allows you to perform aggregations operations on a JenisKegiatan.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ProgramStudiFieldAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {JenisKegiatanAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -13693,13 +13004,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends ProgramStudiFieldAggregateArgs>(args: Subset<T, ProgramStudiFieldAggregateArgs>): Prisma.PrismaPromise<GetProgramStudiFieldAggregateType<T>>
+    aggregate<T extends JenisKegiatanAggregateArgs>(args: Subset<T, JenisKegiatanAggregateArgs>): Prisma.PrismaPromise<GetJenisKegiatanAggregateType<T>>
 
     /**
-     * Group by ProgramStudiField.
+     * Group by JenisKegiatan.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ProgramStudiFieldGroupByArgs} args - Group by arguments.
+     * @param {JenisKegiatanGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -13714,14 +13025,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends ProgramStudiFieldGroupByArgs,
+      T extends JenisKegiatanGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: ProgramStudiFieldGroupByArgs['orderBy'] }
-        : { orderBy?: ProgramStudiFieldGroupByArgs['orderBy'] },
+        ? { orderBy: JenisKegiatanGroupByArgs['orderBy'] }
+        : { orderBy?: JenisKegiatanGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -13770,22 +13081,24 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, ProgramStudiFieldGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetProgramStudiFieldGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, JenisKegiatanGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetJenisKegiatanGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the ProgramStudiField model
+   * Fields of the JenisKegiatan model
    */
-  readonly fields: ProgramStudiFieldFieldRefs;
+  readonly fields: JenisKegiatanFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for ProgramStudiField.
+   * The delegate class that acts as a "Promise-like" for JenisKegiatan.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__ProgramStudiFieldClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__JenisKegiatanClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     programStudi<T extends ProgramStudiDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProgramStudiDefaultArgs<ExtArgs>>): Prisma__ProgramStudiClient<$Result.GetResult<Prisma.$ProgramStudiPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    kegiatan<T extends JenisKegiatan$kegiatanArgs<ExtArgs> = {}>(args?: Subset<T, JenisKegiatan$kegiatanArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$KegiatanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    fields<T extends JenisKegiatan$fieldsArgs<ExtArgs> = {}>(args?: Subset<T, JenisKegiatan$fieldsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$JenisKegiatanFieldPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -13812,375 +13125,3343 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the ProgramStudiField model
+   * Fields of the JenisKegiatan model
    */
-  interface ProgramStudiFieldFieldRefs {
-    readonly id: FieldRef<"ProgramStudiField", 'String'>
-    readonly programStudiId: FieldRef<"ProgramStudiField", 'String'>
-    readonly fieldName: FieldRef<"ProgramStudiField", 'String'>
-    readonly fieldType: FieldRef<"ProgramStudiField", 'String'>
-    readonly isRequired: FieldRef<"ProgramStudiField", 'Boolean'>
-    readonly order: FieldRef<"ProgramStudiField", 'Int'>
-    readonly createdAt: FieldRef<"ProgramStudiField", 'DateTime'>
-    readonly updatedAt: FieldRef<"ProgramStudiField", 'DateTime'>
+  interface JenisKegiatanFieldRefs {
+    readonly id: FieldRef<"JenisKegiatan", 'String'>
+    readonly programStudiId: FieldRef<"JenisKegiatan", 'String'>
+    readonly nama: FieldRef<"JenisKegiatan", 'String'>
+    readonly templateIdentifier: FieldRef<"JenisKegiatan", 'String'>
+    readonly isMataKuliahRequired: FieldRef<"JenisKegiatan", 'Boolean'>
+    readonly createdAt: FieldRef<"JenisKegiatan", 'DateTime'>
+    readonly updatedAt: FieldRef<"JenisKegiatan", 'DateTime'>
   }
     
 
   // Custom InputTypes
   /**
-   * ProgramStudiField findUnique
+   * JenisKegiatan findUnique
    */
-  export type ProgramStudiFieldFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type JenisKegiatanFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ProgramStudiField
+     * Select specific fields to fetch from the JenisKegiatan
      */
-    select?: ProgramStudiFieldSelect<ExtArgs> | null
+    select?: JenisKegiatanSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ProgramStudiField
+     * Omit specific fields from the JenisKegiatan
      */
-    omit?: ProgramStudiFieldOmit<ExtArgs> | null
+    omit?: JenisKegiatanOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ProgramStudiFieldInclude<ExtArgs> | null
+    include?: JenisKegiatanInclude<ExtArgs> | null
     /**
-     * Filter, which ProgramStudiField to fetch.
+     * Filter, which JenisKegiatan to fetch.
      */
-    where: ProgramStudiFieldWhereUniqueInput
+    where: JenisKegiatanWhereUniqueInput
   }
 
   /**
-   * ProgramStudiField findUniqueOrThrow
+   * JenisKegiatan findUniqueOrThrow
    */
-  export type ProgramStudiFieldFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type JenisKegiatanFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ProgramStudiField
+     * Select specific fields to fetch from the JenisKegiatan
      */
-    select?: ProgramStudiFieldSelect<ExtArgs> | null
+    select?: JenisKegiatanSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ProgramStudiField
+     * Omit specific fields from the JenisKegiatan
      */
-    omit?: ProgramStudiFieldOmit<ExtArgs> | null
+    omit?: JenisKegiatanOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ProgramStudiFieldInclude<ExtArgs> | null
+    include?: JenisKegiatanInclude<ExtArgs> | null
     /**
-     * Filter, which ProgramStudiField to fetch.
+     * Filter, which JenisKegiatan to fetch.
      */
-    where: ProgramStudiFieldWhereUniqueInput
+    where: JenisKegiatanWhereUniqueInput
   }
 
   /**
-   * ProgramStudiField findFirst
+   * JenisKegiatan findFirst
    */
-  export type ProgramStudiFieldFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type JenisKegiatanFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ProgramStudiField
+     * Select specific fields to fetch from the JenisKegiatan
      */
-    select?: ProgramStudiFieldSelect<ExtArgs> | null
+    select?: JenisKegiatanSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ProgramStudiField
+     * Omit specific fields from the JenisKegiatan
      */
-    omit?: ProgramStudiFieldOmit<ExtArgs> | null
+    omit?: JenisKegiatanOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ProgramStudiFieldInclude<ExtArgs> | null
+    include?: JenisKegiatanInclude<ExtArgs> | null
     /**
-     * Filter, which ProgramStudiField to fetch.
+     * Filter, which JenisKegiatan to fetch.
      */
-    where?: ProgramStudiFieldWhereInput
+    where?: JenisKegiatanWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of ProgramStudiFields to fetch.
+     * Determine the order of JenisKegiatans to fetch.
      */
-    orderBy?: ProgramStudiFieldOrderByWithRelationInput | ProgramStudiFieldOrderByWithRelationInput[]
+    orderBy?: JenisKegiatanOrderByWithRelationInput | JenisKegiatanOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for ProgramStudiFields.
+     * Sets the position for searching for JenisKegiatans.
      */
-    cursor?: ProgramStudiFieldWhereUniqueInput
+    cursor?: JenisKegiatanWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` ProgramStudiFields from the position of the cursor.
+     * Take `±n` JenisKegiatans from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` ProgramStudiFields.
+     * Skip the first `n` JenisKegiatans.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of ProgramStudiFields.
+     * Filter by unique combinations of JenisKegiatans.
      */
-    distinct?: ProgramStudiFieldScalarFieldEnum | ProgramStudiFieldScalarFieldEnum[]
+    distinct?: JenisKegiatanScalarFieldEnum | JenisKegiatanScalarFieldEnum[]
   }
 
   /**
-   * ProgramStudiField findFirstOrThrow
+   * JenisKegiatan findFirstOrThrow
    */
-  export type ProgramStudiFieldFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type JenisKegiatanFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ProgramStudiField
+     * Select specific fields to fetch from the JenisKegiatan
      */
-    select?: ProgramStudiFieldSelect<ExtArgs> | null
+    select?: JenisKegiatanSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ProgramStudiField
+     * Omit specific fields from the JenisKegiatan
      */
-    omit?: ProgramStudiFieldOmit<ExtArgs> | null
+    omit?: JenisKegiatanOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ProgramStudiFieldInclude<ExtArgs> | null
+    include?: JenisKegiatanInclude<ExtArgs> | null
     /**
-     * Filter, which ProgramStudiField to fetch.
+     * Filter, which JenisKegiatan to fetch.
      */
-    where?: ProgramStudiFieldWhereInput
+    where?: JenisKegiatanWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of ProgramStudiFields to fetch.
+     * Determine the order of JenisKegiatans to fetch.
      */
-    orderBy?: ProgramStudiFieldOrderByWithRelationInput | ProgramStudiFieldOrderByWithRelationInput[]
+    orderBy?: JenisKegiatanOrderByWithRelationInput | JenisKegiatanOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for ProgramStudiFields.
+     * Sets the position for searching for JenisKegiatans.
      */
-    cursor?: ProgramStudiFieldWhereUniqueInput
+    cursor?: JenisKegiatanWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` ProgramStudiFields from the position of the cursor.
+     * Take `±n` JenisKegiatans from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` ProgramStudiFields.
+     * Skip the first `n` JenisKegiatans.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of ProgramStudiFields.
+     * Filter by unique combinations of JenisKegiatans.
      */
-    distinct?: ProgramStudiFieldScalarFieldEnum | ProgramStudiFieldScalarFieldEnum[]
+    distinct?: JenisKegiatanScalarFieldEnum | JenisKegiatanScalarFieldEnum[]
   }
 
   /**
-   * ProgramStudiField findMany
+   * JenisKegiatan findMany
    */
-  export type ProgramStudiFieldFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type JenisKegiatanFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ProgramStudiField
+     * Select specific fields to fetch from the JenisKegiatan
      */
-    select?: ProgramStudiFieldSelect<ExtArgs> | null
+    select?: JenisKegiatanSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ProgramStudiField
+     * Omit specific fields from the JenisKegiatan
      */
-    omit?: ProgramStudiFieldOmit<ExtArgs> | null
+    omit?: JenisKegiatanOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ProgramStudiFieldInclude<ExtArgs> | null
+    include?: JenisKegiatanInclude<ExtArgs> | null
     /**
-     * Filter, which ProgramStudiFields to fetch.
+     * Filter, which JenisKegiatans to fetch.
      */
-    where?: ProgramStudiFieldWhereInput
+    where?: JenisKegiatanWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of ProgramStudiFields to fetch.
+     * Determine the order of JenisKegiatans to fetch.
      */
-    orderBy?: ProgramStudiFieldOrderByWithRelationInput | ProgramStudiFieldOrderByWithRelationInput[]
+    orderBy?: JenisKegiatanOrderByWithRelationInput | JenisKegiatanOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing ProgramStudiFields.
+     * Sets the position for listing JenisKegiatans.
      */
-    cursor?: ProgramStudiFieldWhereUniqueInput
+    cursor?: JenisKegiatanWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` ProgramStudiFields from the position of the cursor.
+     * Take `±n` JenisKegiatans from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` ProgramStudiFields.
+     * Skip the first `n` JenisKegiatans.
      */
     skip?: number
-    distinct?: ProgramStudiFieldScalarFieldEnum | ProgramStudiFieldScalarFieldEnum[]
+    distinct?: JenisKegiatanScalarFieldEnum | JenisKegiatanScalarFieldEnum[]
   }
 
   /**
-   * ProgramStudiField create
+   * JenisKegiatan create
    */
-  export type ProgramStudiFieldCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type JenisKegiatanCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ProgramStudiField
+     * Select specific fields to fetch from the JenisKegiatan
      */
-    select?: ProgramStudiFieldSelect<ExtArgs> | null
+    select?: JenisKegiatanSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ProgramStudiField
+     * Omit specific fields from the JenisKegiatan
      */
-    omit?: ProgramStudiFieldOmit<ExtArgs> | null
+    omit?: JenisKegiatanOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ProgramStudiFieldInclude<ExtArgs> | null
+    include?: JenisKegiatanInclude<ExtArgs> | null
     /**
-     * The data needed to create a ProgramStudiField.
+     * The data needed to create a JenisKegiatan.
      */
-    data: XOR<ProgramStudiFieldCreateInput, ProgramStudiFieldUncheckedCreateInput>
+    data: XOR<JenisKegiatanCreateInput, JenisKegiatanUncheckedCreateInput>
   }
 
   /**
-   * ProgramStudiField createMany
+   * JenisKegiatan createMany
    */
-  export type ProgramStudiFieldCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type JenisKegiatanCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many ProgramStudiFields.
+     * The data used to create many JenisKegiatans.
      */
-    data: ProgramStudiFieldCreateManyInput | ProgramStudiFieldCreateManyInput[]
+    data: JenisKegiatanCreateManyInput | JenisKegiatanCreateManyInput[]
     skipDuplicates?: boolean
   }
 
   /**
-   * ProgramStudiField update
+   * JenisKegiatan update
    */
-  export type ProgramStudiFieldUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type JenisKegiatanUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ProgramStudiField
+     * Select specific fields to fetch from the JenisKegiatan
      */
-    select?: ProgramStudiFieldSelect<ExtArgs> | null
+    select?: JenisKegiatanSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ProgramStudiField
+     * Omit specific fields from the JenisKegiatan
      */
-    omit?: ProgramStudiFieldOmit<ExtArgs> | null
+    omit?: JenisKegiatanOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ProgramStudiFieldInclude<ExtArgs> | null
+    include?: JenisKegiatanInclude<ExtArgs> | null
     /**
-     * The data needed to update a ProgramStudiField.
+     * The data needed to update a JenisKegiatan.
      */
-    data: XOR<ProgramStudiFieldUpdateInput, ProgramStudiFieldUncheckedUpdateInput>
+    data: XOR<JenisKegiatanUpdateInput, JenisKegiatanUncheckedUpdateInput>
     /**
-     * Choose, which ProgramStudiField to update.
+     * Choose, which JenisKegiatan to update.
      */
-    where: ProgramStudiFieldWhereUniqueInput
+    where: JenisKegiatanWhereUniqueInput
   }
 
   /**
-   * ProgramStudiField updateMany
+   * JenisKegiatan updateMany
    */
-  export type ProgramStudiFieldUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type JenisKegiatanUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to update ProgramStudiFields.
+     * The data used to update JenisKegiatans.
      */
-    data: XOR<ProgramStudiFieldUpdateManyMutationInput, ProgramStudiFieldUncheckedUpdateManyInput>
+    data: XOR<JenisKegiatanUpdateManyMutationInput, JenisKegiatanUncheckedUpdateManyInput>
     /**
-     * Filter which ProgramStudiFields to update
+     * Filter which JenisKegiatans to update
      */
-    where?: ProgramStudiFieldWhereInput
+    where?: JenisKegiatanWhereInput
     /**
-     * Limit how many ProgramStudiFields to update.
+     * Limit how many JenisKegiatans to update.
      */
     limit?: number
   }
 
   /**
-   * ProgramStudiField upsert
+   * JenisKegiatan upsert
    */
-  export type ProgramStudiFieldUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type JenisKegiatanUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ProgramStudiField
+     * Select specific fields to fetch from the JenisKegiatan
      */
-    select?: ProgramStudiFieldSelect<ExtArgs> | null
+    select?: JenisKegiatanSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ProgramStudiField
+     * Omit specific fields from the JenisKegiatan
      */
-    omit?: ProgramStudiFieldOmit<ExtArgs> | null
+    omit?: JenisKegiatanOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ProgramStudiFieldInclude<ExtArgs> | null
+    include?: JenisKegiatanInclude<ExtArgs> | null
     /**
-     * The filter to search for the ProgramStudiField to update in case it exists.
+     * The filter to search for the JenisKegiatan to update in case it exists.
      */
-    where: ProgramStudiFieldWhereUniqueInput
+    where: JenisKegiatanWhereUniqueInput
     /**
-     * In case the ProgramStudiField found by the `where` argument doesn't exist, create a new ProgramStudiField with this data.
+     * In case the JenisKegiatan found by the `where` argument doesn't exist, create a new JenisKegiatan with this data.
      */
-    create: XOR<ProgramStudiFieldCreateInput, ProgramStudiFieldUncheckedCreateInput>
+    create: XOR<JenisKegiatanCreateInput, JenisKegiatanUncheckedCreateInput>
     /**
-     * In case the ProgramStudiField was found with the provided `where` argument, update it with this data.
+     * In case the JenisKegiatan was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<ProgramStudiFieldUpdateInput, ProgramStudiFieldUncheckedUpdateInput>
+    update: XOR<JenisKegiatanUpdateInput, JenisKegiatanUncheckedUpdateInput>
   }
 
   /**
-   * ProgramStudiField delete
+   * JenisKegiatan delete
    */
-  export type ProgramStudiFieldDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type JenisKegiatanDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ProgramStudiField
+     * Select specific fields to fetch from the JenisKegiatan
      */
-    select?: ProgramStudiFieldSelect<ExtArgs> | null
+    select?: JenisKegiatanSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ProgramStudiField
+     * Omit specific fields from the JenisKegiatan
      */
-    omit?: ProgramStudiFieldOmit<ExtArgs> | null
+    omit?: JenisKegiatanOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ProgramStudiFieldInclude<ExtArgs> | null
+    include?: JenisKegiatanInclude<ExtArgs> | null
     /**
-     * Filter which ProgramStudiField to delete.
+     * Filter which JenisKegiatan to delete.
      */
-    where: ProgramStudiFieldWhereUniqueInput
+    where: JenisKegiatanWhereUniqueInput
   }
 
   /**
-   * ProgramStudiField deleteMany
+   * JenisKegiatan deleteMany
    */
-  export type ProgramStudiFieldDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type JenisKegiatanDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which ProgramStudiFields to delete
+     * Filter which JenisKegiatans to delete
      */
-    where?: ProgramStudiFieldWhereInput
+    where?: JenisKegiatanWhereInput
     /**
-     * Limit how many ProgramStudiFields to delete.
+     * Limit how many JenisKegiatans to delete.
      */
     limit?: number
   }
 
   /**
-   * ProgramStudiField without action
+   * JenisKegiatan.kegiatan
    */
-  export type ProgramStudiFieldDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type JenisKegiatan$kegiatanArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ProgramStudiField
+     * Select specific fields to fetch from the Kegiatan
      */
-    select?: ProgramStudiFieldSelect<ExtArgs> | null
+    select?: KegiatanSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ProgramStudiField
+     * Omit specific fields from the Kegiatan
      */
-    omit?: ProgramStudiFieldOmit<ExtArgs> | null
+    omit?: KegiatanOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ProgramStudiFieldInclude<ExtArgs> | null
+    include?: KegiatanInclude<ExtArgs> | null
+    where?: KegiatanWhereInput
+    orderBy?: KegiatanOrderByWithRelationInput | KegiatanOrderByWithRelationInput[]
+    cursor?: KegiatanWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: KegiatanScalarFieldEnum | KegiatanScalarFieldEnum[]
+  }
+
+  /**
+   * JenisKegiatan.fields
+   */
+  export type JenisKegiatan$fieldsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the JenisKegiatanField
+     */
+    select?: JenisKegiatanFieldSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the JenisKegiatanField
+     */
+    omit?: JenisKegiatanFieldOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JenisKegiatanFieldInclude<ExtArgs> | null
+    where?: JenisKegiatanFieldWhereInput
+    orderBy?: JenisKegiatanFieldOrderByWithRelationInput | JenisKegiatanFieldOrderByWithRelationInput[]
+    cursor?: JenisKegiatanFieldWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: JenisKegiatanFieldScalarFieldEnum | JenisKegiatanFieldScalarFieldEnum[]
+  }
+
+  /**
+   * JenisKegiatan without action
+   */
+  export type JenisKegiatanDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the JenisKegiatan
+     */
+    select?: JenisKegiatanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the JenisKegiatan
+     */
+    omit?: JenisKegiatanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JenisKegiatanInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model JenisKegiatanField
+   */
+
+  export type AggregateJenisKegiatanField = {
+    _count: JenisKegiatanFieldCountAggregateOutputType | null
+    _avg: JenisKegiatanFieldAvgAggregateOutputType | null
+    _sum: JenisKegiatanFieldSumAggregateOutputType | null
+    _min: JenisKegiatanFieldMinAggregateOutputType | null
+    _max: JenisKegiatanFieldMaxAggregateOutputType | null
+  }
+
+  export type JenisKegiatanFieldAvgAggregateOutputType = {
+    order: number | null
+  }
+
+  export type JenisKegiatanFieldSumAggregateOutputType = {
+    order: number | null
+  }
+
+  export type JenisKegiatanFieldMinAggregateOutputType = {
+    id: string | null
+    jenisKegiatanId: string | null
+    fieldName: string | null
+    fieldType: string | null
+    templateKey: string | null
+    isRequired: boolean | null
+    order: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type JenisKegiatanFieldMaxAggregateOutputType = {
+    id: string | null
+    jenisKegiatanId: string | null
+    fieldName: string | null
+    fieldType: string | null
+    templateKey: string | null
+    isRequired: boolean | null
+    order: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type JenisKegiatanFieldCountAggregateOutputType = {
+    id: number
+    jenisKegiatanId: number
+    fieldName: number
+    fieldType: number
+    templateKey: number
+    isRequired: number
+    order: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type JenisKegiatanFieldAvgAggregateInputType = {
+    order?: true
+  }
+
+  export type JenisKegiatanFieldSumAggregateInputType = {
+    order?: true
+  }
+
+  export type JenisKegiatanFieldMinAggregateInputType = {
+    id?: true
+    jenisKegiatanId?: true
+    fieldName?: true
+    fieldType?: true
+    templateKey?: true
+    isRequired?: true
+    order?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type JenisKegiatanFieldMaxAggregateInputType = {
+    id?: true
+    jenisKegiatanId?: true
+    fieldName?: true
+    fieldType?: true
+    templateKey?: true
+    isRequired?: true
+    order?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type JenisKegiatanFieldCountAggregateInputType = {
+    id?: true
+    jenisKegiatanId?: true
+    fieldName?: true
+    fieldType?: true
+    templateKey?: true
+    isRequired?: true
+    order?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type JenisKegiatanFieldAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which JenisKegiatanField to aggregate.
+     */
+    where?: JenisKegiatanFieldWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of JenisKegiatanFields to fetch.
+     */
+    orderBy?: JenisKegiatanFieldOrderByWithRelationInput | JenisKegiatanFieldOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: JenisKegiatanFieldWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` JenisKegiatanFields from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` JenisKegiatanFields.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned JenisKegiatanFields
+    **/
+    _count?: true | JenisKegiatanFieldCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: JenisKegiatanFieldAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: JenisKegiatanFieldSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: JenisKegiatanFieldMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: JenisKegiatanFieldMaxAggregateInputType
+  }
+
+  export type GetJenisKegiatanFieldAggregateType<T extends JenisKegiatanFieldAggregateArgs> = {
+        [P in keyof T & keyof AggregateJenisKegiatanField]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateJenisKegiatanField[P]>
+      : GetScalarType<T[P], AggregateJenisKegiatanField[P]>
+  }
+
+
+
+
+  export type JenisKegiatanFieldGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: JenisKegiatanFieldWhereInput
+    orderBy?: JenisKegiatanFieldOrderByWithAggregationInput | JenisKegiatanFieldOrderByWithAggregationInput[]
+    by: JenisKegiatanFieldScalarFieldEnum[] | JenisKegiatanFieldScalarFieldEnum
+    having?: JenisKegiatanFieldScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: JenisKegiatanFieldCountAggregateInputType | true
+    _avg?: JenisKegiatanFieldAvgAggregateInputType
+    _sum?: JenisKegiatanFieldSumAggregateInputType
+    _min?: JenisKegiatanFieldMinAggregateInputType
+    _max?: JenisKegiatanFieldMaxAggregateInputType
+  }
+
+  export type JenisKegiatanFieldGroupByOutputType = {
+    id: string
+    jenisKegiatanId: string
+    fieldName: string
+    fieldType: string
+    templateKey: string | null
+    isRequired: boolean
+    order: number
+    createdAt: Date
+    updatedAt: Date
+    _count: JenisKegiatanFieldCountAggregateOutputType | null
+    _avg: JenisKegiatanFieldAvgAggregateOutputType | null
+    _sum: JenisKegiatanFieldSumAggregateOutputType | null
+    _min: JenisKegiatanFieldMinAggregateOutputType | null
+    _max: JenisKegiatanFieldMaxAggregateOutputType | null
+  }
+
+  type GetJenisKegiatanFieldGroupByPayload<T extends JenisKegiatanFieldGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<JenisKegiatanFieldGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof JenisKegiatanFieldGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], JenisKegiatanFieldGroupByOutputType[P]>
+            : GetScalarType<T[P], JenisKegiatanFieldGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type JenisKegiatanFieldSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    jenisKegiatanId?: boolean
+    fieldName?: boolean
+    fieldType?: boolean
+    templateKey?: boolean
+    isRequired?: boolean
+    order?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    jenisKegiatan?: boolean | JenisKegiatanDefaultArgs<ExtArgs>
+    fieldValues?: boolean | JenisKegiatanField$fieldValuesArgs<ExtArgs>
+    _count?: boolean | JenisKegiatanFieldCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["jenisKegiatanField"]>
+
+
+
+  export type JenisKegiatanFieldSelectScalar = {
+    id?: boolean
+    jenisKegiatanId?: boolean
+    fieldName?: boolean
+    fieldType?: boolean
+    templateKey?: boolean
+    isRequired?: boolean
+    order?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type JenisKegiatanFieldOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "jenisKegiatanId" | "fieldName" | "fieldType" | "templateKey" | "isRequired" | "order" | "createdAt" | "updatedAt", ExtArgs["result"]["jenisKegiatanField"]>
+  export type JenisKegiatanFieldInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    jenisKegiatan?: boolean | JenisKegiatanDefaultArgs<ExtArgs>
+    fieldValues?: boolean | JenisKegiatanField$fieldValuesArgs<ExtArgs>
+    _count?: boolean | JenisKegiatanFieldCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $JenisKegiatanFieldPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "JenisKegiatanField"
+    objects: {
+      jenisKegiatan: Prisma.$JenisKegiatanPayload<ExtArgs>
+      fieldValues: Prisma.$FieldKegiatanValuesPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      jenisKegiatanId: string
+      fieldName: string
+      fieldType: string
+      templateKey: string | null
+      isRequired: boolean
+      order: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["jenisKegiatanField"]>
+    composites: {}
+  }
+
+  type JenisKegiatanFieldGetPayload<S extends boolean | null | undefined | JenisKegiatanFieldDefaultArgs> = $Result.GetResult<Prisma.$JenisKegiatanFieldPayload, S>
+
+  type JenisKegiatanFieldCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<JenisKegiatanFieldFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: JenisKegiatanFieldCountAggregateInputType | true
+    }
+
+  export interface JenisKegiatanFieldDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['JenisKegiatanField'], meta: { name: 'JenisKegiatanField' } }
+    /**
+     * Find zero or one JenisKegiatanField that matches the filter.
+     * @param {JenisKegiatanFieldFindUniqueArgs} args - Arguments to find a JenisKegiatanField
+     * @example
+     * // Get one JenisKegiatanField
+     * const jenisKegiatanField = await prisma.jenisKegiatanField.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends JenisKegiatanFieldFindUniqueArgs>(args: SelectSubset<T, JenisKegiatanFieldFindUniqueArgs<ExtArgs>>): Prisma__JenisKegiatanFieldClient<$Result.GetResult<Prisma.$JenisKegiatanFieldPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one JenisKegiatanField that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {JenisKegiatanFieldFindUniqueOrThrowArgs} args - Arguments to find a JenisKegiatanField
+     * @example
+     * // Get one JenisKegiatanField
+     * const jenisKegiatanField = await prisma.jenisKegiatanField.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends JenisKegiatanFieldFindUniqueOrThrowArgs>(args: SelectSubset<T, JenisKegiatanFieldFindUniqueOrThrowArgs<ExtArgs>>): Prisma__JenisKegiatanFieldClient<$Result.GetResult<Prisma.$JenisKegiatanFieldPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first JenisKegiatanField that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {JenisKegiatanFieldFindFirstArgs} args - Arguments to find a JenisKegiatanField
+     * @example
+     * // Get one JenisKegiatanField
+     * const jenisKegiatanField = await prisma.jenisKegiatanField.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends JenisKegiatanFieldFindFirstArgs>(args?: SelectSubset<T, JenisKegiatanFieldFindFirstArgs<ExtArgs>>): Prisma__JenisKegiatanFieldClient<$Result.GetResult<Prisma.$JenisKegiatanFieldPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first JenisKegiatanField that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {JenisKegiatanFieldFindFirstOrThrowArgs} args - Arguments to find a JenisKegiatanField
+     * @example
+     * // Get one JenisKegiatanField
+     * const jenisKegiatanField = await prisma.jenisKegiatanField.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends JenisKegiatanFieldFindFirstOrThrowArgs>(args?: SelectSubset<T, JenisKegiatanFieldFindFirstOrThrowArgs<ExtArgs>>): Prisma__JenisKegiatanFieldClient<$Result.GetResult<Prisma.$JenisKegiatanFieldPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more JenisKegiatanFields that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {JenisKegiatanFieldFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all JenisKegiatanFields
+     * const jenisKegiatanFields = await prisma.jenisKegiatanField.findMany()
+     * 
+     * // Get first 10 JenisKegiatanFields
+     * const jenisKegiatanFields = await prisma.jenisKegiatanField.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const jenisKegiatanFieldWithIdOnly = await prisma.jenisKegiatanField.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends JenisKegiatanFieldFindManyArgs>(args?: SelectSubset<T, JenisKegiatanFieldFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$JenisKegiatanFieldPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a JenisKegiatanField.
+     * @param {JenisKegiatanFieldCreateArgs} args - Arguments to create a JenisKegiatanField.
+     * @example
+     * // Create one JenisKegiatanField
+     * const JenisKegiatanField = await prisma.jenisKegiatanField.create({
+     *   data: {
+     *     // ... data to create a JenisKegiatanField
+     *   }
+     * })
+     * 
+     */
+    create<T extends JenisKegiatanFieldCreateArgs>(args: SelectSubset<T, JenisKegiatanFieldCreateArgs<ExtArgs>>): Prisma__JenisKegiatanFieldClient<$Result.GetResult<Prisma.$JenisKegiatanFieldPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many JenisKegiatanFields.
+     * @param {JenisKegiatanFieldCreateManyArgs} args - Arguments to create many JenisKegiatanFields.
+     * @example
+     * // Create many JenisKegiatanFields
+     * const jenisKegiatanField = await prisma.jenisKegiatanField.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends JenisKegiatanFieldCreateManyArgs>(args?: SelectSubset<T, JenisKegiatanFieldCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a JenisKegiatanField.
+     * @param {JenisKegiatanFieldDeleteArgs} args - Arguments to delete one JenisKegiatanField.
+     * @example
+     * // Delete one JenisKegiatanField
+     * const JenisKegiatanField = await prisma.jenisKegiatanField.delete({
+     *   where: {
+     *     // ... filter to delete one JenisKegiatanField
+     *   }
+     * })
+     * 
+     */
+    delete<T extends JenisKegiatanFieldDeleteArgs>(args: SelectSubset<T, JenisKegiatanFieldDeleteArgs<ExtArgs>>): Prisma__JenisKegiatanFieldClient<$Result.GetResult<Prisma.$JenisKegiatanFieldPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one JenisKegiatanField.
+     * @param {JenisKegiatanFieldUpdateArgs} args - Arguments to update one JenisKegiatanField.
+     * @example
+     * // Update one JenisKegiatanField
+     * const jenisKegiatanField = await prisma.jenisKegiatanField.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends JenisKegiatanFieldUpdateArgs>(args: SelectSubset<T, JenisKegiatanFieldUpdateArgs<ExtArgs>>): Prisma__JenisKegiatanFieldClient<$Result.GetResult<Prisma.$JenisKegiatanFieldPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more JenisKegiatanFields.
+     * @param {JenisKegiatanFieldDeleteManyArgs} args - Arguments to filter JenisKegiatanFields to delete.
+     * @example
+     * // Delete a few JenisKegiatanFields
+     * const { count } = await prisma.jenisKegiatanField.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends JenisKegiatanFieldDeleteManyArgs>(args?: SelectSubset<T, JenisKegiatanFieldDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more JenisKegiatanFields.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {JenisKegiatanFieldUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many JenisKegiatanFields
+     * const jenisKegiatanField = await prisma.jenisKegiatanField.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends JenisKegiatanFieldUpdateManyArgs>(args: SelectSubset<T, JenisKegiatanFieldUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one JenisKegiatanField.
+     * @param {JenisKegiatanFieldUpsertArgs} args - Arguments to update or create a JenisKegiatanField.
+     * @example
+     * // Update or create a JenisKegiatanField
+     * const jenisKegiatanField = await prisma.jenisKegiatanField.upsert({
+     *   create: {
+     *     // ... data to create a JenisKegiatanField
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the JenisKegiatanField we want to update
+     *   }
+     * })
+     */
+    upsert<T extends JenisKegiatanFieldUpsertArgs>(args: SelectSubset<T, JenisKegiatanFieldUpsertArgs<ExtArgs>>): Prisma__JenisKegiatanFieldClient<$Result.GetResult<Prisma.$JenisKegiatanFieldPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of JenisKegiatanFields.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {JenisKegiatanFieldCountArgs} args - Arguments to filter JenisKegiatanFields to count.
+     * @example
+     * // Count the number of JenisKegiatanFields
+     * const count = await prisma.jenisKegiatanField.count({
+     *   where: {
+     *     // ... the filter for the JenisKegiatanFields we want to count
+     *   }
+     * })
+    **/
+    count<T extends JenisKegiatanFieldCountArgs>(
+      args?: Subset<T, JenisKegiatanFieldCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], JenisKegiatanFieldCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a JenisKegiatanField.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {JenisKegiatanFieldAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends JenisKegiatanFieldAggregateArgs>(args: Subset<T, JenisKegiatanFieldAggregateArgs>): Prisma.PrismaPromise<GetJenisKegiatanFieldAggregateType<T>>
+
+    /**
+     * Group by JenisKegiatanField.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {JenisKegiatanFieldGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends JenisKegiatanFieldGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: JenisKegiatanFieldGroupByArgs['orderBy'] }
+        : { orderBy?: JenisKegiatanFieldGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, JenisKegiatanFieldGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetJenisKegiatanFieldGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the JenisKegiatanField model
+   */
+  readonly fields: JenisKegiatanFieldFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for JenisKegiatanField.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__JenisKegiatanFieldClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    jenisKegiatan<T extends JenisKegiatanDefaultArgs<ExtArgs> = {}>(args?: Subset<T, JenisKegiatanDefaultArgs<ExtArgs>>): Prisma__JenisKegiatanClient<$Result.GetResult<Prisma.$JenisKegiatanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    fieldValues<T extends JenisKegiatanField$fieldValuesArgs<ExtArgs> = {}>(args?: Subset<T, JenisKegiatanField$fieldValuesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FieldKegiatanValuesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the JenisKegiatanField model
+   */
+  interface JenisKegiatanFieldFieldRefs {
+    readonly id: FieldRef<"JenisKegiatanField", 'String'>
+    readonly jenisKegiatanId: FieldRef<"JenisKegiatanField", 'String'>
+    readonly fieldName: FieldRef<"JenisKegiatanField", 'String'>
+    readonly fieldType: FieldRef<"JenisKegiatanField", 'String'>
+    readonly templateKey: FieldRef<"JenisKegiatanField", 'String'>
+    readonly isRequired: FieldRef<"JenisKegiatanField", 'Boolean'>
+    readonly order: FieldRef<"JenisKegiatanField", 'Int'>
+    readonly createdAt: FieldRef<"JenisKegiatanField", 'DateTime'>
+    readonly updatedAt: FieldRef<"JenisKegiatanField", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * JenisKegiatanField findUnique
+   */
+  export type JenisKegiatanFieldFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the JenisKegiatanField
+     */
+    select?: JenisKegiatanFieldSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the JenisKegiatanField
+     */
+    omit?: JenisKegiatanFieldOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JenisKegiatanFieldInclude<ExtArgs> | null
+    /**
+     * Filter, which JenisKegiatanField to fetch.
+     */
+    where: JenisKegiatanFieldWhereUniqueInput
+  }
+
+  /**
+   * JenisKegiatanField findUniqueOrThrow
+   */
+  export type JenisKegiatanFieldFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the JenisKegiatanField
+     */
+    select?: JenisKegiatanFieldSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the JenisKegiatanField
+     */
+    omit?: JenisKegiatanFieldOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JenisKegiatanFieldInclude<ExtArgs> | null
+    /**
+     * Filter, which JenisKegiatanField to fetch.
+     */
+    where: JenisKegiatanFieldWhereUniqueInput
+  }
+
+  /**
+   * JenisKegiatanField findFirst
+   */
+  export type JenisKegiatanFieldFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the JenisKegiatanField
+     */
+    select?: JenisKegiatanFieldSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the JenisKegiatanField
+     */
+    omit?: JenisKegiatanFieldOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JenisKegiatanFieldInclude<ExtArgs> | null
+    /**
+     * Filter, which JenisKegiatanField to fetch.
+     */
+    where?: JenisKegiatanFieldWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of JenisKegiatanFields to fetch.
+     */
+    orderBy?: JenisKegiatanFieldOrderByWithRelationInput | JenisKegiatanFieldOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for JenisKegiatanFields.
+     */
+    cursor?: JenisKegiatanFieldWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` JenisKegiatanFields from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` JenisKegiatanFields.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of JenisKegiatanFields.
+     */
+    distinct?: JenisKegiatanFieldScalarFieldEnum | JenisKegiatanFieldScalarFieldEnum[]
+  }
+
+  /**
+   * JenisKegiatanField findFirstOrThrow
+   */
+  export type JenisKegiatanFieldFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the JenisKegiatanField
+     */
+    select?: JenisKegiatanFieldSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the JenisKegiatanField
+     */
+    omit?: JenisKegiatanFieldOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JenisKegiatanFieldInclude<ExtArgs> | null
+    /**
+     * Filter, which JenisKegiatanField to fetch.
+     */
+    where?: JenisKegiatanFieldWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of JenisKegiatanFields to fetch.
+     */
+    orderBy?: JenisKegiatanFieldOrderByWithRelationInput | JenisKegiatanFieldOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for JenisKegiatanFields.
+     */
+    cursor?: JenisKegiatanFieldWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` JenisKegiatanFields from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` JenisKegiatanFields.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of JenisKegiatanFields.
+     */
+    distinct?: JenisKegiatanFieldScalarFieldEnum | JenisKegiatanFieldScalarFieldEnum[]
+  }
+
+  /**
+   * JenisKegiatanField findMany
+   */
+  export type JenisKegiatanFieldFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the JenisKegiatanField
+     */
+    select?: JenisKegiatanFieldSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the JenisKegiatanField
+     */
+    omit?: JenisKegiatanFieldOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JenisKegiatanFieldInclude<ExtArgs> | null
+    /**
+     * Filter, which JenisKegiatanFields to fetch.
+     */
+    where?: JenisKegiatanFieldWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of JenisKegiatanFields to fetch.
+     */
+    orderBy?: JenisKegiatanFieldOrderByWithRelationInput | JenisKegiatanFieldOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing JenisKegiatanFields.
+     */
+    cursor?: JenisKegiatanFieldWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` JenisKegiatanFields from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` JenisKegiatanFields.
+     */
+    skip?: number
+    distinct?: JenisKegiatanFieldScalarFieldEnum | JenisKegiatanFieldScalarFieldEnum[]
+  }
+
+  /**
+   * JenisKegiatanField create
+   */
+  export type JenisKegiatanFieldCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the JenisKegiatanField
+     */
+    select?: JenisKegiatanFieldSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the JenisKegiatanField
+     */
+    omit?: JenisKegiatanFieldOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JenisKegiatanFieldInclude<ExtArgs> | null
+    /**
+     * The data needed to create a JenisKegiatanField.
+     */
+    data: XOR<JenisKegiatanFieldCreateInput, JenisKegiatanFieldUncheckedCreateInput>
+  }
+
+  /**
+   * JenisKegiatanField createMany
+   */
+  export type JenisKegiatanFieldCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many JenisKegiatanFields.
+     */
+    data: JenisKegiatanFieldCreateManyInput | JenisKegiatanFieldCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * JenisKegiatanField update
+   */
+  export type JenisKegiatanFieldUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the JenisKegiatanField
+     */
+    select?: JenisKegiatanFieldSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the JenisKegiatanField
+     */
+    omit?: JenisKegiatanFieldOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JenisKegiatanFieldInclude<ExtArgs> | null
+    /**
+     * The data needed to update a JenisKegiatanField.
+     */
+    data: XOR<JenisKegiatanFieldUpdateInput, JenisKegiatanFieldUncheckedUpdateInput>
+    /**
+     * Choose, which JenisKegiatanField to update.
+     */
+    where: JenisKegiatanFieldWhereUniqueInput
+  }
+
+  /**
+   * JenisKegiatanField updateMany
+   */
+  export type JenisKegiatanFieldUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update JenisKegiatanFields.
+     */
+    data: XOR<JenisKegiatanFieldUpdateManyMutationInput, JenisKegiatanFieldUncheckedUpdateManyInput>
+    /**
+     * Filter which JenisKegiatanFields to update
+     */
+    where?: JenisKegiatanFieldWhereInput
+    /**
+     * Limit how many JenisKegiatanFields to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * JenisKegiatanField upsert
+   */
+  export type JenisKegiatanFieldUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the JenisKegiatanField
+     */
+    select?: JenisKegiatanFieldSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the JenisKegiatanField
+     */
+    omit?: JenisKegiatanFieldOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JenisKegiatanFieldInclude<ExtArgs> | null
+    /**
+     * The filter to search for the JenisKegiatanField to update in case it exists.
+     */
+    where: JenisKegiatanFieldWhereUniqueInput
+    /**
+     * In case the JenisKegiatanField found by the `where` argument doesn't exist, create a new JenisKegiatanField with this data.
+     */
+    create: XOR<JenisKegiatanFieldCreateInput, JenisKegiatanFieldUncheckedCreateInput>
+    /**
+     * In case the JenisKegiatanField was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<JenisKegiatanFieldUpdateInput, JenisKegiatanFieldUncheckedUpdateInput>
+  }
+
+  /**
+   * JenisKegiatanField delete
+   */
+  export type JenisKegiatanFieldDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the JenisKegiatanField
+     */
+    select?: JenisKegiatanFieldSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the JenisKegiatanField
+     */
+    omit?: JenisKegiatanFieldOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JenisKegiatanFieldInclude<ExtArgs> | null
+    /**
+     * Filter which JenisKegiatanField to delete.
+     */
+    where: JenisKegiatanFieldWhereUniqueInput
+  }
+
+  /**
+   * JenisKegiatanField deleteMany
+   */
+  export type JenisKegiatanFieldDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which JenisKegiatanFields to delete
+     */
+    where?: JenisKegiatanFieldWhereInput
+    /**
+     * Limit how many JenisKegiatanFields to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * JenisKegiatanField.fieldValues
+   */
+  export type JenisKegiatanField$fieldValuesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FieldKegiatanValues
+     */
+    select?: FieldKegiatanValuesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FieldKegiatanValues
+     */
+    omit?: FieldKegiatanValuesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FieldKegiatanValuesInclude<ExtArgs> | null
+    where?: FieldKegiatanValuesWhereInput
+    orderBy?: FieldKegiatanValuesOrderByWithRelationInput | FieldKegiatanValuesOrderByWithRelationInput[]
+    cursor?: FieldKegiatanValuesWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FieldKegiatanValuesScalarFieldEnum | FieldKegiatanValuesScalarFieldEnum[]
+  }
+
+  /**
+   * JenisKegiatanField without action
+   */
+  export type JenisKegiatanFieldDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the JenisKegiatanField
+     */
+    select?: JenisKegiatanFieldSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the JenisKegiatanField
+     */
+    omit?: JenisKegiatanFieldOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JenisKegiatanFieldInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model FieldKegiatanValues
+   */
+
+  export type AggregateFieldKegiatanValues = {
+    _count: FieldKegiatanValuesCountAggregateOutputType | null
+    _min: FieldKegiatanValuesMinAggregateOutputType | null
+    _max: FieldKegiatanValuesMaxAggregateOutputType | null
+  }
+
+  export type FieldKegiatanValuesMinAggregateOutputType = {
+    id: string | null
+    kegiatanId: string | null
+    jenisKegiatanFieldId: string | null
+    value: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FieldKegiatanValuesMaxAggregateOutputType = {
+    id: string | null
+    kegiatanId: string | null
+    jenisKegiatanFieldId: string | null
+    value: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FieldKegiatanValuesCountAggregateOutputType = {
+    id: number
+    kegiatanId: number
+    jenisKegiatanFieldId: number
+    value: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type FieldKegiatanValuesMinAggregateInputType = {
+    id?: true
+    kegiatanId?: true
+    jenisKegiatanFieldId?: true
+    value?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FieldKegiatanValuesMaxAggregateInputType = {
+    id?: true
+    kegiatanId?: true
+    jenisKegiatanFieldId?: true
+    value?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FieldKegiatanValuesCountAggregateInputType = {
+    id?: true
+    kegiatanId?: true
+    jenisKegiatanFieldId?: true
+    value?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type FieldKegiatanValuesAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FieldKegiatanValues to aggregate.
+     */
+    where?: FieldKegiatanValuesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FieldKegiatanValues to fetch.
+     */
+    orderBy?: FieldKegiatanValuesOrderByWithRelationInput | FieldKegiatanValuesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: FieldKegiatanValuesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FieldKegiatanValues from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FieldKegiatanValues.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned FieldKegiatanValues
+    **/
+    _count?: true | FieldKegiatanValuesCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FieldKegiatanValuesMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FieldKegiatanValuesMaxAggregateInputType
+  }
+
+  export type GetFieldKegiatanValuesAggregateType<T extends FieldKegiatanValuesAggregateArgs> = {
+        [P in keyof T & keyof AggregateFieldKegiatanValues]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFieldKegiatanValues[P]>
+      : GetScalarType<T[P], AggregateFieldKegiatanValues[P]>
+  }
+
+
+
+
+  export type FieldKegiatanValuesGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FieldKegiatanValuesWhereInput
+    orderBy?: FieldKegiatanValuesOrderByWithAggregationInput | FieldKegiatanValuesOrderByWithAggregationInput[]
+    by: FieldKegiatanValuesScalarFieldEnum[] | FieldKegiatanValuesScalarFieldEnum
+    having?: FieldKegiatanValuesScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FieldKegiatanValuesCountAggregateInputType | true
+    _min?: FieldKegiatanValuesMinAggregateInputType
+    _max?: FieldKegiatanValuesMaxAggregateInputType
+  }
+
+  export type FieldKegiatanValuesGroupByOutputType = {
+    id: string
+    kegiatanId: string
+    jenisKegiatanFieldId: string
+    value: string
+    createdAt: Date
+    updatedAt: Date
+    _count: FieldKegiatanValuesCountAggregateOutputType | null
+    _min: FieldKegiatanValuesMinAggregateOutputType | null
+    _max: FieldKegiatanValuesMaxAggregateOutputType | null
+  }
+
+  type GetFieldKegiatanValuesGroupByPayload<T extends FieldKegiatanValuesGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<FieldKegiatanValuesGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FieldKegiatanValuesGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FieldKegiatanValuesGroupByOutputType[P]>
+            : GetScalarType<T[P], FieldKegiatanValuesGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FieldKegiatanValuesSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    kegiatanId?: boolean
+    jenisKegiatanFieldId?: boolean
+    value?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    kegiatan?: boolean | KegiatanDefaultArgs<ExtArgs>
+    jenisKegiatanField?: boolean | JenisKegiatanFieldDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["fieldKegiatanValues"]>
+
+
+
+  export type FieldKegiatanValuesSelectScalar = {
+    id?: boolean
+    kegiatanId?: boolean
+    jenisKegiatanFieldId?: boolean
+    value?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type FieldKegiatanValuesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "kegiatanId" | "jenisKegiatanFieldId" | "value" | "createdAt" | "updatedAt", ExtArgs["result"]["fieldKegiatanValues"]>
+  export type FieldKegiatanValuesInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    kegiatan?: boolean | KegiatanDefaultArgs<ExtArgs>
+    jenisKegiatanField?: boolean | JenisKegiatanFieldDefaultArgs<ExtArgs>
+  }
+
+  export type $FieldKegiatanValuesPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "FieldKegiatanValues"
+    objects: {
+      kegiatan: Prisma.$KegiatanPayload<ExtArgs>
+      jenisKegiatanField: Prisma.$JenisKegiatanFieldPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      kegiatanId: string
+      jenisKegiatanFieldId: string
+      value: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["fieldKegiatanValues"]>
+    composites: {}
+  }
+
+  type FieldKegiatanValuesGetPayload<S extends boolean | null | undefined | FieldKegiatanValuesDefaultArgs> = $Result.GetResult<Prisma.$FieldKegiatanValuesPayload, S>
+
+  type FieldKegiatanValuesCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<FieldKegiatanValuesFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: FieldKegiatanValuesCountAggregateInputType | true
+    }
+
+  export interface FieldKegiatanValuesDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['FieldKegiatanValues'], meta: { name: 'FieldKegiatanValues' } }
+    /**
+     * Find zero or one FieldKegiatanValues that matches the filter.
+     * @param {FieldKegiatanValuesFindUniqueArgs} args - Arguments to find a FieldKegiatanValues
+     * @example
+     * // Get one FieldKegiatanValues
+     * const fieldKegiatanValues = await prisma.fieldKegiatanValues.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends FieldKegiatanValuesFindUniqueArgs>(args: SelectSubset<T, FieldKegiatanValuesFindUniqueArgs<ExtArgs>>): Prisma__FieldKegiatanValuesClient<$Result.GetResult<Prisma.$FieldKegiatanValuesPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one FieldKegiatanValues that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {FieldKegiatanValuesFindUniqueOrThrowArgs} args - Arguments to find a FieldKegiatanValues
+     * @example
+     * // Get one FieldKegiatanValues
+     * const fieldKegiatanValues = await prisma.fieldKegiatanValues.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends FieldKegiatanValuesFindUniqueOrThrowArgs>(args: SelectSubset<T, FieldKegiatanValuesFindUniqueOrThrowArgs<ExtArgs>>): Prisma__FieldKegiatanValuesClient<$Result.GetResult<Prisma.$FieldKegiatanValuesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FieldKegiatanValues that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FieldKegiatanValuesFindFirstArgs} args - Arguments to find a FieldKegiatanValues
+     * @example
+     * // Get one FieldKegiatanValues
+     * const fieldKegiatanValues = await prisma.fieldKegiatanValues.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends FieldKegiatanValuesFindFirstArgs>(args?: SelectSubset<T, FieldKegiatanValuesFindFirstArgs<ExtArgs>>): Prisma__FieldKegiatanValuesClient<$Result.GetResult<Prisma.$FieldKegiatanValuesPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FieldKegiatanValues that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FieldKegiatanValuesFindFirstOrThrowArgs} args - Arguments to find a FieldKegiatanValues
+     * @example
+     * // Get one FieldKegiatanValues
+     * const fieldKegiatanValues = await prisma.fieldKegiatanValues.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends FieldKegiatanValuesFindFirstOrThrowArgs>(args?: SelectSubset<T, FieldKegiatanValuesFindFirstOrThrowArgs<ExtArgs>>): Prisma__FieldKegiatanValuesClient<$Result.GetResult<Prisma.$FieldKegiatanValuesPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more FieldKegiatanValues that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FieldKegiatanValuesFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all FieldKegiatanValues
+     * const fieldKegiatanValues = await prisma.fieldKegiatanValues.findMany()
+     * 
+     * // Get first 10 FieldKegiatanValues
+     * const fieldKegiatanValues = await prisma.fieldKegiatanValues.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const fieldKegiatanValuesWithIdOnly = await prisma.fieldKegiatanValues.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends FieldKegiatanValuesFindManyArgs>(args?: SelectSubset<T, FieldKegiatanValuesFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FieldKegiatanValuesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a FieldKegiatanValues.
+     * @param {FieldKegiatanValuesCreateArgs} args - Arguments to create a FieldKegiatanValues.
+     * @example
+     * // Create one FieldKegiatanValues
+     * const FieldKegiatanValues = await prisma.fieldKegiatanValues.create({
+     *   data: {
+     *     // ... data to create a FieldKegiatanValues
+     *   }
+     * })
+     * 
+     */
+    create<T extends FieldKegiatanValuesCreateArgs>(args: SelectSubset<T, FieldKegiatanValuesCreateArgs<ExtArgs>>): Prisma__FieldKegiatanValuesClient<$Result.GetResult<Prisma.$FieldKegiatanValuesPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many FieldKegiatanValues.
+     * @param {FieldKegiatanValuesCreateManyArgs} args - Arguments to create many FieldKegiatanValues.
+     * @example
+     * // Create many FieldKegiatanValues
+     * const fieldKegiatanValues = await prisma.fieldKegiatanValues.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends FieldKegiatanValuesCreateManyArgs>(args?: SelectSubset<T, FieldKegiatanValuesCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a FieldKegiatanValues.
+     * @param {FieldKegiatanValuesDeleteArgs} args - Arguments to delete one FieldKegiatanValues.
+     * @example
+     * // Delete one FieldKegiatanValues
+     * const FieldKegiatanValues = await prisma.fieldKegiatanValues.delete({
+     *   where: {
+     *     // ... filter to delete one FieldKegiatanValues
+     *   }
+     * })
+     * 
+     */
+    delete<T extends FieldKegiatanValuesDeleteArgs>(args: SelectSubset<T, FieldKegiatanValuesDeleteArgs<ExtArgs>>): Prisma__FieldKegiatanValuesClient<$Result.GetResult<Prisma.$FieldKegiatanValuesPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one FieldKegiatanValues.
+     * @param {FieldKegiatanValuesUpdateArgs} args - Arguments to update one FieldKegiatanValues.
+     * @example
+     * // Update one FieldKegiatanValues
+     * const fieldKegiatanValues = await prisma.fieldKegiatanValues.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends FieldKegiatanValuesUpdateArgs>(args: SelectSubset<T, FieldKegiatanValuesUpdateArgs<ExtArgs>>): Prisma__FieldKegiatanValuesClient<$Result.GetResult<Prisma.$FieldKegiatanValuesPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more FieldKegiatanValues.
+     * @param {FieldKegiatanValuesDeleteManyArgs} args - Arguments to filter FieldKegiatanValues to delete.
+     * @example
+     * // Delete a few FieldKegiatanValues
+     * const { count } = await prisma.fieldKegiatanValues.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends FieldKegiatanValuesDeleteManyArgs>(args?: SelectSubset<T, FieldKegiatanValuesDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FieldKegiatanValues.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FieldKegiatanValuesUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many FieldKegiatanValues
+     * const fieldKegiatanValues = await prisma.fieldKegiatanValues.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends FieldKegiatanValuesUpdateManyArgs>(args: SelectSubset<T, FieldKegiatanValuesUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one FieldKegiatanValues.
+     * @param {FieldKegiatanValuesUpsertArgs} args - Arguments to update or create a FieldKegiatanValues.
+     * @example
+     * // Update or create a FieldKegiatanValues
+     * const fieldKegiatanValues = await prisma.fieldKegiatanValues.upsert({
+     *   create: {
+     *     // ... data to create a FieldKegiatanValues
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the FieldKegiatanValues we want to update
+     *   }
+     * })
+     */
+    upsert<T extends FieldKegiatanValuesUpsertArgs>(args: SelectSubset<T, FieldKegiatanValuesUpsertArgs<ExtArgs>>): Prisma__FieldKegiatanValuesClient<$Result.GetResult<Prisma.$FieldKegiatanValuesPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of FieldKegiatanValues.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FieldKegiatanValuesCountArgs} args - Arguments to filter FieldKegiatanValues to count.
+     * @example
+     * // Count the number of FieldKegiatanValues
+     * const count = await prisma.fieldKegiatanValues.count({
+     *   where: {
+     *     // ... the filter for the FieldKegiatanValues we want to count
+     *   }
+     * })
+    **/
+    count<T extends FieldKegiatanValuesCountArgs>(
+      args?: Subset<T, FieldKegiatanValuesCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FieldKegiatanValuesCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a FieldKegiatanValues.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FieldKegiatanValuesAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FieldKegiatanValuesAggregateArgs>(args: Subset<T, FieldKegiatanValuesAggregateArgs>): Prisma.PrismaPromise<GetFieldKegiatanValuesAggregateType<T>>
+
+    /**
+     * Group by FieldKegiatanValues.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FieldKegiatanValuesGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FieldKegiatanValuesGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FieldKegiatanValuesGroupByArgs['orderBy'] }
+        : { orderBy?: FieldKegiatanValuesGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FieldKegiatanValuesGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFieldKegiatanValuesGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the FieldKegiatanValues model
+   */
+  readonly fields: FieldKegiatanValuesFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for FieldKegiatanValues.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__FieldKegiatanValuesClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    kegiatan<T extends KegiatanDefaultArgs<ExtArgs> = {}>(args?: Subset<T, KegiatanDefaultArgs<ExtArgs>>): Prisma__KegiatanClient<$Result.GetResult<Prisma.$KegiatanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    jenisKegiatanField<T extends JenisKegiatanFieldDefaultArgs<ExtArgs> = {}>(args?: Subset<T, JenisKegiatanFieldDefaultArgs<ExtArgs>>): Prisma__JenisKegiatanFieldClient<$Result.GetResult<Prisma.$JenisKegiatanFieldPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the FieldKegiatanValues model
+   */
+  interface FieldKegiatanValuesFieldRefs {
+    readonly id: FieldRef<"FieldKegiatanValues", 'String'>
+    readonly kegiatanId: FieldRef<"FieldKegiatanValues", 'String'>
+    readonly jenisKegiatanFieldId: FieldRef<"FieldKegiatanValues", 'String'>
+    readonly value: FieldRef<"FieldKegiatanValues", 'String'>
+    readonly createdAt: FieldRef<"FieldKegiatanValues", 'DateTime'>
+    readonly updatedAt: FieldRef<"FieldKegiatanValues", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * FieldKegiatanValues findUnique
+   */
+  export type FieldKegiatanValuesFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FieldKegiatanValues
+     */
+    select?: FieldKegiatanValuesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FieldKegiatanValues
+     */
+    omit?: FieldKegiatanValuesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FieldKegiatanValuesInclude<ExtArgs> | null
+    /**
+     * Filter, which FieldKegiatanValues to fetch.
+     */
+    where: FieldKegiatanValuesWhereUniqueInput
+  }
+
+  /**
+   * FieldKegiatanValues findUniqueOrThrow
+   */
+  export type FieldKegiatanValuesFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FieldKegiatanValues
+     */
+    select?: FieldKegiatanValuesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FieldKegiatanValues
+     */
+    omit?: FieldKegiatanValuesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FieldKegiatanValuesInclude<ExtArgs> | null
+    /**
+     * Filter, which FieldKegiatanValues to fetch.
+     */
+    where: FieldKegiatanValuesWhereUniqueInput
+  }
+
+  /**
+   * FieldKegiatanValues findFirst
+   */
+  export type FieldKegiatanValuesFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FieldKegiatanValues
+     */
+    select?: FieldKegiatanValuesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FieldKegiatanValues
+     */
+    omit?: FieldKegiatanValuesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FieldKegiatanValuesInclude<ExtArgs> | null
+    /**
+     * Filter, which FieldKegiatanValues to fetch.
+     */
+    where?: FieldKegiatanValuesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FieldKegiatanValues to fetch.
+     */
+    orderBy?: FieldKegiatanValuesOrderByWithRelationInput | FieldKegiatanValuesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FieldKegiatanValues.
+     */
+    cursor?: FieldKegiatanValuesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FieldKegiatanValues from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FieldKegiatanValues.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FieldKegiatanValues.
+     */
+    distinct?: FieldKegiatanValuesScalarFieldEnum | FieldKegiatanValuesScalarFieldEnum[]
+  }
+
+  /**
+   * FieldKegiatanValues findFirstOrThrow
+   */
+  export type FieldKegiatanValuesFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FieldKegiatanValues
+     */
+    select?: FieldKegiatanValuesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FieldKegiatanValues
+     */
+    omit?: FieldKegiatanValuesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FieldKegiatanValuesInclude<ExtArgs> | null
+    /**
+     * Filter, which FieldKegiatanValues to fetch.
+     */
+    where?: FieldKegiatanValuesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FieldKegiatanValues to fetch.
+     */
+    orderBy?: FieldKegiatanValuesOrderByWithRelationInput | FieldKegiatanValuesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FieldKegiatanValues.
+     */
+    cursor?: FieldKegiatanValuesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FieldKegiatanValues from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FieldKegiatanValues.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FieldKegiatanValues.
+     */
+    distinct?: FieldKegiatanValuesScalarFieldEnum | FieldKegiatanValuesScalarFieldEnum[]
+  }
+
+  /**
+   * FieldKegiatanValues findMany
+   */
+  export type FieldKegiatanValuesFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FieldKegiatanValues
+     */
+    select?: FieldKegiatanValuesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FieldKegiatanValues
+     */
+    omit?: FieldKegiatanValuesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FieldKegiatanValuesInclude<ExtArgs> | null
+    /**
+     * Filter, which FieldKegiatanValues to fetch.
+     */
+    where?: FieldKegiatanValuesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FieldKegiatanValues to fetch.
+     */
+    orderBy?: FieldKegiatanValuesOrderByWithRelationInput | FieldKegiatanValuesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing FieldKegiatanValues.
+     */
+    cursor?: FieldKegiatanValuesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FieldKegiatanValues from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FieldKegiatanValues.
+     */
+    skip?: number
+    distinct?: FieldKegiatanValuesScalarFieldEnum | FieldKegiatanValuesScalarFieldEnum[]
+  }
+
+  /**
+   * FieldKegiatanValues create
+   */
+  export type FieldKegiatanValuesCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FieldKegiatanValues
+     */
+    select?: FieldKegiatanValuesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FieldKegiatanValues
+     */
+    omit?: FieldKegiatanValuesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FieldKegiatanValuesInclude<ExtArgs> | null
+    /**
+     * The data needed to create a FieldKegiatanValues.
+     */
+    data: XOR<FieldKegiatanValuesCreateInput, FieldKegiatanValuesUncheckedCreateInput>
+  }
+
+  /**
+   * FieldKegiatanValues createMany
+   */
+  export type FieldKegiatanValuesCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many FieldKegiatanValues.
+     */
+    data: FieldKegiatanValuesCreateManyInput | FieldKegiatanValuesCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * FieldKegiatanValues update
+   */
+  export type FieldKegiatanValuesUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FieldKegiatanValues
+     */
+    select?: FieldKegiatanValuesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FieldKegiatanValues
+     */
+    omit?: FieldKegiatanValuesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FieldKegiatanValuesInclude<ExtArgs> | null
+    /**
+     * The data needed to update a FieldKegiatanValues.
+     */
+    data: XOR<FieldKegiatanValuesUpdateInput, FieldKegiatanValuesUncheckedUpdateInput>
+    /**
+     * Choose, which FieldKegiatanValues to update.
+     */
+    where: FieldKegiatanValuesWhereUniqueInput
+  }
+
+  /**
+   * FieldKegiatanValues updateMany
+   */
+  export type FieldKegiatanValuesUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update FieldKegiatanValues.
+     */
+    data: XOR<FieldKegiatanValuesUpdateManyMutationInput, FieldKegiatanValuesUncheckedUpdateManyInput>
+    /**
+     * Filter which FieldKegiatanValues to update
+     */
+    where?: FieldKegiatanValuesWhereInput
+    /**
+     * Limit how many FieldKegiatanValues to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FieldKegiatanValues upsert
+   */
+  export type FieldKegiatanValuesUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FieldKegiatanValues
+     */
+    select?: FieldKegiatanValuesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FieldKegiatanValues
+     */
+    omit?: FieldKegiatanValuesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FieldKegiatanValuesInclude<ExtArgs> | null
+    /**
+     * The filter to search for the FieldKegiatanValues to update in case it exists.
+     */
+    where: FieldKegiatanValuesWhereUniqueInput
+    /**
+     * In case the FieldKegiatanValues found by the `where` argument doesn't exist, create a new FieldKegiatanValues with this data.
+     */
+    create: XOR<FieldKegiatanValuesCreateInput, FieldKegiatanValuesUncheckedCreateInput>
+    /**
+     * In case the FieldKegiatanValues was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FieldKegiatanValuesUpdateInput, FieldKegiatanValuesUncheckedUpdateInput>
+  }
+
+  /**
+   * FieldKegiatanValues delete
+   */
+  export type FieldKegiatanValuesDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FieldKegiatanValues
+     */
+    select?: FieldKegiatanValuesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FieldKegiatanValues
+     */
+    omit?: FieldKegiatanValuesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FieldKegiatanValuesInclude<ExtArgs> | null
+    /**
+     * Filter which FieldKegiatanValues to delete.
+     */
+    where: FieldKegiatanValuesWhereUniqueInput
+  }
+
+  /**
+   * FieldKegiatanValues deleteMany
+   */
+  export type FieldKegiatanValuesDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FieldKegiatanValues to delete
+     */
+    where?: FieldKegiatanValuesWhereInput
+    /**
+     * Limit how many FieldKegiatanValues to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * FieldKegiatanValues without action
+   */
+  export type FieldKegiatanValuesDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FieldKegiatanValues
+     */
+    select?: FieldKegiatanValuesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FieldKegiatanValues
+     */
+    omit?: FieldKegiatanValuesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FieldKegiatanValuesInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model RiwayatPerubahanPembimbing
+   */
+
+  export type AggregateRiwayatPerubahanPembimbing = {
+    _count: RiwayatPerubahanPembimbingCountAggregateOutputType | null
+    _min: RiwayatPerubahanPembimbingMinAggregateOutputType | null
+    _max: RiwayatPerubahanPembimbingMaxAggregateOutputType | null
+  }
+
+  export type RiwayatPerubahanPembimbingMinAggregateOutputType = {
+    id: string | null
+    mahasiswaId: string | null
+    alasan: string | null
+    pembimbingIdLama: string | null
+    pembimbingIdBaru: string | null
+    changedAt: Date | null
+  }
+
+  export type RiwayatPerubahanPembimbingMaxAggregateOutputType = {
+    id: string | null
+    mahasiswaId: string | null
+    alasan: string | null
+    pembimbingIdLama: string | null
+    pembimbingIdBaru: string | null
+    changedAt: Date | null
+  }
+
+  export type RiwayatPerubahanPembimbingCountAggregateOutputType = {
+    id: number
+    mahasiswaId: number
+    alasan: number
+    pembimbingIdLama: number
+    pembimbingIdBaru: number
+    changedAt: number
+    _all: number
+  }
+
+
+  export type RiwayatPerubahanPembimbingMinAggregateInputType = {
+    id?: true
+    mahasiswaId?: true
+    alasan?: true
+    pembimbingIdLama?: true
+    pembimbingIdBaru?: true
+    changedAt?: true
+  }
+
+  export type RiwayatPerubahanPembimbingMaxAggregateInputType = {
+    id?: true
+    mahasiswaId?: true
+    alasan?: true
+    pembimbingIdLama?: true
+    pembimbingIdBaru?: true
+    changedAt?: true
+  }
+
+  export type RiwayatPerubahanPembimbingCountAggregateInputType = {
+    id?: true
+    mahasiswaId?: true
+    alasan?: true
+    pembimbingIdLama?: true
+    pembimbingIdBaru?: true
+    changedAt?: true
+    _all?: true
+  }
+
+  export type RiwayatPerubahanPembimbingAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RiwayatPerubahanPembimbing to aggregate.
+     */
+    where?: RiwayatPerubahanPembimbingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RiwayatPerubahanPembimbings to fetch.
+     */
+    orderBy?: RiwayatPerubahanPembimbingOrderByWithRelationInput | RiwayatPerubahanPembimbingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RiwayatPerubahanPembimbingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RiwayatPerubahanPembimbings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RiwayatPerubahanPembimbings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned RiwayatPerubahanPembimbings
+    **/
+    _count?: true | RiwayatPerubahanPembimbingCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RiwayatPerubahanPembimbingMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RiwayatPerubahanPembimbingMaxAggregateInputType
+  }
+
+  export type GetRiwayatPerubahanPembimbingAggregateType<T extends RiwayatPerubahanPembimbingAggregateArgs> = {
+        [P in keyof T & keyof AggregateRiwayatPerubahanPembimbing]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRiwayatPerubahanPembimbing[P]>
+      : GetScalarType<T[P], AggregateRiwayatPerubahanPembimbing[P]>
+  }
+
+
+
+
+  export type RiwayatPerubahanPembimbingGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RiwayatPerubahanPembimbingWhereInput
+    orderBy?: RiwayatPerubahanPembimbingOrderByWithAggregationInput | RiwayatPerubahanPembimbingOrderByWithAggregationInput[]
+    by: RiwayatPerubahanPembimbingScalarFieldEnum[] | RiwayatPerubahanPembimbingScalarFieldEnum
+    having?: RiwayatPerubahanPembimbingScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RiwayatPerubahanPembimbingCountAggregateInputType | true
+    _min?: RiwayatPerubahanPembimbingMinAggregateInputType
+    _max?: RiwayatPerubahanPembimbingMaxAggregateInputType
+  }
+
+  export type RiwayatPerubahanPembimbingGroupByOutputType = {
+    id: string
+    mahasiswaId: string
+    alasan: string
+    pembimbingIdLama: string | null
+    pembimbingIdBaru: string | null
+    changedAt: Date
+    _count: RiwayatPerubahanPembimbingCountAggregateOutputType | null
+    _min: RiwayatPerubahanPembimbingMinAggregateOutputType | null
+    _max: RiwayatPerubahanPembimbingMaxAggregateOutputType | null
+  }
+
+  type GetRiwayatPerubahanPembimbingGroupByPayload<T extends RiwayatPerubahanPembimbingGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RiwayatPerubahanPembimbingGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RiwayatPerubahanPembimbingGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RiwayatPerubahanPembimbingGroupByOutputType[P]>
+            : GetScalarType<T[P], RiwayatPerubahanPembimbingGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RiwayatPerubahanPembimbingSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    mahasiswaId?: boolean
+    alasan?: boolean
+    pembimbingIdLama?: boolean
+    pembimbingIdBaru?: boolean
+    changedAt?: boolean
+    mahasiswa?: boolean | MahasiswaDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["riwayatPerubahanPembimbing"]>
+
+
+
+  export type RiwayatPerubahanPembimbingSelectScalar = {
+    id?: boolean
+    mahasiswaId?: boolean
+    alasan?: boolean
+    pembimbingIdLama?: boolean
+    pembimbingIdBaru?: boolean
+    changedAt?: boolean
+  }
+
+  export type RiwayatPerubahanPembimbingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "mahasiswaId" | "alasan" | "pembimbingIdLama" | "pembimbingIdBaru" | "changedAt", ExtArgs["result"]["riwayatPerubahanPembimbing"]>
+  export type RiwayatPerubahanPembimbingInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    mahasiswa?: boolean | MahasiswaDefaultArgs<ExtArgs>
+  }
+
+  export type $RiwayatPerubahanPembimbingPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "RiwayatPerubahanPembimbing"
+    objects: {
+      mahasiswa: Prisma.$MahasiswaPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      mahasiswaId: string
+      alasan: string
+      pembimbingIdLama: string | null
+      pembimbingIdBaru: string | null
+      changedAt: Date
+    }, ExtArgs["result"]["riwayatPerubahanPembimbing"]>
+    composites: {}
+  }
+
+  type RiwayatPerubahanPembimbingGetPayload<S extends boolean | null | undefined | RiwayatPerubahanPembimbingDefaultArgs> = $Result.GetResult<Prisma.$RiwayatPerubahanPembimbingPayload, S>
+
+  type RiwayatPerubahanPembimbingCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RiwayatPerubahanPembimbingFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RiwayatPerubahanPembimbingCountAggregateInputType | true
+    }
+
+  export interface RiwayatPerubahanPembimbingDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RiwayatPerubahanPembimbing'], meta: { name: 'RiwayatPerubahanPembimbing' } }
+    /**
+     * Find zero or one RiwayatPerubahanPembimbing that matches the filter.
+     * @param {RiwayatPerubahanPembimbingFindUniqueArgs} args - Arguments to find a RiwayatPerubahanPembimbing
+     * @example
+     * // Get one RiwayatPerubahanPembimbing
+     * const riwayatPerubahanPembimbing = await prisma.riwayatPerubahanPembimbing.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RiwayatPerubahanPembimbingFindUniqueArgs>(args: SelectSubset<T, RiwayatPerubahanPembimbingFindUniqueArgs<ExtArgs>>): Prisma__RiwayatPerubahanPembimbingClient<$Result.GetResult<Prisma.$RiwayatPerubahanPembimbingPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one RiwayatPerubahanPembimbing that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RiwayatPerubahanPembimbingFindUniqueOrThrowArgs} args - Arguments to find a RiwayatPerubahanPembimbing
+     * @example
+     * // Get one RiwayatPerubahanPembimbing
+     * const riwayatPerubahanPembimbing = await prisma.riwayatPerubahanPembimbing.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RiwayatPerubahanPembimbingFindUniqueOrThrowArgs>(args: SelectSubset<T, RiwayatPerubahanPembimbingFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RiwayatPerubahanPembimbingClient<$Result.GetResult<Prisma.$RiwayatPerubahanPembimbingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RiwayatPerubahanPembimbing that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RiwayatPerubahanPembimbingFindFirstArgs} args - Arguments to find a RiwayatPerubahanPembimbing
+     * @example
+     * // Get one RiwayatPerubahanPembimbing
+     * const riwayatPerubahanPembimbing = await prisma.riwayatPerubahanPembimbing.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RiwayatPerubahanPembimbingFindFirstArgs>(args?: SelectSubset<T, RiwayatPerubahanPembimbingFindFirstArgs<ExtArgs>>): Prisma__RiwayatPerubahanPembimbingClient<$Result.GetResult<Prisma.$RiwayatPerubahanPembimbingPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RiwayatPerubahanPembimbing that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RiwayatPerubahanPembimbingFindFirstOrThrowArgs} args - Arguments to find a RiwayatPerubahanPembimbing
+     * @example
+     * // Get one RiwayatPerubahanPembimbing
+     * const riwayatPerubahanPembimbing = await prisma.riwayatPerubahanPembimbing.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RiwayatPerubahanPembimbingFindFirstOrThrowArgs>(args?: SelectSubset<T, RiwayatPerubahanPembimbingFindFirstOrThrowArgs<ExtArgs>>): Prisma__RiwayatPerubahanPembimbingClient<$Result.GetResult<Prisma.$RiwayatPerubahanPembimbingPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more RiwayatPerubahanPembimbings that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RiwayatPerubahanPembimbingFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all RiwayatPerubahanPembimbings
+     * const riwayatPerubahanPembimbings = await prisma.riwayatPerubahanPembimbing.findMany()
+     * 
+     * // Get first 10 RiwayatPerubahanPembimbings
+     * const riwayatPerubahanPembimbings = await prisma.riwayatPerubahanPembimbing.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const riwayatPerubahanPembimbingWithIdOnly = await prisma.riwayatPerubahanPembimbing.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RiwayatPerubahanPembimbingFindManyArgs>(args?: SelectSubset<T, RiwayatPerubahanPembimbingFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RiwayatPerubahanPembimbingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a RiwayatPerubahanPembimbing.
+     * @param {RiwayatPerubahanPembimbingCreateArgs} args - Arguments to create a RiwayatPerubahanPembimbing.
+     * @example
+     * // Create one RiwayatPerubahanPembimbing
+     * const RiwayatPerubahanPembimbing = await prisma.riwayatPerubahanPembimbing.create({
+     *   data: {
+     *     // ... data to create a RiwayatPerubahanPembimbing
+     *   }
+     * })
+     * 
+     */
+    create<T extends RiwayatPerubahanPembimbingCreateArgs>(args: SelectSubset<T, RiwayatPerubahanPembimbingCreateArgs<ExtArgs>>): Prisma__RiwayatPerubahanPembimbingClient<$Result.GetResult<Prisma.$RiwayatPerubahanPembimbingPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many RiwayatPerubahanPembimbings.
+     * @param {RiwayatPerubahanPembimbingCreateManyArgs} args - Arguments to create many RiwayatPerubahanPembimbings.
+     * @example
+     * // Create many RiwayatPerubahanPembimbings
+     * const riwayatPerubahanPembimbing = await prisma.riwayatPerubahanPembimbing.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RiwayatPerubahanPembimbingCreateManyArgs>(args?: SelectSubset<T, RiwayatPerubahanPembimbingCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a RiwayatPerubahanPembimbing.
+     * @param {RiwayatPerubahanPembimbingDeleteArgs} args - Arguments to delete one RiwayatPerubahanPembimbing.
+     * @example
+     * // Delete one RiwayatPerubahanPembimbing
+     * const RiwayatPerubahanPembimbing = await prisma.riwayatPerubahanPembimbing.delete({
+     *   where: {
+     *     // ... filter to delete one RiwayatPerubahanPembimbing
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RiwayatPerubahanPembimbingDeleteArgs>(args: SelectSubset<T, RiwayatPerubahanPembimbingDeleteArgs<ExtArgs>>): Prisma__RiwayatPerubahanPembimbingClient<$Result.GetResult<Prisma.$RiwayatPerubahanPembimbingPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one RiwayatPerubahanPembimbing.
+     * @param {RiwayatPerubahanPembimbingUpdateArgs} args - Arguments to update one RiwayatPerubahanPembimbing.
+     * @example
+     * // Update one RiwayatPerubahanPembimbing
+     * const riwayatPerubahanPembimbing = await prisma.riwayatPerubahanPembimbing.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RiwayatPerubahanPembimbingUpdateArgs>(args: SelectSubset<T, RiwayatPerubahanPembimbingUpdateArgs<ExtArgs>>): Prisma__RiwayatPerubahanPembimbingClient<$Result.GetResult<Prisma.$RiwayatPerubahanPembimbingPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more RiwayatPerubahanPembimbings.
+     * @param {RiwayatPerubahanPembimbingDeleteManyArgs} args - Arguments to filter RiwayatPerubahanPembimbings to delete.
+     * @example
+     * // Delete a few RiwayatPerubahanPembimbings
+     * const { count } = await prisma.riwayatPerubahanPembimbing.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RiwayatPerubahanPembimbingDeleteManyArgs>(args?: SelectSubset<T, RiwayatPerubahanPembimbingDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RiwayatPerubahanPembimbings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RiwayatPerubahanPembimbingUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many RiwayatPerubahanPembimbings
+     * const riwayatPerubahanPembimbing = await prisma.riwayatPerubahanPembimbing.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RiwayatPerubahanPembimbingUpdateManyArgs>(args: SelectSubset<T, RiwayatPerubahanPembimbingUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one RiwayatPerubahanPembimbing.
+     * @param {RiwayatPerubahanPembimbingUpsertArgs} args - Arguments to update or create a RiwayatPerubahanPembimbing.
+     * @example
+     * // Update or create a RiwayatPerubahanPembimbing
+     * const riwayatPerubahanPembimbing = await prisma.riwayatPerubahanPembimbing.upsert({
+     *   create: {
+     *     // ... data to create a RiwayatPerubahanPembimbing
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the RiwayatPerubahanPembimbing we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RiwayatPerubahanPembimbingUpsertArgs>(args: SelectSubset<T, RiwayatPerubahanPembimbingUpsertArgs<ExtArgs>>): Prisma__RiwayatPerubahanPembimbingClient<$Result.GetResult<Prisma.$RiwayatPerubahanPembimbingPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of RiwayatPerubahanPembimbings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RiwayatPerubahanPembimbingCountArgs} args - Arguments to filter RiwayatPerubahanPembimbings to count.
+     * @example
+     * // Count the number of RiwayatPerubahanPembimbings
+     * const count = await prisma.riwayatPerubahanPembimbing.count({
+     *   where: {
+     *     // ... the filter for the RiwayatPerubahanPembimbings we want to count
+     *   }
+     * })
+    **/
+    count<T extends RiwayatPerubahanPembimbingCountArgs>(
+      args?: Subset<T, RiwayatPerubahanPembimbingCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RiwayatPerubahanPembimbingCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a RiwayatPerubahanPembimbing.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RiwayatPerubahanPembimbingAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RiwayatPerubahanPembimbingAggregateArgs>(args: Subset<T, RiwayatPerubahanPembimbingAggregateArgs>): Prisma.PrismaPromise<GetRiwayatPerubahanPembimbingAggregateType<T>>
+
+    /**
+     * Group by RiwayatPerubahanPembimbing.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RiwayatPerubahanPembimbingGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RiwayatPerubahanPembimbingGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RiwayatPerubahanPembimbingGroupByArgs['orderBy'] }
+        : { orderBy?: RiwayatPerubahanPembimbingGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RiwayatPerubahanPembimbingGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRiwayatPerubahanPembimbingGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the RiwayatPerubahanPembimbing model
+   */
+  readonly fields: RiwayatPerubahanPembimbingFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for RiwayatPerubahanPembimbing.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RiwayatPerubahanPembimbingClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    mahasiswa<T extends MahasiswaDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MahasiswaDefaultArgs<ExtArgs>>): Prisma__MahasiswaClient<$Result.GetResult<Prisma.$MahasiswaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the RiwayatPerubahanPembimbing model
+   */
+  interface RiwayatPerubahanPembimbingFieldRefs {
+    readonly id: FieldRef<"RiwayatPerubahanPembimbing", 'String'>
+    readonly mahasiswaId: FieldRef<"RiwayatPerubahanPembimbing", 'String'>
+    readonly alasan: FieldRef<"RiwayatPerubahanPembimbing", 'String'>
+    readonly pembimbingIdLama: FieldRef<"RiwayatPerubahanPembimbing", 'String'>
+    readonly pembimbingIdBaru: FieldRef<"RiwayatPerubahanPembimbing", 'String'>
+    readonly changedAt: FieldRef<"RiwayatPerubahanPembimbing", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * RiwayatPerubahanPembimbing findUnique
+   */
+  export type RiwayatPerubahanPembimbingFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RiwayatPerubahanPembimbing
+     */
+    select?: RiwayatPerubahanPembimbingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RiwayatPerubahanPembimbing
+     */
+    omit?: RiwayatPerubahanPembimbingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RiwayatPerubahanPembimbingInclude<ExtArgs> | null
+    /**
+     * Filter, which RiwayatPerubahanPembimbing to fetch.
+     */
+    where: RiwayatPerubahanPembimbingWhereUniqueInput
+  }
+
+  /**
+   * RiwayatPerubahanPembimbing findUniqueOrThrow
+   */
+  export type RiwayatPerubahanPembimbingFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RiwayatPerubahanPembimbing
+     */
+    select?: RiwayatPerubahanPembimbingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RiwayatPerubahanPembimbing
+     */
+    omit?: RiwayatPerubahanPembimbingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RiwayatPerubahanPembimbingInclude<ExtArgs> | null
+    /**
+     * Filter, which RiwayatPerubahanPembimbing to fetch.
+     */
+    where: RiwayatPerubahanPembimbingWhereUniqueInput
+  }
+
+  /**
+   * RiwayatPerubahanPembimbing findFirst
+   */
+  export type RiwayatPerubahanPembimbingFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RiwayatPerubahanPembimbing
+     */
+    select?: RiwayatPerubahanPembimbingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RiwayatPerubahanPembimbing
+     */
+    omit?: RiwayatPerubahanPembimbingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RiwayatPerubahanPembimbingInclude<ExtArgs> | null
+    /**
+     * Filter, which RiwayatPerubahanPembimbing to fetch.
+     */
+    where?: RiwayatPerubahanPembimbingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RiwayatPerubahanPembimbings to fetch.
+     */
+    orderBy?: RiwayatPerubahanPembimbingOrderByWithRelationInput | RiwayatPerubahanPembimbingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RiwayatPerubahanPembimbings.
+     */
+    cursor?: RiwayatPerubahanPembimbingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RiwayatPerubahanPembimbings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RiwayatPerubahanPembimbings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RiwayatPerubahanPembimbings.
+     */
+    distinct?: RiwayatPerubahanPembimbingScalarFieldEnum | RiwayatPerubahanPembimbingScalarFieldEnum[]
+  }
+
+  /**
+   * RiwayatPerubahanPembimbing findFirstOrThrow
+   */
+  export type RiwayatPerubahanPembimbingFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RiwayatPerubahanPembimbing
+     */
+    select?: RiwayatPerubahanPembimbingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RiwayatPerubahanPembimbing
+     */
+    omit?: RiwayatPerubahanPembimbingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RiwayatPerubahanPembimbingInclude<ExtArgs> | null
+    /**
+     * Filter, which RiwayatPerubahanPembimbing to fetch.
+     */
+    where?: RiwayatPerubahanPembimbingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RiwayatPerubahanPembimbings to fetch.
+     */
+    orderBy?: RiwayatPerubahanPembimbingOrderByWithRelationInput | RiwayatPerubahanPembimbingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RiwayatPerubahanPembimbings.
+     */
+    cursor?: RiwayatPerubahanPembimbingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RiwayatPerubahanPembimbings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RiwayatPerubahanPembimbings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RiwayatPerubahanPembimbings.
+     */
+    distinct?: RiwayatPerubahanPembimbingScalarFieldEnum | RiwayatPerubahanPembimbingScalarFieldEnum[]
+  }
+
+  /**
+   * RiwayatPerubahanPembimbing findMany
+   */
+  export type RiwayatPerubahanPembimbingFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RiwayatPerubahanPembimbing
+     */
+    select?: RiwayatPerubahanPembimbingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RiwayatPerubahanPembimbing
+     */
+    omit?: RiwayatPerubahanPembimbingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RiwayatPerubahanPembimbingInclude<ExtArgs> | null
+    /**
+     * Filter, which RiwayatPerubahanPembimbings to fetch.
+     */
+    where?: RiwayatPerubahanPembimbingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RiwayatPerubahanPembimbings to fetch.
+     */
+    orderBy?: RiwayatPerubahanPembimbingOrderByWithRelationInput | RiwayatPerubahanPembimbingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing RiwayatPerubahanPembimbings.
+     */
+    cursor?: RiwayatPerubahanPembimbingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RiwayatPerubahanPembimbings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RiwayatPerubahanPembimbings.
+     */
+    skip?: number
+    distinct?: RiwayatPerubahanPembimbingScalarFieldEnum | RiwayatPerubahanPembimbingScalarFieldEnum[]
+  }
+
+  /**
+   * RiwayatPerubahanPembimbing create
+   */
+  export type RiwayatPerubahanPembimbingCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RiwayatPerubahanPembimbing
+     */
+    select?: RiwayatPerubahanPembimbingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RiwayatPerubahanPembimbing
+     */
+    omit?: RiwayatPerubahanPembimbingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RiwayatPerubahanPembimbingInclude<ExtArgs> | null
+    /**
+     * The data needed to create a RiwayatPerubahanPembimbing.
+     */
+    data: XOR<RiwayatPerubahanPembimbingCreateInput, RiwayatPerubahanPembimbingUncheckedCreateInput>
+  }
+
+  /**
+   * RiwayatPerubahanPembimbing createMany
+   */
+  export type RiwayatPerubahanPembimbingCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many RiwayatPerubahanPembimbings.
+     */
+    data: RiwayatPerubahanPembimbingCreateManyInput | RiwayatPerubahanPembimbingCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RiwayatPerubahanPembimbing update
+   */
+  export type RiwayatPerubahanPembimbingUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RiwayatPerubahanPembimbing
+     */
+    select?: RiwayatPerubahanPembimbingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RiwayatPerubahanPembimbing
+     */
+    omit?: RiwayatPerubahanPembimbingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RiwayatPerubahanPembimbingInclude<ExtArgs> | null
+    /**
+     * The data needed to update a RiwayatPerubahanPembimbing.
+     */
+    data: XOR<RiwayatPerubahanPembimbingUpdateInput, RiwayatPerubahanPembimbingUncheckedUpdateInput>
+    /**
+     * Choose, which RiwayatPerubahanPembimbing to update.
+     */
+    where: RiwayatPerubahanPembimbingWhereUniqueInput
+  }
+
+  /**
+   * RiwayatPerubahanPembimbing updateMany
+   */
+  export type RiwayatPerubahanPembimbingUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update RiwayatPerubahanPembimbings.
+     */
+    data: XOR<RiwayatPerubahanPembimbingUpdateManyMutationInput, RiwayatPerubahanPembimbingUncheckedUpdateManyInput>
+    /**
+     * Filter which RiwayatPerubahanPembimbings to update
+     */
+    where?: RiwayatPerubahanPembimbingWhereInput
+    /**
+     * Limit how many RiwayatPerubahanPembimbings to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RiwayatPerubahanPembimbing upsert
+   */
+  export type RiwayatPerubahanPembimbingUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RiwayatPerubahanPembimbing
+     */
+    select?: RiwayatPerubahanPembimbingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RiwayatPerubahanPembimbing
+     */
+    omit?: RiwayatPerubahanPembimbingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RiwayatPerubahanPembimbingInclude<ExtArgs> | null
+    /**
+     * The filter to search for the RiwayatPerubahanPembimbing to update in case it exists.
+     */
+    where: RiwayatPerubahanPembimbingWhereUniqueInput
+    /**
+     * In case the RiwayatPerubahanPembimbing found by the `where` argument doesn't exist, create a new RiwayatPerubahanPembimbing with this data.
+     */
+    create: XOR<RiwayatPerubahanPembimbingCreateInput, RiwayatPerubahanPembimbingUncheckedCreateInput>
+    /**
+     * In case the RiwayatPerubahanPembimbing was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RiwayatPerubahanPembimbingUpdateInput, RiwayatPerubahanPembimbingUncheckedUpdateInput>
+  }
+
+  /**
+   * RiwayatPerubahanPembimbing delete
+   */
+  export type RiwayatPerubahanPembimbingDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RiwayatPerubahanPembimbing
+     */
+    select?: RiwayatPerubahanPembimbingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RiwayatPerubahanPembimbing
+     */
+    omit?: RiwayatPerubahanPembimbingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RiwayatPerubahanPembimbingInclude<ExtArgs> | null
+    /**
+     * Filter which RiwayatPerubahanPembimbing to delete.
+     */
+    where: RiwayatPerubahanPembimbingWhereUniqueInput
+  }
+
+  /**
+   * RiwayatPerubahanPembimbing deleteMany
+   */
+  export type RiwayatPerubahanPembimbingDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RiwayatPerubahanPembimbings to delete
+     */
+    where?: RiwayatPerubahanPembimbingWhereInput
+    /**
+     * Limit how many RiwayatPerubahanPembimbings to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * RiwayatPerubahanPembimbing without action
+   */
+  export type RiwayatPerubahanPembimbingDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RiwayatPerubahanPembimbing
+     */
+    select?: RiwayatPerubahanPembimbingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RiwayatPerubahanPembimbing
+     */
+    omit?: RiwayatPerubahanPembimbingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RiwayatPerubahanPembimbingInclude<ExtArgs> | null
   }
 
 
@@ -14228,6 +16509,7 @@ export namespace Prisma {
     pekerjaan: 'pekerjaan',
     nomorTelpon: 'nomorTelpon',
     email: 'email',
+    jenisKelamin: 'jenisKelamin',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -14256,27 +16538,11 @@ export namespace Prisma {
   export type LogbookScalarFieldEnum = (typeof LogbookScalarFieldEnum)[keyof typeof LogbookScalarFieldEnum]
 
 
-  export const RiwayatPerubahanPembimbingScalarFieldEnum: {
-    id: 'id',
-    mahasiswaId: 'mahasiswaId',
-    alasan: 'alasan',
-    pembimbingIdLama: 'pembimbingIdLama',
-    promotorIdLama: 'promotorIdLama',
-    koPromotorIdLama: 'koPromotorIdLama',
-    pembimbingIdBaru: 'pembimbingIdBaru',
-    promotorIdBaru: 'promotorIdBaru',
-    koPromotorIdBaru: 'koPromotorIdBaru',
-    changedAt: 'changedAt'
-  };
-
-  export type RiwayatPerubahanPembimbingScalarFieldEnum = (typeof RiwayatPerubahanPembimbingScalarFieldEnum)[keyof typeof RiwayatPerubahanPembimbingScalarFieldEnum]
-
-
   export const KegiatanScalarFieldEnum: {
     id: 'id',
     logbookId: 'logbookId',
     mataKuliahId: 'mataKuliahId',
-    fieldsData: 'fieldsData',
+    jenisKegiatanId: 'jenisKegiatanId',
     status: 'status',
     alasanDitolak: 'alasanDitolak',
     createdAt: 'createdAt',
@@ -14349,18 +16615,56 @@ export namespace Prisma {
   export type ProgramStudiScalarFieldEnum = (typeof ProgramStudiScalarFieldEnum)[keyof typeof ProgramStudiScalarFieldEnum]
 
 
-  export const ProgramStudiFieldScalarFieldEnum: {
+  export const JenisKegiatanScalarFieldEnum: {
     id: 'id',
     programStudiId: 'programStudiId',
+    nama: 'nama',
+    templateIdentifier: 'templateIdentifier',
+    isMataKuliahRequired: 'isMataKuliahRequired',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type JenisKegiatanScalarFieldEnum = (typeof JenisKegiatanScalarFieldEnum)[keyof typeof JenisKegiatanScalarFieldEnum]
+
+
+  export const JenisKegiatanFieldScalarFieldEnum: {
+    id: 'id',
+    jenisKegiatanId: 'jenisKegiatanId',
     fieldName: 'fieldName',
     fieldType: 'fieldType',
+    templateKey: 'templateKey',
     isRequired: 'isRequired',
     order: 'order',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
 
-  export type ProgramStudiFieldScalarFieldEnum = (typeof ProgramStudiFieldScalarFieldEnum)[keyof typeof ProgramStudiFieldScalarFieldEnum]
+  export type JenisKegiatanFieldScalarFieldEnum = (typeof JenisKegiatanFieldScalarFieldEnum)[keyof typeof JenisKegiatanFieldScalarFieldEnum]
+
+
+  export const FieldKegiatanValuesScalarFieldEnum: {
+    id: 'id',
+    kegiatanId: 'kegiatanId',
+    jenisKegiatanFieldId: 'jenisKegiatanFieldId',
+    value: 'value',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type FieldKegiatanValuesScalarFieldEnum = (typeof FieldKegiatanValuesScalarFieldEnum)[keyof typeof FieldKegiatanValuesScalarFieldEnum]
+
+
+  export const RiwayatPerubahanPembimbingScalarFieldEnum: {
+    id: 'id',
+    mahasiswaId: 'mahasiswaId',
+    alasan: 'alasan',
+    pembimbingIdLama: 'pembimbingIdLama',
+    pembimbingIdBaru: 'pembimbingIdBaru',
+    changedAt: 'changedAt'
+  };
+
+  export type RiwayatPerubahanPembimbingScalarFieldEnum = (typeof RiwayatPerubahanPembimbingScalarFieldEnum)[keyof typeof RiwayatPerubahanPembimbingScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -14369,14 +16673,6 @@ export namespace Prisma {
   };
 
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
-
-
-  export const NullableJsonNullValueInput: {
-    DbNull: typeof DbNull,
-    JsonNull: typeof JsonNull
-  };
-
-  export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
   export const NullsOrder: {
@@ -14412,7 +16708,8 @@ export namespace Prisma {
     tahunLulus: 'tahunLulus',
     pekerjaan: 'pekerjaan',
     nomorTelpon: 'nomorTelpon',
-    email: 'email'
+    email: 'email',
+    jenisKelamin: 'jenisKelamin'
   };
 
   export type MahasiswaOrderByRelevanceFieldEnum = (typeof MahasiswaOrderByRelevanceFieldEnum)[keyof typeof MahasiswaOrderByRelevanceFieldEnum]
@@ -14435,41 +16732,10 @@ export namespace Prisma {
   export type LogbookOrderByRelevanceFieldEnum = (typeof LogbookOrderByRelevanceFieldEnum)[keyof typeof LogbookOrderByRelevanceFieldEnum]
 
 
-  export const RiwayatPerubahanPembimbingOrderByRelevanceFieldEnum: {
-    id: 'id',
-    mahasiswaId: 'mahasiswaId',
-    alasan: 'alasan',
-    pembimbingIdLama: 'pembimbingIdLama',
-    promotorIdLama: 'promotorIdLama',
-    koPromotorIdLama: 'koPromotorIdLama',
-    pembimbingIdBaru: 'pembimbingIdBaru',
-    promotorIdBaru: 'promotorIdBaru',
-    koPromotorIdBaru: 'koPromotorIdBaru'
-  };
-
-  export type RiwayatPerubahanPembimbingOrderByRelevanceFieldEnum = (typeof RiwayatPerubahanPembimbingOrderByRelevanceFieldEnum)[keyof typeof RiwayatPerubahanPembimbingOrderByRelevanceFieldEnum]
-
-
-  export const JsonNullValueFilter: {
-    DbNull: typeof DbNull,
-    JsonNull: typeof JsonNull,
-    AnyNull: typeof AnyNull
-  };
-
-  export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
-
-
-  export const QueryMode: {
-    default: 'default',
-    insensitive: 'insensitive'
-  };
-
-  export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
-
-
   export const KegiatanOrderByRelevanceFieldEnum: {
     id: 'id',
     logbookId: 'logbookId',
+    jenisKegiatanId: 'jenisKegiatanId',
     status: 'status',
     alasanDitolak: 'alasanDitolak'
   };
@@ -14526,14 +16792,46 @@ export namespace Prisma {
   export type ProgramStudiOrderByRelevanceFieldEnum = (typeof ProgramStudiOrderByRelevanceFieldEnum)[keyof typeof ProgramStudiOrderByRelevanceFieldEnum]
 
 
-  export const ProgramStudiFieldOrderByRelevanceFieldEnum: {
+  export const JenisKegiatanOrderByRelevanceFieldEnum: {
     id: 'id',
     programStudiId: 'programStudiId',
-    fieldName: 'fieldName',
-    fieldType: 'fieldType'
+    nama: 'nama',
+    templateIdentifier: 'templateIdentifier'
   };
 
-  export type ProgramStudiFieldOrderByRelevanceFieldEnum = (typeof ProgramStudiFieldOrderByRelevanceFieldEnum)[keyof typeof ProgramStudiFieldOrderByRelevanceFieldEnum]
+  export type JenisKegiatanOrderByRelevanceFieldEnum = (typeof JenisKegiatanOrderByRelevanceFieldEnum)[keyof typeof JenisKegiatanOrderByRelevanceFieldEnum]
+
+
+  export const JenisKegiatanFieldOrderByRelevanceFieldEnum: {
+    id: 'id',
+    jenisKegiatanId: 'jenisKegiatanId',
+    fieldName: 'fieldName',
+    fieldType: 'fieldType',
+    templateKey: 'templateKey'
+  };
+
+  export type JenisKegiatanFieldOrderByRelevanceFieldEnum = (typeof JenisKegiatanFieldOrderByRelevanceFieldEnum)[keyof typeof JenisKegiatanFieldOrderByRelevanceFieldEnum]
+
+
+  export const FieldKegiatanValuesOrderByRelevanceFieldEnum: {
+    id: 'id',
+    kegiatanId: 'kegiatanId',
+    jenisKegiatanFieldId: 'jenisKegiatanFieldId',
+    value: 'value'
+  };
+
+  export type FieldKegiatanValuesOrderByRelevanceFieldEnum = (typeof FieldKegiatanValuesOrderByRelevanceFieldEnum)[keyof typeof FieldKegiatanValuesOrderByRelevanceFieldEnum]
+
+
+  export const RiwayatPerubahanPembimbingOrderByRelevanceFieldEnum: {
+    id: 'id',
+    mahasiswaId: 'mahasiswaId',
+    alasan: 'alasan',
+    pembimbingIdLama: 'pembimbingIdLama',
+    pembimbingIdBaru: 'pembimbingIdBaru'
+  };
+
+  export type RiwayatPerubahanPembimbingOrderByRelevanceFieldEnum = (typeof RiwayatPerubahanPembimbingOrderByRelevanceFieldEnum)[keyof typeof RiwayatPerubahanPembimbingOrderByRelevanceFieldEnum]
 
 
   /**
@@ -14559,20 +16857,6 @@ export namespace Prisma {
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-  /**
-   * Reference to a field of type 'Json'
-   */
-  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
-    
-
-
-  /**
-   * Reference to a field of type 'QueryMode'
-   */
-  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -14699,6 +16983,7 @@ export namespace Prisma {
     pekerjaan?: StringNullableFilter<"Mahasiswa"> | string | null
     nomorTelpon?: StringNullableFilter<"Mahasiswa"> | string | null
     email?: StringNullableFilter<"Mahasiswa"> | string | null
+    jenisKelamin?: StringNullableFilter<"Mahasiswa"> | string | null
     createdAt?: DateTimeFilter<"Mahasiswa"> | Date | string
     updatedAt?: DateTimeFilter<"Mahasiswa"> | Date | string
     pengguna?: XOR<PenggunaScalarRelationFilter, PenggunaWhereInput>
@@ -14723,6 +17008,7 @@ export namespace Prisma {
     pekerjaan?: SortOrderInput | SortOrder
     nomorTelpon?: SortOrderInput | SortOrder
     email?: SortOrderInput | SortOrder
+    jenisKelamin?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     pengguna?: PenggunaOrderByWithRelationInput
@@ -14751,6 +17037,7 @@ export namespace Prisma {
     pekerjaan?: StringNullableFilter<"Mahasiswa"> | string | null
     nomorTelpon?: StringNullableFilter<"Mahasiswa"> | string | null
     email?: StringNullableFilter<"Mahasiswa"> | string | null
+    jenisKelamin?: StringNullableFilter<"Mahasiswa"> | string | null
     createdAt?: DateTimeFilter<"Mahasiswa"> | Date | string
     updatedAt?: DateTimeFilter<"Mahasiswa"> | Date | string
     pengguna?: XOR<PenggunaScalarRelationFilter, PenggunaWhereInput>
@@ -14775,6 +17062,7 @@ export namespace Prisma {
     pekerjaan?: SortOrderInput | SortOrder
     nomorTelpon?: SortOrderInput | SortOrder
     email?: SortOrderInput | SortOrder
+    jenisKelamin?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: MahasiswaCountOrderByAggregateInput
@@ -14802,6 +17090,7 @@ export namespace Prisma {
     pekerjaan?: StringNullableWithAggregatesFilter<"Mahasiswa"> | string | null
     nomorTelpon?: StringNullableWithAggregatesFilter<"Mahasiswa"> | string | null
     email?: StringNullableWithAggregatesFilter<"Mahasiswa"> | string | null
+    jenisKelamin?: StringNullableWithAggregatesFilter<"Mahasiswa"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Mahasiswa"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Mahasiswa"> | Date | string
   }
@@ -14868,18 +17157,18 @@ export namespace Prisma {
     OR?: LogbookWhereInput[]
     NOT?: LogbookWhereInput | LogbookWhereInput[]
     id?: StringFilter<"Logbook"> | string
-    mahasiswaId?: StringFilter<"Logbook"> | string
+    mahasiswaId?: StringNullableFilter<"Logbook"> | string | null
     createdAt?: DateTimeFilter<"Logbook"> | Date | string
     updatedAt?: DateTimeFilter<"Logbook"> | Date | string
     penggunaId?: StringNullableFilter<"Logbook"> | string | null
-    mahasiswa?: XOR<MahasiswaScalarRelationFilter, MahasiswaWhereInput>
+    mahasiswa?: XOR<MahasiswaNullableScalarRelationFilter, MahasiswaWhereInput> | null
     kegiatan?: KegiatanListRelationFilter
     Pengguna?: XOR<PenggunaNullableScalarRelationFilter, PenggunaWhereInput> | null
   }
 
   export type LogbookOrderByWithRelationInput = {
     id?: SortOrder
-    mahasiswaId?: SortOrder
+    mahasiswaId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     penggunaId?: SortOrderInput | SortOrder
@@ -14894,18 +17183,18 @@ export namespace Prisma {
     AND?: LogbookWhereInput | LogbookWhereInput[]
     OR?: LogbookWhereInput[]
     NOT?: LogbookWhereInput | LogbookWhereInput[]
-    mahasiswaId?: StringFilter<"Logbook"> | string
+    mahasiswaId?: StringNullableFilter<"Logbook"> | string | null
     createdAt?: DateTimeFilter<"Logbook"> | Date | string
     updatedAt?: DateTimeFilter<"Logbook"> | Date | string
     penggunaId?: StringNullableFilter<"Logbook"> | string | null
-    mahasiswa?: XOR<MahasiswaScalarRelationFilter, MahasiswaWhereInput>
+    mahasiswa?: XOR<MahasiswaNullableScalarRelationFilter, MahasiswaWhereInput> | null
     kegiatan?: KegiatanListRelationFilter
     Pengguna?: XOR<PenggunaNullableScalarRelationFilter, PenggunaWhereInput> | null
   }, "id">
 
   export type LogbookOrderByWithAggregationInput = {
     id?: SortOrder
-    mahasiswaId?: SortOrder
+    mahasiswaId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     penggunaId?: SortOrderInput | SortOrder
@@ -14919,91 +17208,10 @@ export namespace Prisma {
     OR?: LogbookScalarWhereWithAggregatesInput[]
     NOT?: LogbookScalarWhereWithAggregatesInput | LogbookScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Logbook"> | string
-    mahasiswaId?: StringWithAggregatesFilter<"Logbook"> | string
+    mahasiswaId?: StringNullableWithAggregatesFilter<"Logbook"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Logbook"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Logbook"> | Date | string
     penggunaId?: StringNullableWithAggregatesFilter<"Logbook"> | string | null
-  }
-
-  export type RiwayatPerubahanPembimbingWhereInput = {
-    AND?: RiwayatPerubahanPembimbingWhereInput | RiwayatPerubahanPembimbingWhereInput[]
-    OR?: RiwayatPerubahanPembimbingWhereInput[]
-    NOT?: RiwayatPerubahanPembimbingWhereInput | RiwayatPerubahanPembimbingWhereInput[]
-    id?: StringFilter<"RiwayatPerubahanPembimbing"> | string
-    mahasiswaId?: StringFilter<"RiwayatPerubahanPembimbing"> | string
-    alasan?: StringFilter<"RiwayatPerubahanPembimbing"> | string
-    pembimbingIdLama?: StringNullableFilter<"RiwayatPerubahanPembimbing"> | string | null
-    promotorIdLama?: StringNullableFilter<"RiwayatPerubahanPembimbing"> | string | null
-    koPromotorIdLama?: StringNullableFilter<"RiwayatPerubahanPembimbing"> | string | null
-    pembimbingIdBaru?: StringNullableFilter<"RiwayatPerubahanPembimbing"> | string | null
-    promotorIdBaru?: StringNullableFilter<"RiwayatPerubahanPembimbing"> | string | null
-    koPromotorIdBaru?: StringNullableFilter<"RiwayatPerubahanPembimbing"> | string | null
-    changedAt?: DateTimeFilter<"RiwayatPerubahanPembimbing"> | Date | string
-    mahasiswa?: XOR<MahasiswaScalarRelationFilter, MahasiswaWhereInput>
-  }
-
-  export type RiwayatPerubahanPembimbingOrderByWithRelationInput = {
-    id?: SortOrder
-    mahasiswaId?: SortOrder
-    alasan?: SortOrder
-    pembimbingIdLama?: SortOrderInput | SortOrder
-    promotorIdLama?: SortOrderInput | SortOrder
-    koPromotorIdLama?: SortOrderInput | SortOrder
-    pembimbingIdBaru?: SortOrderInput | SortOrder
-    promotorIdBaru?: SortOrderInput | SortOrder
-    koPromotorIdBaru?: SortOrderInput | SortOrder
-    changedAt?: SortOrder
-    mahasiswa?: MahasiswaOrderByWithRelationInput
-    _relevance?: RiwayatPerubahanPembimbingOrderByRelevanceInput
-  }
-
-  export type RiwayatPerubahanPembimbingWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    AND?: RiwayatPerubahanPembimbingWhereInput | RiwayatPerubahanPembimbingWhereInput[]
-    OR?: RiwayatPerubahanPembimbingWhereInput[]
-    NOT?: RiwayatPerubahanPembimbingWhereInput | RiwayatPerubahanPembimbingWhereInput[]
-    mahasiswaId?: StringFilter<"RiwayatPerubahanPembimbing"> | string
-    alasan?: StringFilter<"RiwayatPerubahanPembimbing"> | string
-    pembimbingIdLama?: StringNullableFilter<"RiwayatPerubahanPembimbing"> | string | null
-    promotorIdLama?: StringNullableFilter<"RiwayatPerubahanPembimbing"> | string | null
-    koPromotorIdLama?: StringNullableFilter<"RiwayatPerubahanPembimbing"> | string | null
-    pembimbingIdBaru?: StringNullableFilter<"RiwayatPerubahanPembimbing"> | string | null
-    promotorIdBaru?: StringNullableFilter<"RiwayatPerubahanPembimbing"> | string | null
-    koPromotorIdBaru?: StringNullableFilter<"RiwayatPerubahanPembimbing"> | string | null
-    changedAt?: DateTimeFilter<"RiwayatPerubahanPembimbing"> | Date | string
-    mahasiswa?: XOR<MahasiswaScalarRelationFilter, MahasiswaWhereInput>
-  }, "id">
-
-  export type RiwayatPerubahanPembimbingOrderByWithAggregationInput = {
-    id?: SortOrder
-    mahasiswaId?: SortOrder
-    alasan?: SortOrder
-    pembimbingIdLama?: SortOrderInput | SortOrder
-    promotorIdLama?: SortOrderInput | SortOrder
-    koPromotorIdLama?: SortOrderInput | SortOrder
-    pembimbingIdBaru?: SortOrderInput | SortOrder
-    promotorIdBaru?: SortOrderInput | SortOrder
-    koPromotorIdBaru?: SortOrderInput | SortOrder
-    changedAt?: SortOrder
-    _count?: RiwayatPerubahanPembimbingCountOrderByAggregateInput
-    _max?: RiwayatPerubahanPembimbingMaxOrderByAggregateInput
-    _min?: RiwayatPerubahanPembimbingMinOrderByAggregateInput
-  }
-
-  export type RiwayatPerubahanPembimbingScalarWhereWithAggregatesInput = {
-    AND?: RiwayatPerubahanPembimbingScalarWhereWithAggregatesInput | RiwayatPerubahanPembimbingScalarWhereWithAggregatesInput[]
-    OR?: RiwayatPerubahanPembimbingScalarWhereWithAggregatesInput[]
-    NOT?: RiwayatPerubahanPembimbingScalarWhereWithAggregatesInput | RiwayatPerubahanPembimbingScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"RiwayatPerubahanPembimbing"> | string
-    mahasiswaId?: StringWithAggregatesFilter<"RiwayatPerubahanPembimbing"> | string
-    alasan?: StringWithAggregatesFilter<"RiwayatPerubahanPembimbing"> | string
-    pembimbingIdLama?: StringNullableWithAggregatesFilter<"RiwayatPerubahanPembimbing"> | string | null
-    promotorIdLama?: StringNullableWithAggregatesFilter<"RiwayatPerubahanPembimbing"> | string | null
-    koPromotorIdLama?: StringNullableWithAggregatesFilter<"RiwayatPerubahanPembimbing"> | string | null
-    pembimbingIdBaru?: StringNullableWithAggregatesFilter<"RiwayatPerubahanPembimbing"> | string | null
-    promotorIdBaru?: StringNullableWithAggregatesFilter<"RiwayatPerubahanPembimbing"> | string | null
-    koPromotorIdBaru?: StringNullableWithAggregatesFilter<"RiwayatPerubahanPembimbing"> | string | null
-    changedAt?: DateTimeWithAggregatesFilter<"RiwayatPerubahanPembimbing"> | Date | string
   }
 
   export type KegiatanWhereInput = {
@@ -15012,28 +17220,32 @@ export namespace Prisma {
     NOT?: KegiatanWhereInput | KegiatanWhereInput[]
     id?: StringFilter<"Kegiatan"> | string
     logbookId?: StringFilter<"Kegiatan"> | string
-    mataKuliahId?: IntFilter<"Kegiatan"> | number
-    fieldsData?: JsonNullableFilter<"Kegiatan">
+    mataKuliahId?: IntNullableFilter<"Kegiatan"> | number | null
+    jenisKegiatanId?: StringFilter<"Kegiatan"> | string
     status?: StringFilter<"Kegiatan"> | string
     alasanDitolak?: StringNullableFilter<"Kegiatan"> | string | null
     createdAt?: DateTimeFilter<"Kegiatan"> | Date | string
     updatedAt?: DateTimeFilter<"Kegiatan"> | Date | string
     logbook?: XOR<LogbookScalarRelationFilter, LogbookWhereInput>
-    MataKuliah?: XOR<MataKuliahScalarRelationFilter, MataKuliahWhereInput>
+    MataKuliah?: XOR<MataKuliahNullableScalarRelationFilter, MataKuliahWhereInput> | null
+    jenisKegiatan?: XOR<JenisKegiatanScalarRelationFilter, JenisKegiatanWhereInput>
+    fieldValues?: FieldKegiatanValuesListRelationFilter
     lampiran?: LampiranListRelationFilter
   }
 
   export type KegiatanOrderByWithRelationInput = {
     id?: SortOrder
     logbookId?: SortOrder
-    mataKuliahId?: SortOrder
-    fieldsData?: SortOrderInput | SortOrder
+    mataKuliahId?: SortOrderInput | SortOrder
+    jenisKegiatanId?: SortOrder
     status?: SortOrder
     alasanDitolak?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     logbook?: LogbookOrderByWithRelationInput
     MataKuliah?: MataKuliahOrderByWithRelationInput
+    jenisKegiatan?: JenisKegiatanOrderByWithRelationInput
+    fieldValues?: FieldKegiatanValuesOrderByRelationAggregateInput
     lampiran?: LampiranOrderByRelationAggregateInput
     _relevance?: KegiatanOrderByRelevanceInput
   }
@@ -15044,22 +17256,24 @@ export namespace Prisma {
     OR?: KegiatanWhereInput[]
     NOT?: KegiatanWhereInput | KegiatanWhereInput[]
     logbookId?: StringFilter<"Kegiatan"> | string
-    mataKuliahId?: IntFilter<"Kegiatan"> | number
-    fieldsData?: JsonNullableFilter<"Kegiatan">
+    mataKuliahId?: IntNullableFilter<"Kegiatan"> | number | null
+    jenisKegiatanId?: StringFilter<"Kegiatan"> | string
     status?: StringFilter<"Kegiatan"> | string
     alasanDitolak?: StringNullableFilter<"Kegiatan"> | string | null
     createdAt?: DateTimeFilter<"Kegiatan"> | Date | string
     updatedAt?: DateTimeFilter<"Kegiatan"> | Date | string
     logbook?: XOR<LogbookScalarRelationFilter, LogbookWhereInput>
-    MataKuliah?: XOR<MataKuliahScalarRelationFilter, MataKuliahWhereInput>
+    MataKuliah?: XOR<MataKuliahNullableScalarRelationFilter, MataKuliahWhereInput> | null
+    jenisKegiatan?: XOR<JenisKegiatanScalarRelationFilter, JenisKegiatanWhereInput>
+    fieldValues?: FieldKegiatanValuesListRelationFilter
     lampiran?: LampiranListRelationFilter
   }, "id">
 
   export type KegiatanOrderByWithAggregationInput = {
     id?: SortOrder
     logbookId?: SortOrder
-    mataKuliahId?: SortOrder
-    fieldsData?: SortOrderInput | SortOrder
+    mataKuliahId?: SortOrderInput | SortOrder
+    jenisKegiatanId?: SortOrder
     status?: SortOrder
     alasanDitolak?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -15077,8 +17291,8 @@ export namespace Prisma {
     NOT?: KegiatanScalarWhereWithAggregatesInput | KegiatanScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Kegiatan"> | string
     logbookId?: StringWithAggregatesFilter<"Kegiatan"> | string
-    mataKuliahId?: IntWithAggregatesFilter<"Kegiatan"> | number
-    fieldsData?: JsonNullableWithAggregatesFilter<"Kegiatan">
+    mataKuliahId?: IntNullableWithAggregatesFilter<"Kegiatan"> | number | null
+    jenisKegiatanId?: StringWithAggregatesFilter<"Kegiatan"> | string
     status?: StringWithAggregatesFilter<"Kegiatan"> | string
     alasanDitolak?: StringNullableWithAggregatesFilter<"Kegiatan"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Kegiatan"> | Date | string
@@ -15364,7 +17578,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"ProgramStudi"> | Date | string
     updatedAt?: DateTimeFilter<"ProgramStudi"> | Date | string
     pengguna?: PenggunaListRelationFilter
-    fields?: ProgramStudiFieldListRelationFilter
+    jenisKegiatan?: JenisKegiatanListRelationFilter
     mataKuliah?: MataKuliahListRelationFilter
   }
 
@@ -15376,7 +17590,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     pengguna?: PenggunaOrderByRelationAggregateInput
-    fields?: ProgramStudiFieldOrderByRelationAggregateInput
+    jenisKegiatan?: JenisKegiatanOrderByRelationAggregateInput
     mataKuliah?: MataKuliahOrderByRelationAggregateInput
     _relevance?: ProgramStudiOrderByRelevanceInput
   }
@@ -15392,7 +17606,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"ProgramStudi"> | Date | string
     updatedAt?: DateTimeFilter<"ProgramStudi"> | Date | string
     pengguna?: PenggunaListRelationFilter
-    fields?: ProgramStudiFieldListRelationFilter
+    jenisKegiatan?: JenisKegiatanListRelationFilter
     mataKuliah?: MataKuliahListRelationFilter
   }, "id" | "nama">
 
@@ -15420,78 +17634,285 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"ProgramStudi"> | Date | string
   }
 
-  export type ProgramStudiFieldWhereInput = {
-    AND?: ProgramStudiFieldWhereInput | ProgramStudiFieldWhereInput[]
-    OR?: ProgramStudiFieldWhereInput[]
-    NOT?: ProgramStudiFieldWhereInput | ProgramStudiFieldWhereInput[]
-    id?: StringFilter<"ProgramStudiField"> | string
-    programStudiId?: StringFilter<"ProgramStudiField"> | string
-    fieldName?: StringFilter<"ProgramStudiField"> | string
-    fieldType?: StringFilter<"ProgramStudiField"> | string
-    isRequired?: BoolFilter<"ProgramStudiField"> | boolean
-    order?: IntFilter<"ProgramStudiField"> | number
-    createdAt?: DateTimeFilter<"ProgramStudiField"> | Date | string
-    updatedAt?: DateTimeFilter<"ProgramStudiField"> | Date | string
+  export type JenisKegiatanWhereInput = {
+    AND?: JenisKegiatanWhereInput | JenisKegiatanWhereInput[]
+    OR?: JenisKegiatanWhereInput[]
+    NOT?: JenisKegiatanWhereInput | JenisKegiatanWhereInput[]
+    id?: StringFilter<"JenisKegiatan"> | string
+    programStudiId?: StringFilter<"JenisKegiatan"> | string
+    nama?: StringFilter<"JenisKegiatan"> | string
+    templateIdentifier?: StringNullableFilter<"JenisKegiatan"> | string | null
+    isMataKuliahRequired?: BoolFilter<"JenisKegiatan"> | boolean
+    createdAt?: DateTimeFilter<"JenisKegiatan"> | Date | string
+    updatedAt?: DateTimeFilter<"JenisKegiatan"> | Date | string
     programStudi?: XOR<ProgramStudiScalarRelationFilter, ProgramStudiWhereInput>
+    kegiatan?: KegiatanListRelationFilter
+    fields?: JenisKegiatanFieldListRelationFilter
   }
 
-  export type ProgramStudiFieldOrderByWithRelationInput = {
+  export type JenisKegiatanOrderByWithRelationInput = {
     id?: SortOrder
     programStudiId?: SortOrder
-    fieldName?: SortOrder
-    fieldType?: SortOrder
-    isRequired?: SortOrder
-    order?: SortOrder
+    nama?: SortOrder
+    templateIdentifier?: SortOrderInput | SortOrder
+    isMataKuliahRequired?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     programStudi?: ProgramStudiOrderByWithRelationInput
-    _relevance?: ProgramStudiFieldOrderByRelevanceInput
+    kegiatan?: KegiatanOrderByRelationAggregateInput
+    fields?: JenisKegiatanFieldOrderByRelationAggregateInput
+    _relevance?: JenisKegiatanOrderByRelevanceInput
   }
 
-  export type ProgramStudiFieldWhereUniqueInput = Prisma.AtLeast<{
+  export type JenisKegiatanWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    programStudiId_fieldName?: ProgramStudiFieldProgramStudiIdFieldNameCompoundUniqueInput
-    AND?: ProgramStudiFieldWhereInput | ProgramStudiFieldWhereInput[]
-    OR?: ProgramStudiFieldWhereInput[]
-    NOT?: ProgramStudiFieldWhereInput | ProgramStudiFieldWhereInput[]
-    programStudiId?: StringFilter<"ProgramStudiField"> | string
-    fieldName?: StringFilter<"ProgramStudiField"> | string
-    fieldType?: StringFilter<"ProgramStudiField"> | string
-    isRequired?: BoolFilter<"ProgramStudiField"> | boolean
-    order?: IntFilter<"ProgramStudiField"> | number
-    createdAt?: DateTimeFilter<"ProgramStudiField"> | Date | string
-    updatedAt?: DateTimeFilter<"ProgramStudiField"> | Date | string
+    templateIdentifier?: string
+    programStudiId_nama?: JenisKegiatanProgramStudiIdNamaCompoundUniqueInput
+    AND?: JenisKegiatanWhereInput | JenisKegiatanWhereInput[]
+    OR?: JenisKegiatanWhereInput[]
+    NOT?: JenisKegiatanWhereInput | JenisKegiatanWhereInput[]
+    programStudiId?: StringFilter<"JenisKegiatan"> | string
+    nama?: StringFilter<"JenisKegiatan"> | string
+    isMataKuliahRequired?: BoolFilter<"JenisKegiatan"> | boolean
+    createdAt?: DateTimeFilter<"JenisKegiatan"> | Date | string
+    updatedAt?: DateTimeFilter<"JenisKegiatan"> | Date | string
     programStudi?: XOR<ProgramStudiScalarRelationFilter, ProgramStudiWhereInput>
-  }, "id" | "programStudiId_fieldName">
+    kegiatan?: KegiatanListRelationFilter
+    fields?: JenisKegiatanFieldListRelationFilter
+  }, "id" | "templateIdentifier" | "programStudiId_nama">
 
-  export type ProgramStudiFieldOrderByWithAggregationInput = {
+  export type JenisKegiatanOrderByWithAggregationInput = {
     id?: SortOrder
     programStudiId?: SortOrder
+    nama?: SortOrder
+    templateIdentifier?: SortOrderInput | SortOrder
+    isMataKuliahRequired?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: JenisKegiatanCountOrderByAggregateInput
+    _max?: JenisKegiatanMaxOrderByAggregateInput
+    _min?: JenisKegiatanMinOrderByAggregateInput
+  }
+
+  export type JenisKegiatanScalarWhereWithAggregatesInput = {
+    AND?: JenisKegiatanScalarWhereWithAggregatesInput | JenisKegiatanScalarWhereWithAggregatesInput[]
+    OR?: JenisKegiatanScalarWhereWithAggregatesInput[]
+    NOT?: JenisKegiatanScalarWhereWithAggregatesInput | JenisKegiatanScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"JenisKegiatan"> | string
+    programStudiId?: StringWithAggregatesFilter<"JenisKegiatan"> | string
+    nama?: StringWithAggregatesFilter<"JenisKegiatan"> | string
+    templateIdentifier?: StringNullableWithAggregatesFilter<"JenisKegiatan"> | string | null
+    isMataKuliahRequired?: BoolWithAggregatesFilter<"JenisKegiatan"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"JenisKegiatan"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"JenisKegiatan"> | Date | string
+  }
+
+  export type JenisKegiatanFieldWhereInput = {
+    AND?: JenisKegiatanFieldWhereInput | JenisKegiatanFieldWhereInput[]
+    OR?: JenisKegiatanFieldWhereInput[]
+    NOT?: JenisKegiatanFieldWhereInput | JenisKegiatanFieldWhereInput[]
+    id?: StringFilter<"JenisKegiatanField"> | string
+    jenisKegiatanId?: StringFilter<"JenisKegiatanField"> | string
+    fieldName?: StringFilter<"JenisKegiatanField"> | string
+    fieldType?: StringFilter<"JenisKegiatanField"> | string
+    templateKey?: StringNullableFilter<"JenisKegiatanField"> | string | null
+    isRequired?: BoolFilter<"JenisKegiatanField"> | boolean
+    order?: IntFilter<"JenisKegiatanField"> | number
+    createdAt?: DateTimeFilter<"JenisKegiatanField"> | Date | string
+    updatedAt?: DateTimeFilter<"JenisKegiatanField"> | Date | string
+    jenisKegiatan?: XOR<JenisKegiatanScalarRelationFilter, JenisKegiatanWhereInput>
+    fieldValues?: FieldKegiatanValuesListRelationFilter
+  }
+
+  export type JenisKegiatanFieldOrderByWithRelationInput = {
+    id?: SortOrder
+    jenisKegiatanId?: SortOrder
     fieldName?: SortOrder
     fieldType?: SortOrder
+    templateKey?: SortOrderInput | SortOrder
     isRequired?: SortOrder
     order?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    _count?: ProgramStudiFieldCountOrderByAggregateInput
-    _avg?: ProgramStudiFieldAvgOrderByAggregateInput
-    _max?: ProgramStudiFieldMaxOrderByAggregateInput
-    _min?: ProgramStudiFieldMinOrderByAggregateInput
-    _sum?: ProgramStudiFieldSumOrderByAggregateInput
+    jenisKegiatan?: JenisKegiatanOrderByWithRelationInput
+    fieldValues?: FieldKegiatanValuesOrderByRelationAggregateInput
+    _relevance?: JenisKegiatanFieldOrderByRelevanceInput
   }
 
-  export type ProgramStudiFieldScalarWhereWithAggregatesInput = {
-    AND?: ProgramStudiFieldScalarWhereWithAggregatesInput | ProgramStudiFieldScalarWhereWithAggregatesInput[]
-    OR?: ProgramStudiFieldScalarWhereWithAggregatesInput[]
-    NOT?: ProgramStudiFieldScalarWhereWithAggregatesInput | ProgramStudiFieldScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"ProgramStudiField"> | string
-    programStudiId?: StringWithAggregatesFilter<"ProgramStudiField"> | string
-    fieldName?: StringWithAggregatesFilter<"ProgramStudiField"> | string
-    fieldType?: StringWithAggregatesFilter<"ProgramStudiField"> | string
-    isRequired?: BoolWithAggregatesFilter<"ProgramStudiField"> | boolean
-    order?: IntWithAggregatesFilter<"ProgramStudiField"> | number
-    createdAt?: DateTimeWithAggregatesFilter<"ProgramStudiField"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"ProgramStudiField"> | Date | string
+  export type JenisKegiatanFieldWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    jenisKegiatanId_fieldName?: JenisKegiatanFieldJenisKegiatanIdFieldNameCompoundUniqueInput
+    AND?: JenisKegiatanFieldWhereInput | JenisKegiatanFieldWhereInput[]
+    OR?: JenisKegiatanFieldWhereInput[]
+    NOT?: JenisKegiatanFieldWhereInput | JenisKegiatanFieldWhereInput[]
+    jenisKegiatanId?: StringFilter<"JenisKegiatanField"> | string
+    fieldName?: StringFilter<"JenisKegiatanField"> | string
+    fieldType?: StringFilter<"JenisKegiatanField"> | string
+    templateKey?: StringNullableFilter<"JenisKegiatanField"> | string | null
+    isRequired?: BoolFilter<"JenisKegiatanField"> | boolean
+    order?: IntFilter<"JenisKegiatanField"> | number
+    createdAt?: DateTimeFilter<"JenisKegiatanField"> | Date | string
+    updatedAt?: DateTimeFilter<"JenisKegiatanField"> | Date | string
+    jenisKegiatan?: XOR<JenisKegiatanScalarRelationFilter, JenisKegiatanWhereInput>
+    fieldValues?: FieldKegiatanValuesListRelationFilter
+  }, "id" | "jenisKegiatanId_fieldName">
+
+  export type JenisKegiatanFieldOrderByWithAggregationInput = {
+    id?: SortOrder
+    jenisKegiatanId?: SortOrder
+    fieldName?: SortOrder
+    fieldType?: SortOrder
+    templateKey?: SortOrderInput | SortOrder
+    isRequired?: SortOrder
+    order?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: JenisKegiatanFieldCountOrderByAggregateInput
+    _avg?: JenisKegiatanFieldAvgOrderByAggregateInput
+    _max?: JenisKegiatanFieldMaxOrderByAggregateInput
+    _min?: JenisKegiatanFieldMinOrderByAggregateInput
+    _sum?: JenisKegiatanFieldSumOrderByAggregateInput
+  }
+
+  export type JenisKegiatanFieldScalarWhereWithAggregatesInput = {
+    AND?: JenisKegiatanFieldScalarWhereWithAggregatesInput | JenisKegiatanFieldScalarWhereWithAggregatesInput[]
+    OR?: JenisKegiatanFieldScalarWhereWithAggregatesInput[]
+    NOT?: JenisKegiatanFieldScalarWhereWithAggregatesInput | JenisKegiatanFieldScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"JenisKegiatanField"> | string
+    jenisKegiatanId?: StringWithAggregatesFilter<"JenisKegiatanField"> | string
+    fieldName?: StringWithAggregatesFilter<"JenisKegiatanField"> | string
+    fieldType?: StringWithAggregatesFilter<"JenisKegiatanField"> | string
+    templateKey?: StringNullableWithAggregatesFilter<"JenisKegiatanField"> | string | null
+    isRequired?: BoolWithAggregatesFilter<"JenisKegiatanField"> | boolean
+    order?: IntWithAggregatesFilter<"JenisKegiatanField"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"JenisKegiatanField"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"JenisKegiatanField"> | Date | string
+  }
+
+  export type FieldKegiatanValuesWhereInput = {
+    AND?: FieldKegiatanValuesWhereInput | FieldKegiatanValuesWhereInput[]
+    OR?: FieldKegiatanValuesWhereInput[]
+    NOT?: FieldKegiatanValuesWhereInput | FieldKegiatanValuesWhereInput[]
+    id?: StringFilter<"FieldKegiatanValues"> | string
+    kegiatanId?: StringFilter<"FieldKegiatanValues"> | string
+    jenisKegiatanFieldId?: StringFilter<"FieldKegiatanValues"> | string
+    value?: StringFilter<"FieldKegiatanValues"> | string
+    createdAt?: DateTimeFilter<"FieldKegiatanValues"> | Date | string
+    updatedAt?: DateTimeFilter<"FieldKegiatanValues"> | Date | string
+    kegiatan?: XOR<KegiatanScalarRelationFilter, KegiatanWhereInput>
+    jenisKegiatanField?: XOR<JenisKegiatanFieldScalarRelationFilter, JenisKegiatanFieldWhereInput>
+  }
+
+  export type FieldKegiatanValuesOrderByWithRelationInput = {
+    id?: SortOrder
+    kegiatanId?: SortOrder
+    jenisKegiatanFieldId?: SortOrder
+    value?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    kegiatan?: KegiatanOrderByWithRelationInput
+    jenisKegiatanField?: JenisKegiatanFieldOrderByWithRelationInput
+    _relevance?: FieldKegiatanValuesOrderByRelevanceInput
+  }
+
+  export type FieldKegiatanValuesWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    kegiatanId_jenisKegiatanFieldId?: FieldKegiatanValuesKegiatanIdJenisKegiatanFieldIdCompoundUniqueInput
+    AND?: FieldKegiatanValuesWhereInput | FieldKegiatanValuesWhereInput[]
+    OR?: FieldKegiatanValuesWhereInput[]
+    NOT?: FieldKegiatanValuesWhereInput | FieldKegiatanValuesWhereInput[]
+    kegiatanId?: StringFilter<"FieldKegiatanValues"> | string
+    jenisKegiatanFieldId?: StringFilter<"FieldKegiatanValues"> | string
+    value?: StringFilter<"FieldKegiatanValues"> | string
+    createdAt?: DateTimeFilter<"FieldKegiatanValues"> | Date | string
+    updatedAt?: DateTimeFilter<"FieldKegiatanValues"> | Date | string
+    kegiatan?: XOR<KegiatanScalarRelationFilter, KegiatanWhereInput>
+    jenisKegiatanField?: XOR<JenisKegiatanFieldScalarRelationFilter, JenisKegiatanFieldWhereInput>
+  }, "id" | "kegiatanId_jenisKegiatanFieldId">
+
+  export type FieldKegiatanValuesOrderByWithAggregationInput = {
+    id?: SortOrder
+    kegiatanId?: SortOrder
+    jenisKegiatanFieldId?: SortOrder
+    value?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: FieldKegiatanValuesCountOrderByAggregateInput
+    _max?: FieldKegiatanValuesMaxOrderByAggregateInput
+    _min?: FieldKegiatanValuesMinOrderByAggregateInput
+  }
+
+  export type FieldKegiatanValuesScalarWhereWithAggregatesInput = {
+    AND?: FieldKegiatanValuesScalarWhereWithAggregatesInput | FieldKegiatanValuesScalarWhereWithAggregatesInput[]
+    OR?: FieldKegiatanValuesScalarWhereWithAggregatesInput[]
+    NOT?: FieldKegiatanValuesScalarWhereWithAggregatesInput | FieldKegiatanValuesScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"FieldKegiatanValues"> | string
+    kegiatanId?: StringWithAggregatesFilter<"FieldKegiatanValues"> | string
+    jenisKegiatanFieldId?: StringWithAggregatesFilter<"FieldKegiatanValues"> | string
+    value?: StringWithAggregatesFilter<"FieldKegiatanValues"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"FieldKegiatanValues"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"FieldKegiatanValues"> | Date | string
+  }
+
+  export type RiwayatPerubahanPembimbingWhereInput = {
+    AND?: RiwayatPerubahanPembimbingWhereInput | RiwayatPerubahanPembimbingWhereInput[]
+    OR?: RiwayatPerubahanPembimbingWhereInput[]
+    NOT?: RiwayatPerubahanPembimbingWhereInput | RiwayatPerubahanPembimbingWhereInput[]
+    id?: StringFilter<"RiwayatPerubahanPembimbing"> | string
+    mahasiswaId?: StringFilter<"RiwayatPerubahanPembimbing"> | string
+    alasan?: StringFilter<"RiwayatPerubahanPembimbing"> | string
+    pembimbingIdLama?: StringNullableFilter<"RiwayatPerubahanPembimbing"> | string | null
+    pembimbingIdBaru?: StringNullableFilter<"RiwayatPerubahanPembimbing"> | string | null
+    changedAt?: DateTimeFilter<"RiwayatPerubahanPembimbing"> | Date | string
+    mahasiswa?: XOR<MahasiswaScalarRelationFilter, MahasiswaWhereInput>
+  }
+
+  export type RiwayatPerubahanPembimbingOrderByWithRelationInput = {
+    id?: SortOrder
+    mahasiswaId?: SortOrder
+    alasan?: SortOrder
+    pembimbingIdLama?: SortOrderInput | SortOrder
+    pembimbingIdBaru?: SortOrderInput | SortOrder
+    changedAt?: SortOrder
+    mahasiswa?: MahasiswaOrderByWithRelationInput
+    _relevance?: RiwayatPerubahanPembimbingOrderByRelevanceInput
+  }
+
+  export type RiwayatPerubahanPembimbingWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: RiwayatPerubahanPembimbingWhereInput | RiwayatPerubahanPembimbingWhereInput[]
+    OR?: RiwayatPerubahanPembimbingWhereInput[]
+    NOT?: RiwayatPerubahanPembimbingWhereInput | RiwayatPerubahanPembimbingWhereInput[]
+    mahasiswaId?: StringFilter<"RiwayatPerubahanPembimbing"> | string
+    alasan?: StringFilter<"RiwayatPerubahanPembimbing"> | string
+    pembimbingIdLama?: StringNullableFilter<"RiwayatPerubahanPembimbing"> | string | null
+    pembimbingIdBaru?: StringNullableFilter<"RiwayatPerubahanPembimbing"> | string | null
+    changedAt?: DateTimeFilter<"RiwayatPerubahanPembimbing"> | Date | string
+    mahasiswa?: XOR<MahasiswaScalarRelationFilter, MahasiswaWhereInput>
+  }, "id">
+
+  export type RiwayatPerubahanPembimbingOrderByWithAggregationInput = {
+    id?: SortOrder
+    mahasiswaId?: SortOrder
+    alasan?: SortOrder
+    pembimbingIdLama?: SortOrderInput | SortOrder
+    pembimbingIdBaru?: SortOrderInput | SortOrder
+    changedAt?: SortOrder
+    _count?: RiwayatPerubahanPembimbingCountOrderByAggregateInput
+    _max?: RiwayatPerubahanPembimbingMaxOrderByAggregateInput
+    _min?: RiwayatPerubahanPembimbingMinOrderByAggregateInput
+  }
+
+  export type RiwayatPerubahanPembimbingScalarWhereWithAggregatesInput = {
+    AND?: RiwayatPerubahanPembimbingScalarWhereWithAggregatesInput | RiwayatPerubahanPembimbingScalarWhereWithAggregatesInput[]
+    OR?: RiwayatPerubahanPembimbingScalarWhereWithAggregatesInput[]
+    NOT?: RiwayatPerubahanPembimbingScalarWhereWithAggregatesInput | RiwayatPerubahanPembimbingScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"RiwayatPerubahanPembimbing"> | string
+    mahasiswaId?: StringWithAggregatesFilter<"RiwayatPerubahanPembimbing"> | string
+    alasan?: StringWithAggregatesFilter<"RiwayatPerubahanPembimbing"> | string
+    pembimbingIdLama?: StringNullableWithAggregatesFilter<"RiwayatPerubahanPembimbing"> | string | null
+    pembimbingIdBaru?: StringNullableWithAggregatesFilter<"RiwayatPerubahanPembimbing"> | string | null
+    changedAt?: DateTimeWithAggregatesFilter<"RiwayatPerubahanPembimbing"> | Date | string
   }
 
   export type PenggunaCreateInput = {
@@ -15606,6 +18027,7 @@ export namespace Prisma {
     pekerjaan?: string | null
     nomorTelpon?: string | null
     email?: string | null
+    jenisKelamin?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     pengguna: PenggunaCreateNestedOneWithoutMahasiswaInput
@@ -15630,6 +18052,7 @@ export namespace Prisma {
     pekerjaan?: string | null
     nomorTelpon?: string | null
     email?: string | null
+    jenisKelamin?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     logbook?: LogbookUncheckedCreateNestedManyWithoutMahasiswaInput
@@ -15650,6 +18073,7 @@ export namespace Prisma {
     pekerjaan?: NullableStringFieldUpdateOperationsInput | string | null
     nomorTelpon?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    jenisKelamin?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     pengguna?: PenggunaUpdateOneRequiredWithoutMahasiswaNestedInput
@@ -15674,6 +18098,7 @@ export namespace Prisma {
     pekerjaan?: NullableStringFieldUpdateOperationsInput | string | null
     nomorTelpon?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    jenisKelamin?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     logbook?: LogbookUncheckedUpdateManyWithoutMahasiswaNestedInput
@@ -15696,6 +18121,7 @@ export namespace Prisma {
     pekerjaan?: string | null
     nomorTelpon?: string | null
     email?: string | null
+    jenisKelamin?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -15713,6 +18139,7 @@ export namespace Prisma {
     pekerjaan?: NullableStringFieldUpdateOperationsInput | string | null
     nomorTelpon?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    jenisKelamin?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -15732,6 +18159,7 @@ export namespace Prisma {
     pekerjaan?: NullableStringFieldUpdateOperationsInput | string | null
     nomorTelpon?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    jenisKelamin?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -15796,14 +18224,14 @@ export namespace Prisma {
     id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    mahasiswa: MahasiswaCreateNestedOneWithoutLogbookInput
+    mahasiswa?: MahasiswaCreateNestedOneWithoutLogbookInput
     kegiatan?: KegiatanCreateNestedManyWithoutLogbookInput
     Pengguna?: PenggunaCreateNestedOneWithoutLogbookInput
   }
 
   export type LogbookUncheckedCreateInput = {
     id?: string
-    mahasiswaId: string
+    mahasiswaId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     penggunaId?: string | null
@@ -15814,14 +18242,14 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    mahasiswa?: MahasiswaUpdateOneRequiredWithoutLogbookNestedInput
+    mahasiswa?: MahasiswaUpdateOneWithoutLogbookNestedInput
     kegiatan?: KegiatanUpdateManyWithoutLogbookNestedInput
     Pengguna?: PenggunaUpdateOneWithoutLogbookNestedInput
   }
 
   export type LogbookUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    mahasiswaId?: StringFieldUpdateOperationsInput | string
+    mahasiswaId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     penggunaId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -15830,7 +18258,7 @@ export namespace Prisma {
 
   export type LogbookCreateManyInput = {
     id?: string
-    mahasiswaId: string
+    mahasiswaId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     penggunaId?: string | null
@@ -15844,155 +18272,69 @@ export namespace Prisma {
 
   export type LogbookUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    mahasiswaId?: StringFieldUpdateOperationsInput | string
+    mahasiswaId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     penggunaId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type RiwayatPerubahanPembimbingCreateInput = {
-    id?: string
-    alasan: string
-    pembimbingIdLama?: string | null
-    promotorIdLama?: string | null
-    koPromotorIdLama?: string | null
-    pembimbingIdBaru?: string | null
-    promotorIdBaru?: string | null
-    koPromotorIdBaru?: string | null
-    changedAt?: Date | string
-    mahasiswa: MahasiswaCreateNestedOneWithoutRiwayatPerubahanPembimbingInput
-  }
-
-  export type RiwayatPerubahanPembimbingUncheckedCreateInput = {
-    id?: string
-    mahasiswaId: string
-    alasan: string
-    pembimbingIdLama?: string | null
-    promotorIdLama?: string | null
-    koPromotorIdLama?: string | null
-    pembimbingIdBaru?: string | null
-    promotorIdBaru?: string | null
-    koPromotorIdBaru?: string | null
-    changedAt?: Date | string
-  }
-
-  export type RiwayatPerubahanPembimbingUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    alasan?: StringFieldUpdateOperationsInput | string
-    pembimbingIdLama?: NullableStringFieldUpdateOperationsInput | string | null
-    promotorIdLama?: NullableStringFieldUpdateOperationsInput | string | null
-    koPromotorIdLama?: NullableStringFieldUpdateOperationsInput | string | null
-    pembimbingIdBaru?: NullableStringFieldUpdateOperationsInput | string | null
-    promotorIdBaru?: NullableStringFieldUpdateOperationsInput | string | null
-    koPromotorIdBaru?: NullableStringFieldUpdateOperationsInput | string | null
-    changedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    mahasiswa?: MahasiswaUpdateOneRequiredWithoutRiwayatPerubahanPembimbingNestedInput
-  }
-
-  export type RiwayatPerubahanPembimbingUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    mahasiswaId?: StringFieldUpdateOperationsInput | string
-    alasan?: StringFieldUpdateOperationsInput | string
-    pembimbingIdLama?: NullableStringFieldUpdateOperationsInput | string | null
-    promotorIdLama?: NullableStringFieldUpdateOperationsInput | string | null
-    koPromotorIdLama?: NullableStringFieldUpdateOperationsInput | string | null
-    pembimbingIdBaru?: NullableStringFieldUpdateOperationsInput | string | null
-    promotorIdBaru?: NullableStringFieldUpdateOperationsInput | string | null
-    koPromotorIdBaru?: NullableStringFieldUpdateOperationsInput | string | null
-    changedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type RiwayatPerubahanPembimbingCreateManyInput = {
-    id?: string
-    mahasiswaId: string
-    alasan: string
-    pembimbingIdLama?: string | null
-    promotorIdLama?: string | null
-    koPromotorIdLama?: string | null
-    pembimbingIdBaru?: string | null
-    promotorIdBaru?: string | null
-    koPromotorIdBaru?: string | null
-    changedAt?: Date | string
-  }
-
-  export type RiwayatPerubahanPembimbingUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    alasan?: StringFieldUpdateOperationsInput | string
-    pembimbingIdLama?: NullableStringFieldUpdateOperationsInput | string | null
-    promotorIdLama?: NullableStringFieldUpdateOperationsInput | string | null
-    koPromotorIdLama?: NullableStringFieldUpdateOperationsInput | string | null
-    pembimbingIdBaru?: NullableStringFieldUpdateOperationsInput | string | null
-    promotorIdBaru?: NullableStringFieldUpdateOperationsInput | string | null
-    koPromotorIdBaru?: NullableStringFieldUpdateOperationsInput | string | null
-    changedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type RiwayatPerubahanPembimbingUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    mahasiswaId?: StringFieldUpdateOperationsInput | string
-    alasan?: StringFieldUpdateOperationsInput | string
-    pembimbingIdLama?: NullableStringFieldUpdateOperationsInput | string | null
-    promotorIdLama?: NullableStringFieldUpdateOperationsInput | string | null
-    koPromotorIdLama?: NullableStringFieldUpdateOperationsInput | string | null
-    pembimbingIdBaru?: NullableStringFieldUpdateOperationsInput | string | null
-    promotorIdBaru?: NullableStringFieldUpdateOperationsInput | string | null
-    koPromotorIdBaru?: NullableStringFieldUpdateOperationsInput | string | null
-    changedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type KegiatanCreateInput = {
     id?: string
-    fieldsData?: NullableJsonNullValueInput | InputJsonValue
     status: string
     alasanDitolak?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     logbook: LogbookCreateNestedOneWithoutKegiatanInput
-    MataKuliah: MataKuliahCreateNestedOneWithoutKegiatanInput
+    MataKuliah?: MataKuliahCreateNestedOneWithoutKegiatanInput
+    jenisKegiatan: JenisKegiatanCreateNestedOneWithoutKegiatanInput
+    fieldValues?: FieldKegiatanValuesCreateNestedManyWithoutKegiatanInput
     lampiran?: LampiranCreateNestedManyWithoutKegiatanInput
   }
 
   export type KegiatanUncheckedCreateInput = {
     id?: string
     logbookId: string
-    mataKuliahId: number
-    fieldsData?: NullableJsonNullValueInput | InputJsonValue
+    mataKuliahId?: number | null
+    jenisKegiatanId: string
     status: string
     alasanDitolak?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    fieldValues?: FieldKegiatanValuesUncheckedCreateNestedManyWithoutKegiatanInput
     lampiran?: LampiranUncheckedCreateNestedManyWithoutKegiatanInput
   }
 
   export type KegiatanUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    fieldsData?: NullableJsonNullValueInput | InputJsonValue
     status?: StringFieldUpdateOperationsInput | string
     alasanDitolak?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     logbook?: LogbookUpdateOneRequiredWithoutKegiatanNestedInput
-    MataKuliah?: MataKuliahUpdateOneRequiredWithoutKegiatanNestedInput
+    MataKuliah?: MataKuliahUpdateOneWithoutKegiatanNestedInput
+    jenisKegiatan?: JenisKegiatanUpdateOneRequiredWithoutKegiatanNestedInput
+    fieldValues?: FieldKegiatanValuesUpdateManyWithoutKegiatanNestedInput
     lampiran?: LampiranUpdateManyWithoutKegiatanNestedInput
   }
 
   export type KegiatanUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     logbookId?: StringFieldUpdateOperationsInput | string
-    mataKuliahId?: IntFieldUpdateOperationsInput | number
-    fieldsData?: NullableJsonNullValueInput | InputJsonValue
+    mataKuliahId?: NullableIntFieldUpdateOperationsInput | number | null
+    jenisKegiatanId?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     alasanDitolak?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    fieldValues?: FieldKegiatanValuesUncheckedUpdateManyWithoutKegiatanNestedInput
     lampiran?: LampiranUncheckedUpdateManyWithoutKegiatanNestedInput
   }
 
   export type KegiatanCreateManyInput = {
     id?: string
     logbookId: string
-    mataKuliahId: number
-    fieldsData?: NullableJsonNullValueInput | InputJsonValue
+    mataKuliahId?: number | null
+    jenisKegiatanId: string
     status: string
     alasanDitolak?: string | null
     createdAt?: Date | string
@@ -16001,7 +18343,6 @@ export namespace Prisma {
 
   export type KegiatanUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    fieldsData?: NullableJsonNullValueInput | InputJsonValue
     status?: StringFieldUpdateOperationsInput | string
     alasanDitolak?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16011,8 +18352,8 @@ export namespace Prisma {
   export type KegiatanUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     logbookId?: StringFieldUpdateOperationsInput | string
-    mataKuliahId?: IntFieldUpdateOperationsInput | number
-    fieldsData?: NullableJsonNullValueInput | InputJsonValue
+    mataKuliahId?: NullableIntFieldUpdateOperationsInput | number | null
+    jenisKegiatanId?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     alasanDitolak?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16296,7 +18637,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     pengguna?: PenggunaCreateNestedManyWithoutProgramStudiInput
-    fields?: ProgramStudiFieldCreateNestedManyWithoutProgramStudiInput
+    jenisKegiatan?: JenisKegiatanCreateNestedManyWithoutProgramStudiInput
     mataKuliah?: MataKuliahCreateNestedManyWithoutProgramStudiInput
   }
 
@@ -16308,7 +18649,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     pengguna?: PenggunaUncheckedCreateNestedManyWithoutProgramStudiInput
-    fields?: ProgramStudiFieldUncheckedCreateNestedManyWithoutProgramStudiInput
+    jenisKegiatan?: JenisKegiatanUncheckedCreateNestedManyWithoutProgramStudiInput
     mataKuliah?: MataKuliahUncheckedCreateNestedManyWithoutProgramStudiInput
   }
 
@@ -16320,7 +18661,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     pengguna?: PenggunaUpdateManyWithoutProgramStudiNestedInput
-    fields?: ProgramStudiFieldUpdateManyWithoutProgramStudiNestedInput
+    jenisKegiatan?: JenisKegiatanUpdateManyWithoutProgramStudiNestedInput
     mataKuliah?: MataKuliahUpdateManyWithoutProgramStudiNestedInput
   }
 
@@ -16332,7 +18673,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     pengguna?: PenggunaUncheckedUpdateManyWithoutProgramStudiNestedInput
-    fields?: ProgramStudiFieldUncheckedUpdateManyWithoutProgramStudiNestedInput
+    jenisKegiatan?: JenisKegiatanUncheckedUpdateManyWithoutProgramStudiNestedInput
     mataKuliah?: MataKuliahUncheckedUpdateManyWithoutProgramStudiNestedInput
   }
 
@@ -16363,80 +18704,291 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type ProgramStudiFieldCreateInput = {
+  export type JenisKegiatanCreateInput = {
     id?: string
-    fieldName: string
-    fieldType: string
-    isRequired?: boolean
-    order?: number
+    nama: string
+    templateIdentifier?: string | null
+    isMataKuliahRequired?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    programStudi: ProgramStudiCreateNestedOneWithoutFieldsInput
+    programStudi: ProgramStudiCreateNestedOneWithoutJenisKegiatanInput
+    kegiatan?: KegiatanCreateNestedManyWithoutJenisKegiatanInput
+    fields?: JenisKegiatanFieldCreateNestedManyWithoutJenisKegiatanInput
   }
 
-  export type ProgramStudiFieldUncheckedCreateInput = {
-    id?: string
-    programStudiId: string
-    fieldName: string
-    fieldType: string
-    isRequired?: boolean
-    order?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type ProgramStudiFieldUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    fieldName?: StringFieldUpdateOperationsInput | string
-    fieldType?: StringFieldUpdateOperationsInput | string
-    isRequired?: BoolFieldUpdateOperationsInput | boolean
-    order?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    programStudi?: ProgramStudiUpdateOneRequiredWithoutFieldsNestedInput
-  }
-
-  export type ProgramStudiFieldUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    programStudiId?: StringFieldUpdateOperationsInput | string
-    fieldName?: StringFieldUpdateOperationsInput | string
-    fieldType?: StringFieldUpdateOperationsInput | string
-    isRequired?: BoolFieldUpdateOperationsInput | boolean
-    order?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ProgramStudiFieldCreateManyInput = {
+  export type JenisKegiatanUncheckedCreateInput = {
     id?: string
     programStudiId: string
+    nama: string
+    templateIdentifier?: string | null
+    isMataKuliahRequired?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    kegiatan?: KegiatanUncheckedCreateNestedManyWithoutJenisKegiatanInput
+    fields?: JenisKegiatanFieldUncheckedCreateNestedManyWithoutJenisKegiatanInput
+  }
+
+  export type JenisKegiatanUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nama?: StringFieldUpdateOperationsInput | string
+    templateIdentifier?: NullableStringFieldUpdateOperationsInput | string | null
+    isMataKuliahRequired?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    programStudi?: ProgramStudiUpdateOneRequiredWithoutJenisKegiatanNestedInput
+    kegiatan?: KegiatanUpdateManyWithoutJenisKegiatanNestedInput
+    fields?: JenisKegiatanFieldUpdateManyWithoutJenisKegiatanNestedInput
+  }
+
+  export type JenisKegiatanUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    programStudiId?: StringFieldUpdateOperationsInput | string
+    nama?: StringFieldUpdateOperationsInput | string
+    templateIdentifier?: NullableStringFieldUpdateOperationsInput | string | null
+    isMataKuliahRequired?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    kegiatan?: KegiatanUncheckedUpdateManyWithoutJenisKegiatanNestedInput
+    fields?: JenisKegiatanFieldUncheckedUpdateManyWithoutJenisKegiatanNestedInput
+  }
+
+  export type JenisKegiatanCreateManyInput = {
+    id?: string
+    programStudiId: string
+    nama: string
+    templateIdentifier?: string | null
+    isMataKuliahRequired?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type JenisKegiatanUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nama?: StringFieldUpdateOperationsInput | string
+    templateIdentifier?: NullableStringFieldUpdateOperationsInput | string | null
+    isMataKuliahRequired?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type JenisKegiatanUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    programStudiId?: StringFieldUpdateOperationsInput | string
+    nama?: StringFieldUpdateOperationsInput | string
+    templateIdentifier?: NullableStringFieldUpdateOperationsInput | string | null
+    isMataKuliahRequired?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type JenisKegiatanFieldCreateInput = {
+    id?: string
     fieldName: string
     fieldType: string
+    templateKey?: string | null
+    isRequired?: boolean
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    jenisKegiatan: JenisKegiatanCreateNestedOneWithoutFieldsInput
+    fieldValues?: FieldKegiatanValuesCreateNestedManyWithoutJenisKegiatanFieldInput
+  }
+
+  export type JenisKegiatanFieldUncheckedCreateInput = {
+    id?: string
+    jenisKegiatanId: string
+    fieldName: string
+    fieldType: string
+    templateKey?: string | null
+    isRequired?: boolean
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    fieldValues?: FieldKegiatanValuesUncheckedCreateNestedManyWithoutJenisKegiatanFieldInput
+  }
+
+  export type JenisKegiatanFieldUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fieldName?: StringFieldUpdateOperationsInput | string
+    fieldType?: StringFieldUpdateOperationsInput | string
+    templateKey?: NullableStringFieldUpdateOperationsInput | string | null
+    isRequired?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    jenisKegiatan?: JenisKegiatanUpdateOneRequiredWithoutFieldsNestedInput
+    fieldValues?: FieldKegiatanValuesUpdateManyWithoutJenisKegiatanFieldNestedInput
+  }
+
+  export type JenisKegiatanFieldUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    jenisKegiatanId?: StringFieldUpdateOperationsInput | string
+    fieldName?: StringFieldUpdateOperationsInput | string
+    fieldType?: StringFieldUpdateOperationsInput | string
+    templateKey?: NullableStringFieldUpdateOperationsInput | string | null
+    isRequired?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    fieldValues?: FieldKegiatanValuesUncheckedUpdateManyWithoutJenisKegiatanFieldNestedInput
+  }
+
+  export type JenisKegiatanFieldCreateManyInput = {
+    id?: string
+    jenisKegiatanId: string
+    fieldName: string
+    fieldType: string
+    templateKey?: string | null
     isRequired?: boolean
     order?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type ProgramStudiFieldUpdateManyMutationInput = {
+  export type JenisKegiatanFieldUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     fieldName?: StringFieldUpdateOperationsInput | string
     fieldType?: StringFieldUpdateOperationsInput | string
+    templateKey?: NullableStringFieldUpdateOperationsInput | string | null
     isRequired?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type ProgramStudiFieldUncheckedUpdateManyInput = {
+  export type JenisKegiatanFieldUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    programStudiId?: StringFieldUpdateOperationsInput | string
+    jenisKegiatanId?: StringFieldUpdateOperationsInput | string
     fieldName?: StringFieldUpdateOperationsInput | string
     fieldType?: StringFieldUpdateOperationsInput | string
+    templateKey?: NullableStringFieldUpdateOperationsInput | string | null
     isRequired?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FieldKegiatanValuesCreateInput = {
+    id?: string
+    value: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    kegiatan: KegiatanCreateNestedOneWithoutFieldValuesInput
+    jenisKegiatanField: JenisKegiatanFieldCreateNestedOneWithoutFieldValuesInput
+  }
+
+  export type FieldKegiatanValuesUncheckedCreateInput = {
+    id?: string
+    kegiatanId: string
+    jenisKegiatanFieldId: string
+    value: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FieldKegiatanValuesUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    kegiatan?: KegiatanUpdateOneRequiredWithoutFieldValuesNestedInput
+    jenisKegiatanField?: JenisKegiatanFieldUpdateOneRequiredWithoutFieldValuesNestedInput
+  }
+
+  export type FieldKegiatanValuesUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    kegiatanId?: StringFieldUpdateOperationsInput | string
+    jenisKegiatanFieldId?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FieldKegiatanValuesCreateManyInput = {
+    id?: string
+    kegiatanId: string
+    jenisKegiatanFieldId: string
+    value: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FieldKegiatanValuesUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FieldKegiatanValuesUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    kegiatanId?: StringFieldUpdateOperationsInput | string
+    jenisKegiatanFieldId?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RiwayatPerubahanPembimbingCreateInput = {
+    id?: string
+    alasan: string
+    pembimbingIdLama?: string | null
+    pembimbingIdBaru?: string | null
+    changedAt?: Date | string
+    mahasiswa: MahasiswaCreateNestedOneWithoutRiwayatPerubahanPembimbingInput
+  }
+
+  export type RiwayatPerubahanPembimbingUncheckedCreateInput = {
+    id?: string
+    mahasiswaId: string
+    alasan: string
+    pembimbingIdLama?: string | null
+    pembimbingIdBaru?: string | null
+    changedAt?: Date | string
+  }
+
+  export type RiwayatPerubahanPembimbingUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    alasan?: StringFieldUpdateOperationsInput | string
+    pembimbingIdLama?: NullableStringFieldUpdateOperationsInput | string | null
+    pembimbingIdBaru?: NullableStringFieldUpdateOperationsInput | string | null
+    changedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    mahasiswa?: MahasiswaUpdateOneRequiredWithoutRiwayatPerubahanPembimbingNestedInput
+  }
+
+  export type RiwayatPerubahanPembimbingUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    mahasiswaId?: StringFieldUpdateOperationsInput | string
+    alasan?: StringFieldUpdateOperationsInput | string
+    pembimbingIdLama?: NullableStringFieldUpdateOperationsInput | string | null
+    pembimbingIdBaru?: NullableStringFieldUpdateOperationsInput | string | null
+    changedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RiwayatPerubahanPembimbingCreateManyInput = {
+    id?: string
+    mahasiswaId: string
+    alasan: string
+    pembimbingIdLama?: string | null
+    pembimbingIdBaru?: string | null
+    changedAt?: Date | string
+  }
+
+  export type RiwayatPerubahanPembimbingUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    alasan?: StringFieldUpdateOperationsInput | string
+    pembimbingIdLama?: NullableStringFieldUpdateOperationsInput | string | null
+    pembimbingIdBaru?: NullableStringFieldUpdateOperationsInput | string | null
+    changedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RiwayatPerubahanPembimbingUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    mahasiswaId?: StringFieldUpdateOperationsInput | string
+    alasan?: StringFieldUpdateOperationsInput | string
+    pembimbingIdLama?: NullableStringFieldUpdateOperationsInput | string | null
+    pembimbingIdBaru?: NullableStringFieldUpdateOperationsInput | string | null
+    changedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -16680,6 +19232,7 @@ export namespace Prisma {
     pekerjaan?: SortOrder
     nomorTelpon?: SortOrder
     email?: SortOrder
+    jenisKelamin?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -16703,6 +19256,7 @@ export namespace Prisma {
     pekerjaan?: SortOrder
     nomorTelpon?: SortOrder
     email?: SortOrder
+    jenisKelamin?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -16722,6 +19276,7 @@ export namespace Prisma {
     pekerjaan?: SortOrder
     nomorTelpon?: SortOrder
     email?: SortOrder
+    jenisKelamin?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -16797,11 +19352,6 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type MahasiswaScalarRelationFilter = {
-    is?: MahasiswaWhereInput
-    isNot?: MahasiswaWhereInput
-  }
-
   export type KegiatanListRelationFilter = {
     every?: KegiatanWhereInput
     some?: KegiatanWhereInput
@@ -16847,99 +19397,35 @@ export namespace Prisma {
     penggunaId?: SortOrder
   }
 
-  export type RiwayatPerubahanPembimbingOrderByRelevanceInput = {
-    fields: RiwayatPerubahanPembimbingOrderByRelevanceFieldEnum | RiwayatPerubahanPembimbingOrderByRelevanceFieldEnum[]
-    sort: SortOrder
-    search: string
-  }
-
-  export type RiwayatPerubahanPembimbingCountOrderByAggregateInput = {
-    id?: SortOrder
-    mahasiswaId?: SortOrder
-    alasan?: SortOrder
-    pembimbingIdLama?: SortOrder
-    promotorIdLama?: SortOrder
-    koPromotorIdLama?: SortOrder
-    pembimbingIdBaru?: SortOrder
-    promotorIdBaru?: SortOrder
-    koPromotorIdBaru?: SortOrder
-    changedAt?: SortOrder
-  }
-
-  export type RiwayatPerubahanPembimbingMaxOrderByAggregateInput = {
-    id?: SortOrder
-    mahasiswaId?: SortOrder
-    alasan?: SortOrder
-    pembimbingIdLama?: SortOrder
-    promotorIdLama?: SortOrder
-    koPromotorIdLama?: SortOrder
-    pembimbingIdBaru?: SortOrder
-    promotorIdBaru?: SortOrder
-    koPromotorIdBaru?: SortOrder
-    changedAt?: SortOrder
-  }
-
-  export type RiwayatPerubahanPembimbingMinOrderByAggregateInput = {
-    id?: SortOrder
-    mahasiswaId?: SortOrder
-    alasan?: SortOrder
-    pembimbingIdLama?: SortOrder
-    promotorIdLama?: SortOrder
-    koPromotorIdLama?: SortOrder
-    pembimbingIdBaru?: SortOrder
-    promotorIdBaru?: SortOrder
-    koPromotorIdBaru?: SortOrder
-    changedAt?: SortOrder
-  }
-
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
-  }
-  export type JsonNullableFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonNullableFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue
-    lte?: InputJsonValue
-    gt?: InputJsonValue
-    gte?: InputJsonValue
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-  }
-
   export type LogbookScalarRelationFilter = {
     is?: LogbookWhereInput
     isNot?: LogbookWhereInput
   }
 
-  export type MataKuliahScalarRelationFilter = {
-    is?: MataKuliahWhereInput
-    isNot?: MataKuliahWhereInput
+  export type MataKuliahNullableScalarRelationFilter = {
+    is?: MataKuliahWhereInput | null
+    isNot?: MataKuliahWhereInput | null
+  }
+
+  export type JenisKegiatanScalarRelationFilter = {
+    is?: JenisKegiatanWhereInput
+    isNot?: JenisKegiatanWhereInput
+  }
+
+  export type FieldKegiatanValuesListRelationFilter = {
+    every?: FieldKegiatanValuesWhereInput
+    some?: FieldKegiatanValuesWhereInput
+    none?: FieldKegiatanValuesWhereInput
   }
 
   export type LampiranListRelationFilter = {
     every?: LampiranWhereInput
     some?: LampiranWhereInput
     none?: LampiranWhereInput
+  }
+
+  export type FieldKegiatanValuesOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type LampiranOrderByRelationAggregateInput = {
@@ -16956,7 +19442,7 @@ export namespace Prisma {
     id?: SortOrder
     logbookId?: SortOrder
     mataKuliahId?: SortOrder
-    fieldsData?: SortOrder
+    jenisKegiatanId?: SortOrder
     status?: SortOrder
     alasanDitolak?: SortOrder
     createdAt?: SortOrder
@@ -16971,6 +19457,7 @@ export namespace Prisma {
     id?: SortOrder
     logbookId?: SortOrder
     mataKuliahId?: SortOrder
+    jenisKegiatanId?: SortOrder
     status?: SortOrder
     alasanDitolak?: SortOrder
     createdAt?: SortOrder
@@ -16981,6 +19468,7 @@ export namespace Prisma {
     id?: SortOrder
     logbookId?: SortOrder
     mataKuliahId?: SortOrder
+    jenisKegiatanId?: SortOrder
     status?: SortOrder
     alasanDitolak?: SortOrder
     createdAt?: SortOrder
@@ -16991,7 +19479,7 @@ export namespace Prisma {
     mataKuliahId?: SortOrder
   }
 
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+  export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[]
     notIn?: number[]
@@ -16999,38 +19487,7 @@ export namespace Prisma {
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
-  }
-  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue
-    lte?: InputJsonValue
-    gt?: InputJsonValue
-    gte?: InputJsonValue
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedJsonNullableFilter<$PrismaModel>
-    _max?: NestedJsonNullableFilter<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
   }
 
   export type ProgramStudiNullableScalarRelationFilter = {
@@ -17086,6 +19543,22 @@ export namespace Prisma {
     semester?: SortOrder
   }
 
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
   export type KegiatanScalarRelationFilter = {
     is?: KegiatanWhereInput
     isNot?: KegiatanWhereInput
@@ -17122,6 +19595,11 @@ export namespace Prisma {
     url?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type MahasiswaScalarRelationFilter = {
+    is?: MahasiswaWhereInput
+    isNot?: MahasiswaWhereInput
   }
 
   export type DosenScalarRelationFilter = {
@@ -17223,10 +19701,10 @@ export namespace Prisma {
     none?: PenggunaWhereInput
   }
 
-  export type ProgramStudiFieldListRelationFilter = {
-    every?: ProgramStudiFieldWhereInput
-    some?: ProgramStudiFieldWhereInput
-    none?: ProgramStudiFieldWhereInput
+  export type JenisKegiatanListRelationFilter = {
+    every?: JenisKegiatanWhereInput
+    some?: JenisKegiatanWhereInput
+    none?: JenisKegiatanWhereInput
   }
 
   export type MataKuliahListRelationFilter = {
@@ -17239,7 +19717,7 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type ProgramStudiFieldOrderByRelationAggregateInput = {
+  export type JenisKegiatanOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -17280,56 +19758,186 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type ProgramStudiFieldOrderByRelevanceInput = {
-    fields: ProgramStudiFieldOrderByRelevanceFieldEnum | ProgramStudiFieldOrderByRelevanceFieldEnum[]
+  export type JenisKegiatanFieldListRelationFilter = {
+    every?: JenisKegiatanFieldWhereInput
+    some?: JenisKegiatanFieldWhereInput
+    none?: JenisKegiatanFieldWhereInput
+  }
+
+  export type JenisKegiatanFieldOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type JenisKegiatanOrderByRelevanceInput = {
+    fields: JenisKegiatanOrderByRelevanceFieldEnum | JenisKegiatanOrderByRelevanceFieldEnum[]
     sort: SortOrder
     search: string
   }
 
-  export type ProgramStudiFieldProgramStudiIdFieldNameCompoundUniqueInput = {
+  export type JenisKegiatanProgramStudiIdNamaCompoundUniqueInput = {
     programStudiId: string
+    nama: string
+  }
+
+  export type JenisKegiatanCountOrderByAggregateInput = {
+    id?: SortOrder
+    programStudiId?: SortOrder
+    nama?: SortOrder
+    templateIdentifier?: SortOrder
+    isMataKuliahRequired?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type JenisKegiatanMaxOrderByAggregateInput = {
+    id?: SortOrder
+    programStudiId?: SortOrder
+    nama?: SortOrder
+    templateIdentifier?: SortOrder
+    isMataKuliahRequired?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type JenisKegiatanMinOrderByAggregateInput = {
+    id?: SortOrder
+    programStudiId?: SortOrder
+    nama?: SortOrder
+    templateIdentifier?: SortOrder
+    isMataKuliahRequired?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type JenisKegiatanFieldOrderByRelevanceInput = {
+    fields: JenisKegiatanFieldOrderByRelevanceFieldEnum | JenisKegiatanFieldOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type JenisKegiatanFieldJenisKegiatanIdFieldNameCompoundUniqueInput = {
+    jenisKegiatanId: string
     fieldName: string
   }
 
-  export type ProgramStudiFieldCountOrderByAggregateInput = {
+  export type JenisKegiatanFieldCountOrderByAggregateInput = {
     id?: SortOrder
-    programStudiId?: SortOrder
+    jenisKegiatanId?: SortOrder
     fieldName?: SortOrder
     fieldType?: SortOrder
+    templateKey?: SortOrder
     isRequired?: SortOrder
     order?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type ProgramStudiFieldAvgOrderByAggregateInput = {
+  export type JenisKegiatanFieldAvgOrderByAggregateInput = {
     order?: SortOrder
   }
 
-  export type ProgramStudiFieldMaxOrderByAggregateInput = {
+  export type JenisKegiatanFieldMaxOrderByAggregateInput = {
     id?: SortOrder
-    programStudiId?: SortOrder
+    jenisKegiatanId?: SortOrder
     fieldName?: SortOrder
     fieldType?: SortOrder
+    templateKey?: SortOrder
     isRequired?: SortOrder
     order?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type ProgramStudiFieldMinOrderByAggregateInput = {
+  export type JenisKegiatanFieldMinOrderByAggregateInput = {
     id?: SortOrder
-    programStudiId?: SortOrder
+    jenisKegiatanId?: SortOrder
     fieldName?: SortOrder
     fieldType?: SortOrder
+    templateKey?: SortOrder
     isRequired?: SortOrder
     order?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type ProgramStudiFieldSumOrderByAggregateInput = {
+  export type JenisKegiatanFieldSumOrderByAggregateInput = {
     order?: SortOrder
+  }
+
+  export type JenisKegiatanFieldScalarRelationFilter = {
+    is?: JenisKegiatanFieldWhereInput
+    isNot?: JenisKegiatanFieldWhereInput
+  }
+
+  export type FieldKegiatanValuesOrderByRelevanceInput = {
+    fields: FieldKegiatanValuesOrderByRelevanceFieldEnum | FieldKegiatanValuesOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type FieldKegiatanValuesKegiatanIdJenisKegiatanFieldIdCompoundUniqueInput = {
+    kegiatanId: string
+    jenisKegiatanFieldId: string
+  }
+
+  export type FieldKegiatanValuesCountOrderByAggregateInput = {
+    id?: SortOrder
+    kegiatanId?: SortOrder
+    jenisKegiatanFieldId?: SortOrder
+    value?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FieldKegiatanValuesMaxOrderByAggregateInput = {
+    id?: SortOrder
+    kegiatanId?: SortOrder
+    jenisKegiatanFieldId?: SortOrder
+    value?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FieldKegiatanValuesMinOrderByAggregateInput = {
+    id?: SortOrder
+    kegiatanId?: SortOrder
+    jenisKegiatanFieldId?: SortOrder
+    value?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RiwayatPerubahanPembimbingOrderByRelevanceInput = {
+    fields: RiwayatPerubahanPembimbingOrderByRelevanceFieldEnum | RiwayatPerubahanPembimbingOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type RiwayatPerubahanPembimbingCountOrderByAggregateInput = {
+    id?: SortOrder
+    mahasiswaId?: SortOrder
+    alasan?: SortOrder
+    pembimbingIdLama?: SortOrder
+    pembimbingIdBaru?: SortOrder
+    changedAt?: SortOrder
+  }
+
+  export type RiwayatPerubahanPembimbingMaxOrderByAggregateInput = {
+    id?: SortOrder
+    mahasiswaId?: SortOrder
+    alasan?: SortOrder
+    pembimbingIdLama?: SortOrder
+    pembimbingIdBaru?: SortOrder
+    changedAt?: SortOrder
+  }
+
+  export type RiwayatPerubahanPembimbingMinOrderByAggregateInput = {
+    id?: SortOrder
+    mahasiswaId?: SortOrder
+    alasan?: SortOrder
+    pembimbingIdLama?: SortOrder
+    pembimbingIdBaru?: SortOrder
+    changedAt?: SortOrder
   }
 
   export type MahasiswaCreateNestedOneWithoutPenggunaInput = {
@@ -17798,10 +20406,12 @@ export namespace Prisma {
     connect?: KegiatanWhereUniqueInput | KegiatanWhereUniqueInput[]
   }
 
-  export type MahasiswaUpdateOneRequiredWithoutLogbookNestedInput = {
+  export type MahasiswaUpdateOneWithoutLogbookNestedInput = {
     create?: XOR<MahasiswaCreateWithoutLogbookInput, MahasiswaUncheckedCreateWithoutLogbookInput>
     connectOrCreate?: MahasiswaCreateOrConnectWithoutLogbookInput
     upsert?: MahasiswaUpsertWithoutLogbookInput
+    disconnect?: MahasiswaWhereInput | boolean
+    delete?: MahasiswaWhereInput | boolean
     connect?: MahasiswaWhereUniqueInput
     update?: XOR<XOR<MahasiswaUpdateToOneWithWhereWithoutLogbookInput, MahasiswaUpdateWithoutLogbookInput>, MahasiswaUncheckedUpdateWithoutLogbookInput>
   }
@@ -17844,20 +20454,6 @@ export namespace Prisma {
     deleteMany?: KegiatanScalarWhereInput | KegiatanScalarWhereInput[]
   }
 
-  export type MahasiswaCreateNestedOneWithoutRiwayatPerubahanPembimbingInput = {
-    create?: XOR<MahasiswaCreateWithoutRiwayatPerubahanPembimbingInput, MahasiswaUncheckedCreateWithoutRiwayatPerubahanPembimbingInput>
-    connectOrCreate?: MahasiswaCreateOrConnectWithoutRiwayatPerubahanPembimbingInput
-    connect?: MahasiswaWhereUniqueInput
-  }
-
-  export type MahasiswaUpdateOneRequiredWithoutRiwayatPerubahanPembimbingNestedInput = {
-    create?: XOR<MahasiswaCreateWithoutRiwayatPerubahanPembimbingInput, MahasiswaUncheckedCreateWithoutRiwayatPerubahanPembimbingInput>
-    connectOrCreate?: MahasiswaCreateOrConnectWithoutRiwayatPerubahanPembimbingInput
-    upsert?: MahasiswaUpsertWithoutRiwayatPerubahanPembimbingInput
-    connect?: MahasiswaWhereUniqueInput
-    update?: XOR<XOR<MahasiswaUpdateToOneWithWhereWithoutRiwayatPerubahanPembimbingInput, MahasiswaUpdateWithoutRiwayatPerubahanPembimbingInput>, MahasiswaUncheckedUpdateWithoutRiwayatPerubahanPembimbingInput>
-  }
-
   export type LogbookCreateNestedOneWithoutKegiatanInput = {
     create?: XOR<LogbookCreateWithoutKegiatanInput, LogbookUncheckedCreateWithoutKegiatanInput>
     connectOrCreate?: LogbookCreateOrConnectWithoutKegiatanInput
@@ -17870,11 +20466,31 @@ export namespace Prisma {
     connect?: MataKuliahWhereUniqueInput
   }
 
+  export type JenisKegiatanCreateNestedOneWithoutKegiatanInput = {
+    create?: XOR<JenisKegiatanCreateWithoutKegiatanInput, JenisKegiatanUncheckedCreateWithoutKegiatanInput>
+    connectOrCreate?: JenisKegiatanCreateOrConnectWithoutKegiatanInput
+    connect?: JenisKegiatanWhereUniqueInput
+  }
+
+  export type FieldKegiatanValuesCreateNestedManyWithoutKegiatanInput = {
+    create?: XOR<FieldKegiatanValuesCreateWithoutKegiatanInput, FieldKegiatanValuesUncheckedCreateWithoutKegiatanInput> | FieldKegiatanValuesCreateWithoutKegiatanInput[] | FieldKegiatanValuesUncheckedCreateWithoutKegiatanInput[]
+    connectOrCreate?: FieldKegiatanValuesCreateOrConnectWithoutKegiatanInput | FieldKegiatanValuesCreateOrConnectWithoutKegiatanInput[]
+    createMany?: FieldKegiatanValuesCreateManyKegiatanInputEnvelope
+    connect?: FieldKegiatanValuesWhereUniqueInput | FieldKegiatanValuesWhereUniqueInput[]
+  }
+
   export type LampiranCreateNestedManyWithoutKegiatanInput = {
     create?: XOR<LampiranCreateWithoutKegiatanInput, LampiranUncheckedCreateWithoutKegiatanInput> | LampiranCreateWithoutKegiatanInput[] | LampiranUncheckedCreateWithoutKegiatanInput[]
     connectOrCreate?: LampiranCreateOrConnectWithoutKegiatanInput | LampiranCreateOrConnectWithoutKegiatanInput[]
     createMany?: LampiranCreateManyKegiatanInputEnvelope
     connect?: LampiranWhereUniqueInput | LampiranWhereUniqueInput[]
+  }
+
+  export type FieldKegiatanValuesUncheckedCreateNestedManyWithoutKegiatanInput = {
+    create?: XOR<FieldKegiatanValuesCreateWithoutKegiatanInput, FieldKegiatanValuesUncheckedCreateWithoutKegiatanInput> | FieldKegiatanValuesCreateWithoutKegiatanInput[] | FieldKegiatanValuesUncheckedCreateWithoutKegiatanInput[]
+    connectOrCreate?: FieldKegiatanValuesCreateOrConnectWithoutKegiatanInput | FieldKegiatanValuesCreateOrConnectWithoutKegiatanInput[]
+    createMany?: FieldKegiatanValuesCreateManyKegiatanInputEnvelope
+    connect?: FieldKegiatanValuesWhereUniqueInput | FieldKegiatanValuesWhereUniqueInput[]
   }
 
   export type LampiranUncheckedCreateNestedManyWithoutKegiatanInput = {
@@ -17892,12 +20508,36 @@ export namespace Prisma {
     update?: XOR<XOR<LogbookUpdateToOneWithWhereWithoutKegiatanInput, LogbookUpdateWithoutKegiatanInput>, LogbookUncheckedUpdateWithoutKegiatanInput>
   }
 
-  export type MataKuliahUpdateOneRequiredWithoutKegiatanNestedInput = {
+  export type MataKuliahUpdateOneWithoutKegiatanNestedInput = {
     create?: XOR<MataKuliahCreateWithoutKegiatanInput, MataKuliahUncheckedCreateWithoutKegiatanInput>
     connectOrCreate?: MataKuliahCreateOrConnectWithoutKegiatanInput
     upsert?: MataKuliahUpsertWithoutKegiatanInput
+    disconnect?: MataKuliahWhereInput | boolean
+    delete?: MataKuliahWhereInput | boolean
     connect?: MataKuliahWhereUniqueInput
     update?: XOR<XOR<MataKuliahUpdateToOneWithWhereWithoutKegiatanInput, MataKuliahUpdateWithoutKegiatanInput>, MataKuliahUncheckedUpdateWithoutKegiatanInput>
+  }
+
+  export type JenisKegiatanUpdateOneRequiredWithoutKegiatanNestedInput = {
+    create?: XOR<JenisKegiatanCreateWithoutKegiatanInput, JenisKegiatanUncheckedCreateWithoutKegiatanInput>
+    connectOrCreate?: JenisKegiatanCreateOrConnectWithoutKegiatanInput
+    upsert?: JenisKegiatanUpsertWithoutKegiatanInput
+    connect?: JenisKegiatanWhereUniqueInput
+    update?: XOR<XOR<JenisKegiatanUpdateToOneWithWhereWithoutKegiatanInput, JenisKegiatanUpdateWithoutKegiatanInput>, JenisKegiatanUncheckedUpdateWithoutKegiatanInput>
+  }
+
+  export type FieldKegiatanValuesUpdateManyWithoutKegiatanNestedInput = {
+    create?: XOR<FieldKegiatanValuesCreateWithoutKegiatanInput, FieldKegiatanValuesUncheckedCreateWithoutKegiatanInput> | FieldKegiatanValuesCreateWithoutKegiatanInput[] | FieldKegiatanValuesUncheckedCreateWithoutKegiatanInput[]
+    connectOrCreate?: FieldKegiatanValuesCreateOrConnectWithoutKegiatanInput | FieldKegiatanValuesCreateOrConnectWithoutKegiatanInput[]
+    upsert?: FieldKegiatanValuesUpsertWithWhereUniqueWithoutKegiatanInput | FieldKegiatanValuesUpsertWithWhereUniqueWithoutKegiatanInput[]
+    createMany?: FieldKegiatanValuesCreateManyKegiatanInputEnvelope
+    set?: FieldKegiatanValuesWhereUniqueInput | FieldKegiatanValuesWhereUniqueInput[]
+    disconnect?: FieldKegiatanValuesWhereUniqueInput | FieldKegiatanValuesWhereUniqueInput[]
+    delete?: FieldKegiatanValuesWhereUniqueInput | FieldKegiatanValuesWhereUniqueInput[]
+    connect?: FieldKegiatanValuesWhereUniqueInput | FieldKegiatanValuesWhereUniqueInput[]
+    update?: FieldKegiatanValuesUpdateWithWhereUniqueWithoutKegiatanInput | FieldKegiatanValuesUpdateWithWhereUniqueWithoutKegiatanInput[]
+    updateMany?: FieldKegiatanValuesUpdateManyWithWhereWithoutKegiatanInput | FieldKegiatanValuesUpdateManyWithWhereWithoutKegiatanInput[]
+    deleteMany?: FieldKegiatanValuesScalarWhereInput | FieldKegiatanValuesScalarWhereInput[]
   }
 
   export type LampiranUpdateManyWithoutKegiatanNestedInput = {
@@ -17914,12 +20554,18 @@ export namespace Prisma {
     deleteMany?: LampiranScalarWhereInput | LampiranScalarWhereInput[]
   }
 
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
+  export type FieldKegiatanValuesUncheckedUpdateManyWithoutKegiatanNestedInput = {
+    create?: XOR<FieldKegiatanValuesCreateWithoutKegiatanInput, FieldKegiatanValuesUncheckedCreateWithoutKegiatanInput> | FieldKegiatanValuesCreateWithoutKegiatanInput[] | FieldKegiatanValuesUncheckedCreateWithoutKegiatanInput[]
+    connectOrCreate?: FieldKegiatanValuesCreateOrConnectWithoutKegiatanInput | FieldKegiatanValuesCreateOrConnectWithoutKegiatanInput[]
+    upsert?: FieldKegiatanValuesUpsertWithWhereUniqueWithoutKegiatanInput | FieldKegiatanValuesUpsertWithWhereUniqueWithoutKegiatanInput[]
+    createMany?: FieldKegiatanValuesCreateManyKegiatanInputEnvelope
+    set?: FieldKegiatanValuesWhereUniqueInput | FieldKegiatanValuesWhereUniqueInput[]
+    disconnect?: FieldKegiatanValuesWhereUniqueInput | FieldKegiatanValuesWhereUniqueInput[]
+    delete?: FieldKegiatanValuesWhereUniqueInput | FieldKegiatanValuesWhereUniqueInput[]
+    connect?: FieldKegiatanValuesWhereUniqueInput | FieldKegiatanValuesWhereUniqueInput[]
+    update?: FieldKegiatanValuesUpdateWithWhereUniqueWithoutKegiatanInput | FieldKegiatanValuesUpdateWithWhereUniqueWithoutKegiatanInput[]
+    updateMany?: FieldKegiatanValuesUpdateManyWithWhereWithoutKegiatanInput | FieldKegiatanValuesUpdateManyWithWhereWithoutKegiatanInput[]
+    deleteMany?: FieldKegiatanValuesScalarWhereInput | FieldKegiatanValuesScalarWhereInput[]
   }
 
   export type LampiranUncheckedUpdateManyWithoutKegiatanNestedInput = {
@@ -17954,6 +20600,14 @@ export namespace Prisma {
     connectOrCreate?: KegiatanCreateOrConnectWithoutMataKuliahInput | KegiatanCreateOrConnectWithoutMataKuliahInput[]
     createMany?: KegiatanCreateManyMataKuliahInputEnvelope
     connect?: KegiatanWhereUniqueInput | KegiatanWhereUniqueInput[]
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type KegiatanUpdateManyWithoutMataKuliahNestedInput = {
@@ -18061,11 +20715,11 @@ export namespace Prisma {
     connect?: PenggunaWhereUniqueInput | PenggunaWhereUniqueInput[]
   }
 
-  export type ProgramStudiFieldCreateNestedManyWithoutProgramStudiInput = {
-    create?: XOR<ProgramStudiFieldCreateWithoutProgramStudiInput, ProgramStudiFieldUncheckedCreateWithoutProgramStudiInput> | ProgramStudiFieldCreateWithoutProgramStudiInput[] | ProgramStudiFieldUncheckedCreateWithoutProgramStudiInput[]
-    connectOrCreate?: ProgramStudiFieldCreateOrConnectWithoutProgramStudiInput | ProgramStudiFieldCreateOrConnectWithoutProgramStudiInput[]
-    createMany?: ProgramStudiFieldCreateManyProgramStudiInputEnvelope
-    connect?: ProgramStudiFieldWhereUniqueInput | ProgramStudiFieldWhereUniqueInput[]
+  export type JenisKegiatanCreateNestedManyWithoutProgramStudiInput = {
+    create?: XOR<JenisKegiatanCreateWithoutProgramStudiInput, JenisKegiatanUncheckedCreateWithoutProgramStudiInput> | JenisKegiatanCreateWithoutProgramStudiInput[] | JenisKegiatanUncheckedCreateWithoutProgramStudiInput[]
+    connectOrCreate?: JenisKegiatanCreateOrConnectWithoutProgramStudiInput | JenisKegiatanCreateOrConnectWithoutProgramStudiInput[]
+    createMany?: JenisKegiatanCreateManyProgramStudiInputEnvelope
+    connect?: JenisKegiatanWhereUniqueInput | JenisKegiatanWhereUniqueInput[]
   }
 
   export type MataKuliahCreateNestedManyWithoutProgramStudiInput = {
@@ -18082,11 +20736,11 @@ export namespace Prisma {
     connect?: PenggunaWhereUniqueInput | PenggunaWhereUniqueInput[]
   }
 
-  export type ProgramStudiFieldUncheckedCreateNestedManyWithoutProgramStudiInput = {
-    create?: XOR<ProgramStudiFieldCreateWithoutProgramStudiInput, ProgramStudiFieldUncheckedCreateWithoutProgramStudiInput> | ProgramStudiFieldCreateWithoutProgramStudiInput[] | ProgramStudiFieldUncheckedCreateWithoutProgramStudiInput[]
-    connectOrCreate?: ProgramStudiFieldCreateOrConnectWithoutProgramStudiInput | ProgramStudiFieldCreateOrConnectWithoutProgramStudiInput[]
-    createMany?: ProgramStudiFieldCreateManyProgramStudiInputEnvelope
-    connect?: ProgramStudiFieldWhereUniqueInput | ProgramStudiFieldWhereUniqueInput[]
+  export type JenisKegiatanUncheckedCreateNestedManyWithoutProgramStudiInput = {
+    create?: XOR<JenisKegiatanCreateWithoutProgramStudiInput, JenisKegiatanUncheckedCreateWithoutProgramStudiInput> | JenisKegiatanCreateWithoutProgramStudiInput[] | JenisKegiatanUncheckedCreateWithoutProgramStudiInput[]
+    connectOrCreate?: JenisKegiatanCreateOrConnectWithoutProgramStudiInput | JenisKegiatanCreateOrConnectWithoutProgramStudiInput[]
+    createMany?: JenisKegiatanCreateManyProgramStudiInputEnvelope
+    connect?: JenisKegiatanWhereUniqueInput | JenisKegiatanWhereUniqueInput[]
   }
 
   export type MataKuliahUncheckedCreateNestedManyWithoutProgramStudiInput = {
@@ -18110,18 +20764,18 @@ export namespace Prisma {
     deleteMany?: PenggunaScalarWhereInput | PenggunaScalarWhereInput[]
   }
 
-  export type ProgramStudiFieldUpdateManyWithoutProgramStudiNestedInput = {
-    create?: XOR<ProgramStudiFieldCreateWithoutProgramStudiInput, ProgramStudiFieldUncheckedCreateWithoutProgramStudiInput> | ProgramStudiFieldCreateWithoutProgramStudiInput[] | ProgramStudiFieldUncheckedCreateWithoutProgramStudiInput[]
-    connectOrCreate?: ProgramStudiFieldCreateOrConnectWithoutProgramStudiInput | ProgramStudiFieldCreateOrConnectWithoutProgramStudiInput[]
-    upsert?: ProgramStudiFieldUpsertWithWhereUniqueWithoutProgramStudiInput | ProgramStudiFieldUpsertWithWhereUniqueWithoutProgramStudiInput[]
-    createMany?: ProgramStudiFieldCreateManyProgramStudiInputEnvelope
-    set?: ProgramStudiFieldWhereUniqueInput | ProgramStudiFieldWhereUniqueInput[]
-    disconnect?: ProgramStudiFieldWhereUniqueInput | ProgramStudiFieldWhereUniqueInput[]
-    delete?: ProgramStudiFieldWhereUniqueInput | ProgramStudiFieldWhereUniqueInput[]
-    connect?: ProgramStudiFieldWhereUniqueInput | ProgramStudiFieldWhereUniqueInput[]
-    update?: ProgramStudiFieldUpdateWithWhereUniqueWithoutProgramStudiInput | ProgramStudiFieldUpdateWithWhereUniqueWithoutProgramStudiInput[]
-    updateMany?: ProgramStudiFieldUpdateManyWithWhereWithoutProgramStudiInput | ProgramStudiFieldUpdateManyWithWhereWithoutProgramStudiInput[]
-    deleteMany?: ProgramStudiFieldScalarWhereInput | ProgramStudiFieldScalarWhereInput[]
+  export type JenisKegiatanUpdateManyWithoutProgramStudiNestedInput = {
+    create?: XOR<JenisKegiatanCreateWithoutProgramStudiInput, JenisKegiatanUncheckedCreateWithoutProgramStudiInput> | JenisKegiatanCreateWithoutProgramStudiInput[] | JenisKegiatanUncheckedCreateWithoutProgramStudiInput[]
+    connectOrCreate?: JenisKegiatanCreateOrConnectWithoutProgramStudiInput | JenisKegiatanCreateOrConnectWithoutProgramStudiInput[]
+    upsert?: JenisKegiatanUpsertWithWhereUniqueWithoutProgramStudiInput | JenisKegiatanUpsertWithWhereUniqueWithoutProgramStudiInput[]
+    createMany?: JenisKegiatanCreateManyProgramStudiInputEnvelope
+    set?: JenisKegiatanWhereUniqueInput | JenisKegiatanWhereUniqueInput[]
+    disconnect?: JenisKegiatanWhereUniqueInput | JenisKegiatanWhereUniqueInput[]
+    delete?: JenisKegiatanWhereUniqueInput | JenisKegiatanWhereUniqueInput[]
+    connect?: JenisKegiatanWhereUniqueInput | JenisKegiatanWhereUniqueInput[]
+    update?: JenisKegiatanUpdateWithWhereUniqueWithoutProgramStudiInput | JenisKegiatanUpdateWithWhereUniqueWithoutProgramStudiInput[]
+    updateMany?: JenisKegiatanUpdateManyWithWhereWithoutProgramStudiInput | JenisKegiatanUpdateManyWithWhereWithoutProgramStudiInput[]
+    deleteMany?: JenisKegiatanScalarWhereInput | JenisKegiatanScalarWhereInput[]
   }
 
   export type MataKuliahUpdateManyWithoutProgramStudiNestedInput = {
@@ -18152,18 +20806,18 @@ export namespace Prisma {
     deleteMany?: PenggunaScalarWhereInput | PenggunaScalarWhereInput[]
   }
 
-  export type ProgramStudiFieldUncheckedUpdateManyWithoutProgramStudiNestedInput = {
-    create?: XOR<ProgramStudiFieldCreateWithoutProgramStudiInput, ProgramStudiFieldUncheckedCreateWithoutProgramStudiInput> | ProgramStudiFieldCreateWithoutProgramStudiInput[] | ProgramStudiFieldUncheckedCreateWithoutProgramStudiInput[]
-    connectOrCreate?: ProgramStudiFieldCreateOrConnectWithoutProgramStudiInput | ProgramStudiFieldCreateOrConnectWithoutProgramStudiInput[]
-    upsert?: ProgramStudiFieldUpsertWithWhereUniqueWithoutProgramStudiInput | ProgramStudiFieldUpsertWithWhereUniqueWithoutProgramStudiInput[]
-    createMany?: ProgramStudiFieldCreateManyProgramStudiInputEnvelope
-    set?: ProgramStudiFieldWhereUniqueInput | ProgramStudiFieldWhereUniqueInput[]
-    disconnect?: ProgramStudiFieldWhereUniqueInput | ProgramStudiFieldWhereUniqueInput[]
-    delete?: ProgramStudiFieldWhereUniqueInput | ProgramStudiFieldWhereUniqueInput[]
-    connect?: ProgramStudiFieldWhereUniqueInput | ProgramStudiFieldWhereUniqueInput[]
-    update?: ProgramStudiFieldUpdateWithWhereUniqueWithoutProgramStudiInput | ProgramStudiFieldUpdateWithWhereUniqueWithoutProgramStudiInput[]
-    updateMany?: ProgramStudiFieldUpdateManyWithWhereWithoutProgramStudiInput | ProgramStudiFieldUpdateManyWithWhereWithoutProgramStudiInput[]
-    deleteMany?: ProgramStudiFieldScalarWhereInput | ProgramStudiFieldScalarWhereInput[]
+  export type JenisKegiatanUncheckedUpdateManyWithoutProgramStudiNestedInput = {
+    create?: XOR<JenisKegiatanCreateWithoutProgramStudiInput, JenisKegiatanUncheckedCreateWithoutProgramStudiInput> | JenisKegiatanCreateWithoutProgramStudiInput[] | JenisKegiatanUncheckedCreateWithoutProgramStudiInput[]
+    connectOrCreate?: JenisKegiatanCreateOrConnectWithoutProgramStudiInput | JenisKegiatanCreateOrConnectWithoutProgramStudiInput[]
+    upsert?: JenisKegiatanUpsertWithWhereUniqueWithoutProgramStudiInput | JenisKegiatanUpsertWithWhereUniqueWithoutProgramStudiInput[]
+    createMany?: JenisKegiatanCreateManyProgramStudiInputEnvelope
+    set?: JenisKegiatanWhereUniqueInput | JenisKegiatanWhereUniqueInput[]
+    disconnect?: JenisKegiatanWhereUniqueInput | JenisKegiatanWhereUniqueInput[]
+    delete?: JenisKegiatanWhereUniqueInput | JenisKegiatanWhereUniqueInput[]
+    connect?: JenisKegiatanWhereUniqueInput | JenisKegiatanWhereUniqueInput[]
+    update?: JenisKegiatanUpdateWithWhereUniqueWithoutProgramStudiInput | JenisKegiatanUpdateWithWhereUniqueWithoutProgramStudiInput[]
+    updateMany?: JenisKegiatanUpdateManyWithWhereWithoutProgramStudiInput | JenisKegiatanUpdateManyWithWhereWithoutProgramStudiInput[]
+    deleteMany?: JenisKegiatanScalarWhereInput | JenisKegiatanScalarWhereInput[]
   }
 
   export type MataKuliahUncheckedUpdateManyWithoutProgramStudiNestedInput = {
@@ -18180,18 +20834,200 @@ export namespace Prisma {
     deleteMany?: MataKuliahScalarWhereInput | MataKuliahScalarWhereInput[]
   }
 
-  export type ProgramStudiCreateNestedOneWithoutFieldsInput = {
-    create?: XOR<ProgramStudiCreateWithoutFieldsInput, ProgramStudiUncheckedCreateWithoutFieldsInput>
-    connectOrCreate?: ProgramStudiCreateOrConnectWithoutFieldsInput
+  export type ProgramStudiCreateNestedOneWithoutJenisKegiatanInput = {
+    create?: XOR<ProgramStudiCreateWithoutJenisKegiatanInput, ProgramStudiUncheckedCreateWithoutJenisKegiatanInput>
+    connectOrCreate?: ProgramStudiCreateOrConnectWithoutJenisKegiatanInput
     connect?: ProgramStudiWhereUniqueInput
   }
 
-  export type ProgramStudiUpdateOneRequiredWithoutFieldsNestedInput = {
-    create?: XOR<ProgramStudiCreateWithoutFieldsInput, ProgramStudiUncheckedCreateWithoutFieldsInput>
-    connectOrCreate?: ProgramStudiCreateOrConnectWithoutFieldsInput
-    upsert?: ProgramStudiUpsertWithoutFieldsInput
+  export type KegiatanCreateNestedManyWithoutJenisKegiatanInput = {
+    create?: XOR<KegiatanCreateWithoutJenisKegiatanInput, KegiatanUncheckedCreateWithoutJenisKegiatanInput> | KegiatanCreateWithoutJenisKegiatanInput[] | KegiatanUncheckedCreateWithoutJenisKegiatanInput[]
+    connectOrCreate?: KegiatanCreateOrConnectWithoutJenisKegiatanInput | KegiatanCreateOrConnectWithoutJenisKegiatanInput[]
+    createMany?: KegiatanCreateManyJenisKegiatanInputEnvelope
+    connect?: KegiatanWhereUniqueInput | KegiatanWhereUniqueInput[]
+  }
+
+  export type JenisKegiatanFieldCreateNestedManyWithoutJenisKegiatanInput = {
+    create?: XOR<JenisKegiatanFieldCreateWithoutJenisKegiatanInput, JenisKegiatanFieldUncheckedCreateWithoutJenisKegiatanInput> | JenisKegiatanFieldCreateWithoutJenisKegiatanInput[] | JenisKegiatanFieldUncheckedCreateWithoutJenisKegiatanInput[]
+    connectOrCreate?: JenisKegiatanFieldCreateOrConnectWithoutJenisKegiatanInput | JenisKegiatanFieldCreateOrConnectWithoutJenisKegiatanInput[]
+    createMany?: JenisKegiatanFieldCreateManyJenisKegiatanInputEnvelope
+    connect?: JenisKegiatanFieldWhereUniqueInput | JenisKegiatanFieldWhereUniqueInput[]
+  }
+
+  export type KegiatanUncheckedCreateNestedManyWithoutJenisKegiatanInput = {
+    create?: XOR<KegiatanCreateWithoutJenisKegiatanInput, KegiatanUncheckedCreateWithoutJenisKegiatanInput> | KegiatanCreateWithoutJenisKegiatanInput[] | KegiatanUncheckedCreateWithoutJenisKegiatanInput[]
+    connectOrCreate?: KegiatanCreateOrConnectWithoutJenisKegiatanInput | KegiatanCreateOrConnectWithoutJenisKegiatanInput[]
+    createMany?: KegiatanCreateManyJenisKegiatanInputEnvelope
+    connect?: KegiatanWhereUniqueInput | KegiatanWhereUniqueInput[]
+  }
+
+  export type JenisKegiatanFieldUncheckedCreateNestedManyWithoutJenisKegiatanInput = {
+    create?: XOR<JenisKegiatanFieldCreateWithoutJenisKegiatanInput, JenisKegiatanFieldUncheckedCreateWithoutJenisKegiatanInput> | JenisKegiatanFieldCreateWithoutJenisKegiatanInput[] | JenisKegiatanFieldUncheckedCreateWithoutJenisKegiatanInput[]
+    connectOrCreate?: JenisKegiatanFieldCreateOrConnectWithoutJenisKegiatanInput | JenisKegiatanFieldCreateOrConnectWithoutJenisKegiatanInput[]
+    createMany?: JenisKegiatanFieldCreateManyJenisKegiatanInputEnvelope
+    connect?: JenisKegiatanFieldWhereUniqueInput | JenisKegiatanFieldWhereUniqueInput[]
+  }
+
+  export type ProgramStudiUpdateOneRequiredWithoutJenisKegiatanNestedInput = {
+    create?: XOR<ProgramStudiCreateWithoutJenisKegiatanInput, ProgramStudiUncheckedCreateWithoutJenisKegiatanInput>
+    connectOrCreate?: ProgramStudiCreateOrConnectWithoutJenisKegiatanInput
+    upsert?: ProgramStudiUpsertWithoutJenisKegiatanInput
     connect?: ProgramStudiWhereUniqueInput
-    update?: XOR<XOR<ProgramStudiUpdateToOneWithWhereWithoutFieldsInput, ProgramStudiUpdateWithoutFieldsInput>, ProgramStudiUncheckedUpdateWithoutFieldsInput>
+    update?: XOR<XOR<ProgramStudiUpdateToOneWithWhereWithoutJenisKegiatanInput, ProgramStudiUpdateWithoutJenisKegiatanInput>, ProgramStudiUncheckedUpdateWithoutJenisKegiatanInput>
+  }
+
+  export type KegiatanUpdateManyWithoutJenisKegiatanNestedInput = {
+    create?: XOR<KegiatanCreateWithoutJenisKegiatanInput, KegiatanUncheckedCreateWithoutJenisKegiatanInput> | KegiatanCreateWithoutJenisKegiatanInput[] | KegiatanUncheckedCreateWithoutJenisKegiatanInput[]
+    connectOrCreate?: KegiatanCreateOrConnectWithoutJenisKegiatanInput | KegiatanCreateOrConnectWithoutJenisKegiatanInput[]
+    upsert?: KegiatanUpsertWithWhereUniqueWithoutJenisKegiatanInput | KegiatanUpsertWithWhereUniqueWithoutJenisKegiatanInput[]
+    createMany?: KegiatanCreateManyJenisKegiatanInputEnvelope
+    set?: KegiatanWhereUniqueInput | KegiatanWhereUniqueInput[]
+    disconnect?: KegiatanWhereUniqueInput | KegiatanWhereUniqueInput[]
+    delete?: KegiatanWhereUniqueInput | KegiatanWhereUniqueInput[]
+    connect?: KegiatanWhereUniqueInput | KegiatanWhereUniqueInput[]
+    update?: KegiatanUpdateWithWhereUniqueWithoutJenisKegiatanInput | KegiatanUpdateWithWhereUniqueWithoutJenisKegiatanInput[]
+    updateMany?: KegiatanUpdateManyWithWhereWithoutJenisKegiatanInput | KegiatanUpdateManyWithWhereWithoutJenisKegiatanInput[]
+    deleteMany?: KegiatanScalarWhereInput | KegiatanScalarWhereInput[]
+  }
+
+  export type JenisKegiatanFieldUpdateManyWithoutJenisKegiatanNestedInput = {
+    create?: XOR<JenisKegiatanFieldCreateWithoutJenisKegiatanInput, JenisKegiatanFieldUncheckedCreateWithoutJenisKegiatanInput> | JenisKegiatanFieldCreateWithoutJenisKegiatanInput[] | JenisKegiatanFieldUncheckedCreateWithoutJenisKegiatanInput[]
+    connectOrCreate?: JenisKegiatanFieldCreateOrConnectWithoutJenisKegiatanInput | JenisKegiatanFieldCreateOrConnectWithoutJenisKegiatanInput[]
+    upsert?: JenisKegiatanFieldUpsertWithWhereUniqueWithoutJenisKegiatanInput | JenisKegiatanFieldUpsertWithWhereUniqueWithoutJenisKegiatanInput[]
+    createMany?: JenisKegiatanFieldCreateManyJenisKegiatanInputEnvelope
+    set?: JenisKegiatanFieldWhereUniqueInput | JenisKegiatanFieldWhereUniqueInput[]
+    disconnect?: JenisKegiatanFieldWhereUniqueInput | JenisKegiatanFieldWhereUniqueInput[]
+    delete?: JenisKegiatanFieldWhereUniqueInput | JenisKegiatanFieldWhereUniqueInput[]
+    connect?: JenisKegiatanFieldWhereUniqueInput | JenisKegiatanFieldWhereUniqueInput[]
+    update?: JenisKegiatanFieldUpdateWithWhereUniqueWithoutJenisKegiatanInput | JenisKegiatanFieldUpdateWithWhereUniqueWithoutJenisKegiatanInput[]
+    updateMany?: JenisKegiatanFieldUpdateManyWithWhereWithoutJenisKegiatanInput | JenisKegiatanFieldUpdateManyWithWhereWithoutJenisKegiatanInput[]
+    deleteMany?: JenisKegiatanFieldScalarWhereInput | JenisKegiatanFieldScalarWhereInput[]
+  }
+
+  export type KegiatanUncheckedUpdateManyWithoutJenisKegiatanNestedInput = {
+    create?: XOR<KegiatanCreateWithoutJenisKegiatanInput, KegiatanUncheckedCreateWithoutJenisKegiatanInput> | KegiatanCreateWithoutJenisKegiatanInput[] | KegiatanUncheckedCreateWithoutJenisKegiatanInput[]
+    connectOrCreate?: KegiatanCreateOrConnectWithoutJenisKegiatanInput | KegiatanCreateOrConnectWithoutJenisKegiatanInput[]
+    upsert?: KegiatanUpsertWithWhereUniqueWithoutJenisKegiatanInput | KegiatanUpsertWithWhereUniqueWithoutJenisKegiatanInput[]
+    createMany?: KegiatanCreateManyJenisKegiatanInputEnvelope
+    set?: KegiatanWhereUniqueInput | KegiatanWhereUniqueInput[]
+    disconnect?: KegiatanWhereUniqueInput | KegiatanWhereUniqueInput[]
+    delete?: KegiatanWhereUniqueInput | KegiatanWhereUniqueInput[]
+    connect?: KegiatanWhereUniqueInput | KegiatanWhereUniqueInput[]
+    update?: KegiatanUpdateWithWhereUniqueWithoutJenisKegiatanInput | KegiatanUpdateWithWhereUniqueWithoutJenisKegiatanInput[]
+    updateMany?: KegiatanUpdateManyWithWhereWithoutJenisKegiatanInput | KegiatanUpdateManyWithWhereWithoutJenisKegiatanInput[]
+    deleteMany?: KegiatanScalarWhereInput | KegiatanScalarWhereInput[]
+  }
+
+  export type JenisKegiatanFieldUncheckedUpdateManyWithoutJenisKegiatanNestedInput = {
+    create?: XOR<JenisKegiatanFieldCreateWithoutJenisKegiatanInput, JenisKegiatanFieldUncheckedCreateWithoutJenisKegiatanInput> | JenisKegiatanFieldCreateWithoutJenisKegiatanInput[] | JenisKegiatanFieldUncheckedCreateWithoutJenisKegiatanInput[]
+    connectOrCreate?: JenisKegiatanFieldCreateOrConnectWithoutJenisKegiatanInput | JenisKegiatanFieldCreateOrConnectWithoutJenisKegiatanInput[]
+    upsert?: JenisKegiatanFieldUpsertWithWhereUniqueWithoutJenisKegiatanInput | JenisKegiatanFieldUpsertWithWhereUniqueWithoutJenisKegiatanInput[]
+    createMany?: JenisKegiatanFieldCreateManyJenisKegiatanInputEnvelope
+    set?: JenisKegiatanFieldWhereUniqueInput | JenisKegiatanFieldWhereUniqueInput[]
+    disconnect?: JenisKegiatanFieldWhereUniqueInput | JenisKegiatanFieldWhereUniqueInput[]
+    delete?: JenisKegiatanFieldWhereUniqueInput | JenisKegiatanFieldWhereUniqueInput[]
+    connect?: JenisKegiatanFieldWhereUniqueInput | JenisKegiatanFieldWhereUniqueInput[]
+    update?: JenisKegiatanFieldUpdateWithWhereUniqueWithoutJenisKegiatanInput | JenisKegiatanFieldUpdateWithWhereUniqueWithoutJenisKegiatanInput[]
+    updateMany?: JenisKegiatanFieldUpdateManyWithWhereWithoutJenisKegiatanInput | JenisKegiatanFieldUpdateManyWithWhereWithoutJenisKegiatanInput[]
+    deleteMany?: JenisKegiatanFieldScalarWhereInput | JenisKegiatanFieldScalarWhereInput[]
+  }
+
+  export type JenisKegiatanCreateNestedOneWithoutFieldsInput = {
+    create?: XOR<JenisKegiatanCreateWithoutFieldsInput, JenisKegiatanUncheckedCreateWithoutFieldsInput>
+    connectOrCreate?: JenisKegiatanCreateOrConnectWithoutFieldsInput
+    connect?: JenisKegiatanWhereUniqueInput
+  }
+
+  export type FieldKegiatanValuesCreateNestedManyWithoutJenisKegiatanFieldInput = {
+    create?: XOR<FieldKegiatanValuesCreateWithoutJenisKegiatanFieldInput, FieldKegiatanValuesUncheckedCreateWithoutJenisKegiatanFieldInput> | FieldKegiatanValuesCreateWithoutJenisKegiatanFieldInput[] | FieldKegiatanValuesUncheckedCreateWithoutJenisKegiatanFieldInput[]
+    connectOrCreate?: FieldKegiatanValuesCreateOrConnectWithoutJenisKegiatanFieldInput | FieldKegiatanValuesCreateOrConnectWithoutJenisKegiatanFieldInput[]
+    createMany?: FieldKegiatanValuesCreateManyJenisKegiatanFieldInputEnvelope
+    connect?: FieldKegiatanValuesWhereUniqueInput | FieldKegiatanValuesWhereUniqueInput[]
+  }
+
+  export type FieldKegiatanValuesUncheckedCreateNestedManyWithoutJenisKegiatanFieldInput = {
+    create?: XOR<FieldKegiatanValuesCreateWithoutJenisKegiatanFieldInput, FieldKegiatanValuesUncheckedCreateWithoutJenisKegiatanFieldInput> | FieldKegiatanValuesCreateWithoutJenisKegiatanFieldInput[] | FieldKegiatanValuesUncheckedCreateWithoutJenisKegiatanFieldInput[]
+    connectOrCreate?: FieldKegiatanValuesCreateOrConnectWithoutJenisKegiatanFieldInput | FieldKegiatanValuesCreateOrConnectWithoutJenisKegiatanFieldInput[]
+    createMany?: FieldKegiatanValuesCreateManyJenisKegiatanFieldInputEnvelope
+    connect?: FieldKegiatanValuesWhereUniqueInput | FieldKegiatanValuesWhereUniqueInput[]
+  }
+
+  export type JenisKegiatanUpdateOneRequiredWithoutFieldsNestedInput = {
+    create?: XOR<JenisKegiatanCreateWithoutFieldsInput, JenisKegiatanUncheckedCreateWithoutFieldsInput>
+    connectOrCreate?: JenisKegiatanCreateOrConnectWithoutFieldsInput
+    upsert?: JenisKegiatanUpsertWithoutFieldsInput
+    connect?: JenisKegiatanWhereUniqueInput
+    update?: XOR<XOR<JenisKegiatanUpdateToOneWithWhereWithoutFieldsInput, JenisKegiatanUpdateWithoutFieldsInput>, JenisKegiatanUncheckedUpdateWithoutFieldsInput>
+  }
+
+  export type FieldKegiatanValuesUpdateManyWithoutJenisKegiatanFieldNestedInput = {
+    create?: XOR<FieldKegiatanValuesCreateWithoutJenisKegiatanFieldInput, FieldKegiatanValuesUncheckedCreateWithoutJenisKegiatanFieldInput> | FieldKegiatanValuesCreateWithoutJenisKegiatanFieldInput[] | FieldKegiatanValuesUncheckedCreateWithoutJenisKegiatanFieldInput[]
+    connectOrCreate?: FieldKegiatanValuesCreateOrConnectWithoutJenisKegiatanFieldInput | FieldKegiatanValuesCreateOrConnectWithoutJenisKegiatanFieldInput[]
+    upsert?: FieldKegiatanValuesUpsertWithWhereUniqueWithoutJenisKegiatanFieldInput | FieldKegiatanValuesUpsertWithWhereUniqueWithoutJenisKegiatanFieldInput[]
+    createMany?: FieldKegiatanValuesCreateManyJenisKegiatanFieldInputEnvelope
+    set?: FieldKegiatanValuesWhereUniqueInput | FieldKegiatanValuesWhereUniqueInput[]
+    disconnect?: FieldKegiatanValuesWhereUniqueInput | FieldKegiatanValuesWhereUniqueInput[]
+    delete?: FieldKegiatanValuesWhereUniqueInput | FieldKegiatanValuesWhereUniqueInput[]
+    connect?: FieldKegiatanValuesWhereUniqueInput | FieldKegiatanValuesWhereUniqueInput[]
+    update?: FieldKegiatanValuesUpdateWithWhereUniqueWithoutJenisKegiatanFieldInput | FieldKegiatanValuesUpdateWithWhereUniqueWithoutJenisKegiatanFieldInput[]
+    updateMany?: FieldKegiatanValuesUpdateManyWithWhereWithoutJenisKegiatanFieldInput | FieldKegiatanValuesUpdateManyWithWhereWithoutJenisKegiatanFieldInput[]
+    deleteMany?: FieldKegiatanValuesScalarWhereInput | FieldKegiatanValuesScalarWhereInput[]
+  }
+
+  export type FieldKegiatanValuesUncheckedUpdateManyWithoutJenisKegiatanFieldNestedInput = {
+    create?: XOR<FieldKegiatanValuesCreateWithoutJenisKegiatanFieldInput, FieldKegiatanValuesUncheckedCreateWithoutJenisKegiatanFieldInput> | FieldKegiatanValuesCreateWithoutJenisKegiatanFieldInput[] | FieldKegiatanValuesUncheckedCreateWithoutJenisKegiatanFieldInput[]
+    connectOrCreate?: FieldKegiatanValuesCreateOrConnectWithoutJenisKegiatanFieldInput | FieldKegiatanValuesCreateOrConnectWithoutJenisKegiatanFieldInput[]
+    upsert?: FieldKegiatanValuesUpsertWithWhereUniqueWithoutJenisKegiatanFieldInput | FieldKegiatanValuesUpsertWithWhereUniqueWithoutJenisKegiatanFieldInput[]
+    createMany?: FieldKegiatanValuesCreateManyJenisKegiatanFieldInputEnvelope
+    set?: FieldKegiatanValuesWhereUniqueInput | FieldKegiatanValuesWhereUniqueInput[]
+    disconnect?: FieldKegiatanValuesWhereUniqueInput | FieldKegiatanValuesWhereUniqueInput[]
+    delete?: FieldKegiatanValuesWhereUniqueInput | FieldKegiatanValuesWhereUniqueInput[]
+    connect?: FieldKegiatanValuesWhereUniqueInput | FieldKegiatanValuesWhereUniqueInput[]
+    update?: FieldKegiatanValuesUpdateWithWhereUniqueWithoutJenisKegiatanFieldInput | FieldKegiatanValuesUpdateWithWhereUniqueWithoutJenisKegiatanFieldInput[]
+    updateMany?: FieldKegiatanValuesUpdateManyWithWhereWithoutJenisKegiatanFieldInput | FieldKegiatanValuesUpdateManyWithWhereWithoutJenisKegiatanFieldInput[]
+    deleteMany?: FieldKegiatanValuesScalarWhereInput | FieldKegiatanValuesScalarWhereInput[]
+  }
+
+  export type KegiatanCreateNestedOneWithoutFieldValuesInput = {
+    create?: XOR<KegiatanCreateWithoutFieldValuesInput, KegiatanUncheckedCreateWithoutFieldValuesInput>
+    connectOrCreate?: KegiatanCreateOrConnectWithoutFieldValuesInput
+    connect?: KegiatanWhereUniqueInput
+  }
+
+  export type JenisKegiatanFieldCreateNestedOneWithoutFieldValuesInput = {
+    create?: XOR<JenisKegiatanFieldCreateWithoutFieldValuesInput, JenisKegiatanFieldUncheckedCreateWithoutFieldValuesInput>
+    connectOrCreate?: JenisKegiatanFieldCreateOrConnectWithoutFieldValuesInput
+    connect?: JenisKegiatanFieldWhereUniqueInput
+  }
+
+  export type KegiatanUpdateOneRequiredWithoutFieldValuesNestedInput = {
+    create?: XOR<KegiatanCreateWithoutFieldValuesInput, KegiatanUncheckedCreateWithoutFieldValuesInput>
+    connectOrCreate?: KegiatanCreateOrConnectWithoutFieldValuesInput
+    upsert?: KegiatanUpsertWithoutFieldValuesInput
+    connect?: KegiatanWhereUniqueInput
+    update?: XOR<XOR<KegiatanUpdateToOneWithWhereWithoutFieldValuesInput, KegiatanUpdateWithoutFieldValuesInput>, KegiatanUncheckedUpdateWithoutFieldValuesInput>
+  }
+
+  export type JenisKegiatanFieldUpdateOneRequiredWithoutFieldValuesNestedInput = {
+    create?: XOR<JenisKegiatanFieldCreateWithoutFieldValuesInput, JenisKegiatanFieldUncheckedCreateWithoutFieldValuesInput>
+    connectOrCreate?: JenisKegiatanFieldCreateOrConnectWithoutFieldValuesInput
+    upsert?: JenisKegiatanFieldUpsertWithoutFieldValuesInput
+    connect?: JenisKegiatanFieldWhereUniqueInput
+    update?: XOR<XOR<JenisKegiatanFieldUpdateToOneWithWhereWithoutFieldValuesInput, JenisKegiatanFieldUpdateWithoutFieldValuesInput>, JenisKegiatanFieldUncheckedUpdateWithoutFieldValuesInput>
+  }
+
+  export type MahasiswaCreateNestedOneWithoutRiwayatPerubahanPembimbingInput = {
+    create?: XOR<MahasiswaCreateWithoutRiwayatPerubahanPembimbingInput, MahasiswaUncheckedCreateWithoutRiwayatPerubahanPembimbingInput>
+    connectOrCreate?: MahasiswaCreateOrConnectWithoutRiwayatPerubahanPembimbingInput
+    connect?: MahasiswaWhereUniqueInput
+  }
+
+  export type MahasiswaUpdateOneRequiredWithoutRiwayatPerubahanPembimbingNestedInput = {
+    create?: XOR<MahasiswaCreateWithoutRiwayatPerubahanPembimbingInput, MahasiswaUncheckedCreateWithoutRiwayatPerubahanPembimbingInput>
+    connectOrCreate?: MahasiswaCreateOrConnectWithoutRiwayatPerubahanPembimbingInput
+    upsert?: MahasiswaUpsertWithoutRiwayatPerubahanPembimbingInput
+    connect?: MahasiswaWhereUniqueInput
+    update?: XOR<XOR<MahasiswaUpdateToOneWithWhereWithoutRiwayatPerubahanPembimbingInput, MahasiswaUpdateWithoutRiwayatPerubahanPembimbingInput>, MahasiswaUncheckedUpdateWithoutRiwayatPerubahanPembimbingInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -18385,29 +21221,6 @@ export namespace Prisma {
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatFilter<$PrismaModel> | number
   }
-  export type NestedJsonNullableFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
-        Required<NestedJsonNullableFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
-
-  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue
-    lte?: InputJsonValue
-    gt?: InputJsonValue
-    gte?: InputJsonValue
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-  }
 
   export type NestedBoolFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
@@ -18435,6 +21248,7 @@ export namespace Prisma {
     pekerjaan?: string | null
     nomorTelpon?: string | null
     email?: string | null
+    jenisKelamin?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     logbook?: LogbookCreateNestedManyWithoutMahasiswaInput
@@ -18457,6 +21271,7 @@ export namespace Prisma {
     pekerjaan?: string | null
     nomorTelpon?: string | null
     email?: string | null
+    jenisKelamin?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     logbook?: LogbookUncheckedCreateNestedManyWithoutMahasiswaInput
@@ -18522,13 +21337,13 @@ export namespace Prisma {
     id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    mahasiswa: MahasiswaCreateNestedOneWithoutLogbookInput
+    mahasiswa?: MahasiswaCreateNestedOneWithoutLogbookInput
     kegiatan?: KegiatanCreateNestedManyWithoutLogbookInput
   }
 
   export type LogbookUncheckedCreateWithoutPenggunaInput = {
     id?: string
-    mahasiswaId: string
+    mahasiswaId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     kegiatan?: KegiatanUncheckedCreateNestedManyWithoutLogbookInput
@@ -18551,7 +21366,7 @@ export namespace Prisma {
     templateSingleFieldForDate?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    fields?: ProgramStudiFieldCreateNestedManyWithoutProgramStudiInput
+    jenisKegiatan?: JenisKegiatanCreateNestedManyWithoutProgramStudiInput
     mataKuliah?: MataKuliahCreateNestedManyWithoutProgramStudiInput
   }
 
@@ -18562,7 +21377,7 @@ export namespace Prisma {
     templateSingleFieldForDate?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    fields?: ProgramStudiFieldUncheckedCreateNestedManyWithoutProgramStudiInput
+    jenisKegiatan?: JenisKegiatanUncheckedCreateNestedManyWithoutProgramStudiInput
     mataKuliah?: MataKuliahUncheckedCreateNestedManyWithoutProgramStudiInput
   }
 
@@ -18595,6 +21410,7 @@ export namespace Prisma {
     pekerjaan?: NullableStringFieldUpdateOperationsInput | string | null
     nomorTelpon?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    jenisKelamin?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     logbook?: LogbookUpdateManyWithoutMahasiswaNestedInput
@@ -18617,6 +21433,7 @@ export namespace Prisma {
     pekerjaan?: NullableStringFieldUpdateOperationsInput | string | null
     nomorTelpon?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    jenisKelamin?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     logbook?: LogbookUncheckedUpdateManyWithoutMahasiswaNestedInput
@@ -18701,7 +21518,7 @@ export namespace Prisma {
     OR?: LogbookScalarWhereInput[]
     NOT?: LogbookScalarWhereInput | LogbookScalarWhereInput[]
     id?: StringFilter<"Logbook"> | string
-    mahasiswaId?: StringFilter<"Logbook"> | string
+    mahasiswaId?: StringNullableFilter<"Logbook"> | string | null
     createdAt?: DateTimeFilter<"Logbook"> | Date | string
     updatedAt?: DateTimeFilter<"Logbook"> | Date | string
     penggunaId?: StringNullableFilter<"Logbook"> | string | null
@@ -18725,7 +21542,7 @@ export namespace Prisma {
     templateSingleFieldForDate?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    fields?: ProgramStudiFieldUpdateManyWithoutProgramStudiNestedInput
+    jenisKegiatan?: JenisKegiatanUpdateManyWithoutProgramStudiNestedInput
     mataKuliah?: MataKuliahUpdateManyWithoutProgramStudiNestedInput
   }
 
@@ -18736,7 +21553,7 @@ export namespace Prisma {
     templateSingleFieldForDate?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    fields?: ProgramStudiFieldUncheckedUpdateManyWithoutProgramStudiNestedInput
+    jenisKegiatan?: JenisKegiatanUncheckedUpdateManyWithoutProgramStudiNestedInput
     mataKuliah?: MataKuliahUncheckedUpdateManyWithoutProgramStudiNestedInput
   }
 
@@ -18856,11 +21673,7 @@ export namespace Prisma {
     id?: string
     alasan: string
     pembimbingIdLama?: string | null
-    promotorIdLama?: string | null
-    koPromotorIdLama?: string | null
     pembimbingIdBaru?: string | null
-    promotorIdBaru?: string | null
-    koPromotorIdBaru?: string | null
     changedAt?: Date | string
   }
 
@@ -18868,11 +21681,7 @@ export namespace Prisma {
     id?: string
     alasan: string
     pembimbingIdLama?: string | null
-    promotorIdLama?: string | null
-    koPromotorIdLama?: string | null
     pembimbingIdBaru?: string | null
-    promotorIdBaru?: string | null
-    koPromotorIdBaru?: string | null
     changedAt?: Date | string
   }
 
@@ -19024,11 +21833,7 @@ export namespace Prisma {
     mahasiswaId?: StringFilter<"RiwayatPerubahanPembimbing"> | string
     alasan?: StringFilter<"RiwayatPerubahanPembimbing"> | string
     pembimbingIdLama?: StringNullableFilter<"RiwayatPerubahanPembimbing"> | string | null
-    promotorIdLama?: StringNullableFilter<"RiwayatPerubahanPembimbing"> | string | null
-    koPromotorIdLama?: StringNullableFilter<"RiwayatPerubahanPembimbing"> | string | null
     pembimbingIdBaru?: StringNullableFilter<"RiwayatPerubahanPembimbing"> | string | null
-    promotorIdBaru?: StringNullableFilter<"RiwayatPerubahanPembimbing"> | string | null
-    koPromotorIdBaru?: StringNullableFilter<"RiwayatPerubahanPembimbing"> | string | null
     changedAt?: DateTimeFilter<"RiwayatPerubahanPembimbing"> | Date | string
   }
 
@@ -19080,6 +21885,7 @@ export namespace Prisma {
     pekerjaan?: string | null
     nomorTelpon?: string | null
     email?: string | null
+    jenisKelamin?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     pengguna: PenggunaCreateNestedOneWithoutMahasiswaInput
@@ -19102,6 +21908,7 @@ export namespace Prisma {
     pekerjaan?: string | null
     nomorTelpon?: string | null
     email?: string | null
+    jenisKelamin?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     logbook?: LogbookUncheckedCreateNestedManyWithoutMahasiswaInput
@@ -19224,6 +22031,7 @@ export namespace Prisma {
     pekerjaan?: StringNullableFilter<"Mahasiswa"> | string | null
     nomorTelpon?: StringNullableFilter<"Mahasiswa"> | string | null
     email?: StringNullableFilter<"Mahasiswa"> | string | null
+    jenisKelamin?: StringNullableFilter<"Mahasiswa"> | string | null
     createdAt?: DateTimeFilter<"Mahasiswa"> | Date | string
     updatedAt?: DateTimeFilter<"Mahasiswa"> | Date | string
   }
@@ -19257,6 +22065,7 @@ export namespace Prisma {
     pekerjaan?: string | null
     nomorTelpon?: string | null
     email?: string | null
+    jenisKelamin?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     pengguna: PenggunaCreateNestedOneWithoutMahasiswaInput
@@ -19280,6 +22089,7 @@ export namespace Prisma {
     pekerjaan?: string | null
     nomorTelpon?: string | null
     email?: string | null
+    jenisKelamin?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     permohonanBimbingan?: PermohonanBimbinganUncheckedCreateNestedManyWithoutMahasiswaInput
@@ -19293,23 +22103,25 @@ export namespace Prisma {
 
   export type KegiatanCreateWithoutLogbookInput = {
     id?: string
-    fieldsData?: NullableJsonNullValueInput | InputJsonValue
     status: string
     alasanDitolak?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    MataKuliah: MataKuliahCreateNestedOneWithoutKegiatanInput
+    MataKuliah?: MataKuliahCreateNestedOneWithoutKegiatanInput
+    jenisKegiatan: JenisKegiatanCreateNestedOneWithoutKegiatanInput
+    fieldValues?: FieldKegiatanValuesCreateNestedManyWithoutKegiatanInput
     lampiran?: LampiranCreateNestedManyWithoutKegiatanInput
   }
 
   export type KegiatanUncheckedCreateWithoutLogbookInput = {
     id?: string
-    mataKuliahId: number
-    fieldsData?: NullableJsonNullValueInput | InputJsonValue
+    mataKuliahId?: number | null
+    jenisKegiatanId: string
     status: string
     alasanDitolak?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    fieldValues?: FieldKegiatanValuesUncheckedCreateNestedManyWithoutKegiatanInput
     lampiran?: LampiranUncheckedCreateNestedManyWithoutKegiatanInput
   }
 
@@ -19382,6 +22194,7 @@ export namespace Prisma {
     pekerjaan?: NullableStringFieldUpdateOperationsInput | string | null
     nomorTelpon?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    jenisKelamin?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     pengguna?: PenggunaUpdateOneRequiredWithoutMahasiswaNestedInput
@@ -19405,6 +22218,7 @@ export namespace Prisma {
     pekerjaan?: NullableStringFieldUpdateOperationsInput | string | null
     nomorTelpon?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    jenisKelamin?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     permohonanBimbingan?: PermohonanBimbinganUncheckedUpdateManyWithoutMahasiswaNestedInput
@@ -19433,8 +22247,8 @@ export namespace Prisma {
     NOT?: KegiatanScalarWhereInput | KegiatanScalarWhereInput[]
     id?: StringFilter<"Kegiatan"> | string
     logbookId?: StringFilter<"Kegiatan"> | string
-    mataKuliahId?: IntFilter<"Kegiatan"> | number
-    fieldsData?: JsonNullableFilter<"Kegiatan">
+    mataKuliahId?: IntNullableFilter<"Kegiatan"> | number | null
+    jenisKegiatanId?: StringFilter<"Kegiatan"> | string
     status?: StringFilter<"Kegiatan"> | string
     alasanDitolak?: StringNullableFilter<"Kegiatan"> | string | null
     createdAt?: DateTimeFilter<"Kegiatan"> | Date | string
@@ -19482,117 +22296,17 @@ export namespace Prisma {
     notifikasi?: NotifikasiUncheckedUpdateManyWithoutPenggunaNestedInput
   }
 
-  export type MahasiswaCreateWithoutRiwayatPerubahanPembimbingInput = {
-    id?: string
-    semester?: number | null
-    judulDisertasi?: string | null
-    angkatan?: string | null
-    tempatTanggalLahir?: string | null
-    alamat?: string | null
-    alamatKeluarga?: string | null
-    tahunLulus?: string | null
-    mulaiMasukPendidikan?: Date | string | null
-    pekerjaan?: string | null
-    nomorTelpon?: string | null
-    email?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    pengguna: PenggunaCreateNestedOneWithoutMahasiswaInput
-    logbook?: LogbookCreateNestedManyWithoutMahasiswaInput
-    pembimbing?: DosenCreateNestedOneWithoutMahasiswaBimbinganInput
-    permohonanBimbingan?: PermohonanBimbinganCreateNestedManyWithoutMahasiswaInput
-  }
-
-  export type MahasiswaUncheckedCreateWithoutRiwayatPerubahanPembimbingInput = {
-    id?: string
-    penggunaId: string
-    pembimbingId?: string | null
-    semester?: number | null
-    judulDisertasi?: string | null
-    angkatan?: string | null
-    tempatTanggalLahir?: string | null
-    alamat?: string | null
-    alamatKeluarga?: string | null
-    tahunLulus?: string | null
-    mulaiMasukPendidikan?: Date | string | null
-    pekerjaan?: string | null
-    nomorTelpon?: string | null
-    email?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    logbook?: LogbookUncheckedCreateNestedManyWithoutMahasiswaInput
-    permohonanBimbingan?: PermohonanBimbinganUncheckedCreateNestedManyWithoutMahasiswaInput
-  }
-
-  export type MahasiswaCreateOrConnectWithoutRiwayatPerubahanPembimbingInput = {
-    where: MahasiswaWhereUniqueInput
-    create: XOR<MahasiswaCreateWithoutRiwayatPerubahanPembimbingInput, MahasiswaUncheckedCreateWithoutRiwayatPerubahanPembimbingInput>
-  }
-
-  export type MahasiswaUpsertWithoutRiwayatPerubahanPembimbingInput = {
-    update: XOR<MahasiswaUpdateWithoutRiwayatPerubahanPembimbingInput, MahasiswaUncheckedUpdateWithoutRiwayatPerubahanPembimbingInput>
-    create: XOR<MahasiswaCreateWithoutRiwayatPerubahanPembimbingInput, MahasiswaUncheckedCreateWithoutRiwayatPerubahanPembimbingInput>
-    where?: MahasiswaWhereInput
-  }
-
-  export type MahasiswaUpdateToOneWithWhereWithoutRiwayatPerubahanPembimbingInput = {
-    where?: MahasiswaWhereInput
-    data: XOR<MahasiswaUpdateWithoutRiwayatPerubahanPembimbingInput, MahasiswaUncheckedUpdateWithoutRiwayatPerubahanPembimbingInput>
-  }
-
-  export type MahasiswaUpdateWithoutRiwayatPerubahanPembimbingInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    semester?: NullableIntFieldUpdateOperationsInput | number | null
-    judulDisertasi?: NullableStringFieldUpdateOperationsInput | string | null
-    angkatan?: NullableStringFieldUpdateOperationsInput | string | null
-    tempatTanggalLahir?: NullableStringFieldUpdateOperationsInput | string | null
-    alamat?: NullableStringFieldUpdateOperationsInput | string | null
-    alamatKeluarga?: NullableStringFieldUpdateOperationsInput | string | null
-    tahunLulus?: NullableStringFieldUpdateOperationsInput | string | null
-    mulaiMasukPendidikan?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    pekerjaan?: NullableStringFieldUpdateOperationsInput | string | null
-    nomorTelpon?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    pengguna?: PenggunaUpdateOneRequiredWithoutMahasiswaNestedInput
-    logbook?: LogbookUpdateManyWithoutMahasiswaNestedInput
-    pembimbing?: DosenUpdateOneWithoutMahasiswaBimbinganNestedInput
-    permohonanBimbingan?: PermohonanBimbinganUpdateManyWithoutMahasiswaNestedInput
-  }
-
-  export type MahasiswaUncheckedUpdateWithoutRiwayatPerubahanPembimbingInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    penggunaId?: StringFieldUpdateOperationsInput | string
-    pembimbingId?: NullableStringFieldUpdateOperationsInput | string | null
-    semester?: NullableIntFieldUpdateOperationsInput | number | null
-    judulDisertasi?: NullableStringFieldUpdateOperationsInput | string | null
-    angkatan?: NullableStringFieldUpdateOperationsInput | string | null
-    tempatTanggalLahir?: NullableStringFieldUpdateOperationsInput | string | null
-    alamat?: NullableStringFieldUpdateOperationsInput | string | null
-    alamatKeluarga?: NullableStringFieldUpdateOperationsInput | string | null
-    tahunLulus?: NullableStringFieldUpdateOperationsInput | string | null
-    mulaiMasukPendidikan?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    pekerjaan?: NullableStringFieldUpdateOperationsInput | string | null
-    nomorTelpon?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    logbook?: LogbookUncheckedUpdateManyWithoutMahasiswaNestedInput
-    permohonanBimbingan?: PermohonanBimbinganUncheckedUpdateManyWithoutMahasiswaNestedInput
-  }
-
   export type LogbookCreateWithoutKegiatanInput = {
     id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    mahasiswa: MahasiswaCreateNestedOneWithoutLogbookInput
+    mahasiswa?: MahasiswaCreateNestedOneWithoutLogbookInput
     Pengguna?: PenggunaCreateNestedOneWithoutLogbookInput
   }
 
   export type LogbookUncheckedCreateWithoutKegiatanInput = {
     id?: string
-    mahasiswaId: string
+    mahasiswaId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     penggunaId?: string | null
@@ -19623,6 +22337,59 @@ export namespace Prisma {
   export type MataKuliahCreateOrConnectWithoutKegiatanInput = {
     where: MataKuliahWhereUniqueInput
     create: XOR<MataKuliahCreateWithoutKegiatanInput, MataKuliahUncheckedCreateWithoutKegiatanInput>
+  }
+
+  export type JenisKegiatanCreateWithoutKegiatanInput = {
+    id?: string
+    nama: string
+    templateIdentifier?: string | null
+    isMataKuliahRequired?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    programStudi: ProgramStudiCreateNestedOneWithoutJenisKegiatanInput
+    fields?: JenisKegiatanFieldCreateNestedManyWithoutJenisKegiatanInput
+  }
+
+  export type JenisKegiatanUncheckedCreateWithoutKegiatanInput = {
+    id?: string
+    programStudiId: string
+    nama: string
+    templateIdentifier?: string | null
+    isMataKuliahRequired?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    fields?: JenisKegiatanFieldUncheckedCreateNestedManyWithoutJenisKegiatanInput
+  }
+
+  export type JenisKegiatanCreateOrConnectWithoutKegiatanInput = {
+    where: JenisKegiatanWhereUniqueInput
+    create: XOR<JenisKegiatanCreateWithoutKegiatanInput, JenisKegiatanUncheckedCreateWithoutKegiatanInput>
+  }
+
+  export type FieldKegiatanValuesCreateWithoutKegiatanInput = {
+    id?: string
+    value: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    jenisKegiatanField: JenisKegiatanFieldCreateNestedOneWithoutFieldValuesInput
+  }
+
+  export type FieldKegiatanValuesUncheckedCreateWithoutKegiatanInput = {
+    id?: string
+    jenisKegiatanFieldId: string
+    value: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FieldKegiatanValuesCreateOrConnectWithoutKegiatanInput = {
+    where: FieldKegiatanValuesWhereUniqueInput
+    create: XOR<FieldKegiatanValuesCreateWithoutKegiatanInput, FieldKegiatanValuesUncheckedCreateWithoutKegiatanInput>
+  }
+
+  export type FieldKegiatanValuesCreateManyKegiatanInputEnvelope = {
+    data: FieldKegiatanValuesCreateManyKegiatanInput | FieldKegiatanValuesCreateManyKegiatanInput[]
+    skipDuplicates?: boolean
   }
 
   export type LampiranCreateWithoutKegiatanInput = {
@@ -19666,13 +22433,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    mahasiswa?: MahasiswaUpdateOneRequiredWithoutLogbookNestedInput
+    mahasiswa?: MahasiswaUpdateOneWithoutLogbookNestedInput
     Pengguna?: PenggunaUpdateOneWithoutLogbookNestedInput
   }
 
   export type LogbookUncheckedUpdateWithoutKegiatanInput = {
     id?: StringFieldUpdateOperationsInput | string
-    mahasiswaId?: StringFieldUpdateOperationsInput | string
+    mahasiswaId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     penggunaId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -19706,6 +22473,67 @@ export namespace Prisma {
     programStudiId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type JenisKegiatanUpsertWithoutKegiatanInput = {
+    update: XOR<JenisKegiatanUpdateWithoutKegiatanInput, JenisKegiatanUncheckedUpdateWithoutKegiatanInput>
+    create: XOR<JenisKegiatanCreateWithoutKegiatanInput, JenisKegiatanUncheckedCreateWithoutKegiatanInput>
+    where?: JenisKegiatanWhereInput
+  }
+
+  export type JenisKegiatanUpdateToOneWithWhereWithoutKegiatanInput = {
+    where?: JenisKegiatanWhereInput
+    data: XOR<JenisKegiatanUpdateWithoutKegiatanInput, JenisKegiatanUncheckedUpdateWithoutKegiatanInput>
+  }
+
+  export type JenisKegiatanUpdateWithoutKegiatanInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nama?: StringFieldUpdateOperationsInput | string
+    templateIdentifier?: NullableStringFieldUpdateOperationsInput | string | null
+    isMataKuliahRequired?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    programStudi?: ProgramStudiUpdateOneRequiredWithoutJenisKegiatanNestedInput
+    fields?: JenisKegiatanFieldUpdateManyWithoutJenisKegiatanNestedInput
+  }
+
+  export type JenisKegiatanUncheckedUpdateWithoutKegiatanInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    programStudiId?: StringFieldUpdateOperationsInput | string
+    nama?: StringFieldUpdateOperationsInput | string
+    templateIdentifier?: NullableStringFieldUpdateOperationsInput | string | null
+    isMataKuliahRequired?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    fields?: JenisKegiatanFieldUncheckedUpdateManyWithoutJenisKegiatanNestedInput
+  }
+
+  export type FieldKegiatanValuesUpsertWithWhereUniqueWithoutKegiatanInput = {
+    where: FieldKegiatanValuesWhereUniqueInput
+    update: XOR<FieldKegiatanValuesUpdateWithoutKegiatanInput, FieldKegiatanValuesUncheckedUpdateWithoutKegiatanInput>
+    create: XOR<FieldKegiatanValuesCreateWithoutKegiatanInput, FieldKegiatanValuesUncheckedCreateWithoutKegiatanInput>
+  }
+
+  export type FieldKegiatanValuesUpdateWithWhereUniqueWithoutKegiatanInput = {
+    where: FieldKegiatanValuesWhereUniqueInput
+    data: XOR<FieldKegiatanValuesUpdateWithoutKegiatanInput, FieldKegiatanValuesUncheckedUpdateWithoutKegiatanInput>
+  }
+
+  export type FieldKegiatanValuesUpdateManyWithWhereWithoutKegiatanInput = {
+    where: FieldKegiatanValuesScalarWhereInput
+    data: XOR<FieldKegiatanValuesUpdateManyMutationInput, FieldKegiatanValuesUncheckedUpdateManyWithoutKegiatanInput>
+  }
+
+  export type FieldKegiatanValuesScalarWhereInput = {
+    AND?: FieldKegiatanValuesScalarWhereInput | FieldKegiatanValuesScalarWhereInput[]
+    OR?: FieldKegiatanValuesScalarWhereInput[]
+    NOT?: FieldKegiatanValuesScalarWhereInput | FieldKegiatanValuesScalarWhereInput[]
+    id?: StringFilter<"FieldKegiatanValues"> | string
+    kegiatanId?: StringFilter<"FieldKegiatanValues"> | string
+    jenisKegiatanFieldId?: StringFilter<"FieldKegiatanValues"> | string
+    value?: StringFilter<"FieldKegiatanValues"> | string
+    createdAt?: DateTimeFilter<"FieldKegiatanValues"> | Date | string
+    updatedAt?: DateTimeFilter<"FieldKegiatanValues"> | Date | string
+  }
+
   export type LampiranUpsertWithWhereUniqueWithoutKegiatanInput = {
     where: LampiranWhereUniqueInput
     update: XOR<LampiranUpdateWithoutKegiatanInput, LampiranUncheckedUpdateWithoutKegiatanInput>
@@ -19736,23 +22564,25 @@ export namespace Prisma {
 
   export type KegiatanCreateWithoutMataKuliahInput = {
     id?: string
-    fieldsData?: NullableJsonNullValueInput | InputJsonValue
     status: string
     alasanDitolak?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     logbook: LogbookCreateNestedOneWithoutKegiatanInput
+    jenisKegiatan: JenisKegiatanCreateNestedOneWithoutKegiatanInput
+    fieldValues?: FieldKegiatanValuesCreateNestedManyWithoutKegiatanInput
     lampiran?: LampiranCreateNestedManyWithoutKegiatanInput
   }
 
   export type KegiatanUncheckedCreateWithoutMataKuliahInput = {
     id?: string
     logbookId: string
-    fieldsData?: NullableJsonNullValueInput | InputJsonValue
+    jenisKegiatanId: string
     status: string
     alasanDitolak?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    fieldValues?: FieldKegiatanValuesUncheckedCreateNestedManyWithoutKegiatanInput
     lampiran?: LampiranUncheckedCreateNestedManyWithoutKegiatanInput
   }
 
@@ -19774,7 +22604,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     pengguna?: PenggunaCreateNestedManyWithoutProgramStudiInput
-    fields?: ProgramStudiFieldCreateNestedManyWithoutProgramStudiInput
+    jenisKegiatan?: JenisKegiatanCreateNestedManyWithoutProgramStudiInput
   }
 
   export type ProgramStudiUncheckedCreateWithoutMataKuliahInput = {
@@ -19785,7 +22615,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     pengguna?: PenggunaUncheckedCreateNestedManyWithoutProgramStudiInput
-    fields?: ProgramStudiFieldUncheckedCreateNestedManyWithoutProgramStudiInput
+    jenisKegiatan?: JenisKegiatanUncheckedCreateNestedManyWithoutProgramStudiInput
   }
 
   export type ProgramStudiCreateOrConnectWithoutMataKuliahInput = {
@@ -19828,7 +22658,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     pengguna?: PenggunaUpdateManyWithoutProgramStudiNestedInput
-    fields?: ProgramStudiFieldUpdateManyWithoutProgramStudiNestedInput
+    jenisKegiatan?: JenisKegiatanUpdateManyWithoutProgramStudiNestedInput
   }
 
   export type ProgramStudiUncheckedUpdateWithoutMataKuliahInput = {
@@ -19839,29 +22669,31 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     pengguna?: PenggunaUncheckedUpdateManyWithoutProgramStudiNestedInput
-    fields?: ProgramStudiFieldUncheckedUpdateManyWithoutProgramStudiNestedInput
+    jenisKegiatan?: JenisKegiatanUncheckedUpdateManyWithoutProgramStudiNestedInput
   }
 
   export type KegiatanCreateWithoutLampiranInput = {
     id?: string
-    fieldsData?: NullableJsonNullValueInput | InputJsonValue
     status: string
     alasanDitolak?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     logbook: LogbookCreateNestedOneWithoutKegiatanInput
-    MataKuliah: MataKuliahCreateNestedOneWithoutKegiatanInput
+    MataKuliah?: MataKuliahCreateNestedOneWithoutKegiatanInput
+    jenisKegiatan: JenisKegiatanCreateNestedOneWithoutKegiatanInput
+    fieldValues?: FieldKegiatanValuesCreateNestedManyWithoutKegiatanInput
   }
 
   export type KegiatanUncheckedCreateWithoutLampiranInput = {
     id?: string
     logbookId: string
-    mataKuliahId: number
-    fieldsData?: NullableJsonNullValueInput | InputJsonValue
+    mataKuliahId?: number | null
+    jenisKegiatanId: string
     status: string
     alasanDitolak?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    fieldValues?: FieldKegiatanValuesUncheckedCreateNestedManyWithoutKegiatanInput
   }
 
   export type KegiatanCreateOrConnectWithoutLampiranInput = {
@@ -19882,24 +22714,26 @@ export namespace Prisma {
 
   export type KegiatanUpdateWithoutLampiranInput = {
     id?: StringFieldUpdateOperationsInput | string
-    fieldsData?: NullableJsonNullValueInput | InputJsonValue
     status?: StringFieldUpdateOperationsInput | string
     alasanDitolak?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     logbook?: LogbookUpdateOneRequiredWithoutKegiatanNestedInput
-    MataKuliah?: MataKuliahUpdateOneRequiredWithoutKegiatanNestedInput
+    MataKuliah?: MataKuliahUpdateOneWithoutKegiatanNestedInput
+    jenisKegiatan?: JenisKegiatanUpdateOneRequiredWithoutKegiatanNestedInput
+    fieldValues?: FieldKegiatanValuesUpdateManyWithoutKegiatanNestedInput
   }
 
   export type KegiatanUncheckedUpdateWithoutLampiranInput = {
     id?: StringFieldUpdateOperationsInput | string
     logbookId?: StringFieldUpdateOperationsInput | string
-    mataKuliahId?: IntFieldUpdateOperationsInput | number
-    fieldsData?: NullableJsonNullValueInput | InputJsonValue
+    mataKuliahId?: NullableIntFieldUpdateOperationsInput | number | null
+    jenisKegiatanId?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     alasanDitolak?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    fieldValues?: FieldKegiatanValuesUncheckedUpdateManyWithoutKegiatanNestedInput
   }
 
   export type MahasiswaCreateWithoutPermohonanBimbinganInput = {
@@ -19915,6 +22749,7 @@ export namespace Prisma {
     pekerjaan?: string | null
     nomorTelpon?: string | null
     email?: string | null
+    jenisKelamin?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     pengguna: PenggunaCreateNestedOneWithoutMahasiswaInput
@@ -19938,6 +22773,7 @@ export namespace Prisma {
     pekerjaan?: string | null
     nomorTelpon?: string | null
     email?: string | null
+    jenisKelamin?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     logbook?: LogbookUncheckedCreateNestedManyWithoutMahasiswaInput
@@ -19994,6 +22830,7 @@ export namespace Prisma {
     pekerjaan?: NullableStringFieldUpdateOperationsInput | string | null
     nomorTelpon?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    jenisKelamin?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     pengguna?: PenggunaUpdateOneRequiredWithoutMahasiswaNestedInput
@@ -20017,6 +22854,7 @@ export namespace Prisma {
     pekerjaan?: NullableStringFieldUpdateOperationsInput | string | null
     nomorTelpon?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    jenisKelamin?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     logbook?: LogbookUncheckedUpdateManyWithoutMahasiswaNestedInput
@@ -20166,33 +23004,35 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type ProgramStudiFieldCreateWithoutProgramStudiInput = {
+  export type JenisKegiatanCreateWithoutProgramStudiInput = {
     id?: string
-    fieldName: string
-    fieldType: string
-    isRequired?: boolean
-    order?: number
+    nama: string
+    templateIdentifier?: string | null
+    isMataKuliahRequired?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    kegiatan?: KegiatanCreateNestedManyWithoutJenisKegiatanInput
+    fields?: JenisKegiatanFieldCreateNestedManyWithoutJenisKegiatanInput
   }
 
-  export type ProgramStudiFieldUncheckedCreateWithoutProgramStudiInput = {
+  export type JenisKegiatanUncheckedCreateWithoutProgramStudiInput = {
     id?: string
-    fieldName: string
-    fieldType: string
-    isRequired?: boolean
-    order?: number
+    nama: string
+    templateIdentifier?: string | null
+    isMataKuliahRequired?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    kegiatan?: KegiatanUncheckedCreateNestedManyWithoutJenisKegiatanInput
+    fields?: JenisKegiatanFieldUncheckedCreateNestedManyWithoutJenisKegiatanInput
   }
 
-  export type ProgramStudiFieldCreateOrConnectWithoutProgramStudiInput = {
-    where: ProgramStudiFieldWhereUniqueInput
-    create: XOR<ProgramStudiFieldCreateWithoutProgramStudiInput, ProgramStudiFieldUncheckedCreateWithoutProgramStudiInput>
+  export type JenisKegiatanCreateOrConnectWithoutProgramStudiInput = {
+    where: JenisKegiatanWhereUniqueInput
+    create: XOR<JenisKegiatanCreateWithoutProgramStudiInput, JenisKegiatanUncheckedCreateWithoutProgramStudiInput>
   }
 
-  export type ProgramStudiFieldCreateManyProgramStudiInputEnvelope = {
-    data: ProgramStudiFieldCreateManyProgramStudiInput | ProgramStudiFieldCreateManyProgramStudiInput[]
+  export type JenisKegiatanCreateManyProgramStudiInputEnvelope = {
+    data: JenisKegiatanCreateManyProgramStudiInput | JenisKegiatanCreateManyProgramStudiInput[]
     skipDuplicates?: boolean
   }
 
@@ -20254,34 +23094,33 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Pengguna"> | Date | string
   }
 
-  export type ProgramStudiFieldUpsertWithWhereUniqueWithoutProgramStudiInput = {
-    where: ProgramStudiFieldWhereUniqueInput
-    update: XOR<ProgramStudiFieldUpdateWithoutProgramStudiInput, ProgramStudiFieldUncheckedUpdateWithoutProgramStudiInput>
-    create: XOR<ProgramStudiFieldCreateWithoutProgramStudiInput, ProgramStudiFieldUncheckedCreateWithoutProgramStudiInput>
+  export type JenisKegiatanUpsertWithWhereUniqueWithoutProgramStudiInput = {
+    where: JenisKegiatanWhereUniqueInput
+    update: XOR<JenisKegiatanUpdateWithoutProgramStudiInput, JenisKegiatanUncheckedUpdateWithoutProgramStudiInput>
+    create: XOR<JenisKegiatanCreateWithoutProgramStudiInput, JenisKegiatanUncheckedCreateWithoutProgramStudiInput>
   }
 
-  export type ProgramStudiFieldUpdateWithWhereUniqueWithoutProgramStudiInput = {
-    where: ProgramStudiFieldWhereUniqueInput
-    data: XOR<ProgramStudiFieldUpdateWithoutProgramStudiInput, ProgramStudiFieldUncheckedUpdateWithoutProgramStudiInput>
+  export type JenisKegiatanUpdateWithWhereUniqueWithoutProgramStudiInput = {
+    where: JenisKegiatanWhereUniqueInput
+    data: XOR<JenisKegiatanUpdateWithoutProgramStudiInput, JenisKegiatanUncheckedUpdateWithoutProgramStudiInput>
   }
 
-  export type ProgramStudiFieldUpdateManyWithWhereWithoutProgramStudiInput = {
-    where: ProgramStudiFieldScalarWhereInput
-    data: XOR<ProgramStudiFieldUpdateManyMutationInput, ProgramStudiFieldUncheckedUpdateManyWithoutProgramStudiInput>
+  export type JenisKegiatanUpdateManyWithWhereWithoutProgramStudiInput = {
+    where: JenisKegiatanScalarWhereInput
+    data: XOR<JenisKegiatanUpdateManyMutationInput, JenisKegiatanUncheckedUpdateManyWithoutProgramStudiInput>
   }
 
-  export type ProgramStudiFieldScalarWhereInput = {
-    AND?: ProgramStudiFieldScalarWhereInput | ProgramStudiFieldScalarWhereInput[]
-    OR?: ProgramStudiFieldScalarWhereInput[]
-    NOT?: ProgramStudiFieldScalarWhereInput | ProgramStudiFieldScalarWhereInput[]
-    id?: StringFilter<"ProgramStudiField"> | string
-    programStudiId?: StringFilter<"ProgramStudiField"> | string
-    fieldName?: StringFilter<"ProgramStudiField"> | string
-    fieldType?: StringFilter<"ProgramStudiField"> | string
-    isRequired?: BoolFilter<"ProgramStudiField"> | boolean
-    order?: IntFilter<"ProgramStudiField"> | number
-    createdAt?: DateTimeFilter<"ProgramStudiField"> | Date | string
-    updatedAt?: DateTimeFilter<"ProgramStudiField"> | Date | string
+  export type JenisKegiatanScalarWhereInput = {
+    AND?: JenisKegiatanScalarWhereInput | JenisKegiatanScalarWhereInput[]
+    OR?: JenisKegiatanScalarWhereInput[]
+    NOT?: JenisKegiatanScalarWhereInput | JenisKegiatanScalarWhereInput[]
+    id?: StringFilter<"JenisKegiatan"> | string
+    programStudiId?: StringFilter<"JenisKegiatan"> | string
+    nama?: StringFilter<"JenisKegiatan"> | string
+    templateIdentifier?: StringNullableFilter<"JenisKegiatan"> | string | null
+    isMataKuliahRequired?: BoolFilter<"JenisKegiatan"> | boolean
+    createdAt?: DateTimeFilter<"JenisKegiatan"> | Date | string
+    updatedAt?: DateTimeFilter<"JenisKegiatan"> | Date | string
   }
 
   export type MataKuliahUpsertWithWhereUniqueWithoutProgramStudiInput = {
@@ -20312,7 +23151,7 @@ export namespace Prisma {
     programStudiId?: StringNullableFilter<"MataKuliah"> | string | null
   }
 
-  export type ProgramStudiCreateWithoutFieldsInput = {
+  export type ProgramStudiCreateWithoutJenisKegiatanInput = {
     id?: string
     nama: string
     displayName: string
@@ -20323,7 +23162,7 @@ export namespace Prisma {
     mataKuliah?: MataKuliahCreateNestedManyWithoutProgramStudiInput
   }
 
-  export type ProgramStudiUncheckedCreateWithoutFieldsInput = {
+  export type ProgramStudiUncheckedCreateWithoutJenisKegiatanInput = {
     id?: string
     nama: string
     displayName: string
@@ -20334,23 +23173,91 @@ export namespace Prisma {
     mataKuliah?: MataKuliahUncheckedCreateNestedManyWithoutProgramStudiInput
   }
 
-  export type ProgramStudiCreateOrConnectWithoutFieldsInput = {
+  export type ProgramStudiCreateOrConnectWithoutJenisKegiatanInput = {
     where: ProgramStudiWhereUniqueInput
-    create: XOR<ProgramStudiCreateWithoutFieldsInput, ProgramStudiUncheckedCreateWithoutFieldsInput>
+    create: XOR<ProgramStudiCreateWithoutJenisKegiatanInput, ProgramStudiUncheckedCreateWithoutJenisKegiatanInput>
   }
 
-  export type ProgramStudiUpsertWithoutFieldsInput = {
-    update: XOR<ProgramStudiUpdateWithoutFieldsInput, ProgramStudiUncheckedUpdateWithoutFieldsInput>
-    create: XOR<ProgramStudiCreateWithoutFieldsInput, ProgramStudiUncheckedCreateWithoutFieldsInput>
+  export type KegiatanCreateWithoutJenisKegiatanInput = {
+    id?: string
+    status: string
+    alasanDitolak?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    logbook: LogbookCreateNestedOneWithoutKegiatanInput
+    MataKuliah?: MataKuliahCreateNestedOneWithoutKegiatanInput
+    fieldValues?: FieldKegiatanValuesCreateNestedManyWithoutKegiatanInput
+    lampiran?: LampiranCreateNestedManyWithoutKegiatanInput
+  }
+
+  export type KegiatanUncheckedCreateWithoutJenisKegiatanInput = {
+    id?: string
+    logbookId: string
+    mataKuliahId?: number | null
+    status: string
+    alasanDitolak?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    fieldValues?: FieldKegiatanValuesUncheckedCreateNestedManyWithoutKegiatanInput
+    lampiran?: LampiranUncheckedCreateNestedManyWithoutKegiatanInput
+  }
+
+  export type KegiatanCreateOrConnectWithoutJenisKegiatanInput = {
+    where: KegiatanWhereUniqueInput
+    create: XOR<KegiatanCreateWithoutJenisKegiatanInput, KegiatanUncheckedCreateWithoutJenisKegiatanInput>
+  }
+
+  export type KegiatanCreateManyJenisKegiatanInputEnvelope = {
+    data: KegiatanCreateManyJenisKegiatanInput | KegiatanCreateManyJenisKegiatanInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type JenisKegiatanFieldCreateWithoutJenisKegiatanInput = {
+    id?: string
+    fieldName: string
+    fieldType: string
+    templateKey?: string | null
+    isRequired?: boolean
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    fieldValues?: FieldKegiatanValuesCreateNestedManyWithoutJenisKegiatanFieldInput
+  }
+
+  export type JenisKegiatanFieldUncheckedCreateWithoutJenisKegiatanInput = {
+    id?: string
+    fieldName: string
+    fieldType: string
+    templateKey?: string | null
+    isRequired?: boolean
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    fieldValues?: FieldKegiatanValuesUncheckedCreateNestedManyWithoutJenisKegiatanFieldInput
+  }
+
+  export type JenisKegiatanFieldCreateOrConnectWithoutJenisKegiatanInput = {
+    where: JenisKegiatanFieldWhereUniqueInput
+    create: XOR<JenisKegiatanFieldCreateWithoutJenisKegiatanInput, JenisKegiatanFieldUncheckedCreateWithoutJenisKegiatanInput>
+  }
+
+  export type JenisKegiatanFieldCreateManyJenisKegiatanInputEnvelope = {
+    data: JenisKegiatanFieldCreateManyJenisKegiatanInput | JenisKegiatanFieldCreateManyJenisKegiatanInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ProgramStudiUpsertWithoutJenisKegiatanInput = {
+    update: XOR<ProgramStudiUpdateWithoutJenisKegiatanInput, ProgramStudiUncheckedUpdateWithoutJenisKegiatanInput>
+    create: XOR<ProgramStudiCreateWithoutJenisKegiatanInput, ProgramStudiUncheckedCreateWithoutJenisKegiatanInput>
     where?: ProgramStudiWhereInput
   }
 
-  export type ProgramStudiUpdateToOneWithWhereWithoutFieldsInput = {
+  export type ProgramStudiUpdateToOneWithWhereWithoutJenisKegiatanInput = {
     where?: ProgramStudiWhereInput
-    data: XOR<ProgramStudiUpdateWithoutFieldsInput, ProgramStudiUncheckedUpdateWithoutFieldsInput>
+    data: XOR<ProgramStudiUpdateWithoutJenisKegiatanInput, ProgramStudiUncheckedUpdateWithoutJenisKegiatanInput>
   }
 
-  export type ProgramStudiUpdateWithoutFieldsInput = {
+  export type ProgramStudiUpdateWithoutJenisKegiatanInput = {
     id?: StringFieldUpdateOperationsInput | string
     nama?: StringFieldUpdateOperationsInput | string
     displayName?: StringFieldUpdateOperationsInput | string
@@ -20361,7 +23268,7 @@ export namespace Prisma {
     mataKuliah?: MataKuliahUpdateManyWithoutProgramStudiNestedInput
   }
 
-  export type ProgramStudiUncheckedUpdateWithoutFieldsInput = {
+  export type ProgramStudiUncheckedUpdateWithoutJenisKegiatanInput = {
     id?: StringFieldUpdateOperationsInput | string
     nama?: StringFieldUpdateOperationsInput | string
     displayName?: StringFieldUpdateOperationsInput | string
@@ -20370,6 +23277,387 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     pengguna?: PenggunaUncheckedUpdateManyWithoutProgramStudiNestedInput
     mataKuliah?: MataKuliahUncheckedUpdateManyWithoutProgramStudiNestedInput
+  }
+
+  export type KegiatanUpsertWithWhereUniqueWithoutJenisKegiatanInput = {
+    where: KegiatanWhereUniqueInput
+    update: XOR<KegiatanUpdateWithoutJenisKegiatanInput, KegiatanUncheckedUpdateWithoutJenisKegiatanInput>
+    create: XOR<KegiatanCreateWithoutJenisKegiatanInput, KegiatanUncheckedCreateWithoutJenisKegiatanInput>
+  }
+
+  export type KegiatanUpdateWithWhereUniqueWithoutJenisKegiatanInput = {
+    where: KegiatanWhereUniqueInput
+    data: XOR<KegiatanUpdateWithoutJenisKegiatanInput, KegiatanUncheckedUpdateWithoutJenisKegiatanInput>
+  }
+
+  export type KegiatanUpdateManyWithWhereWithoutJenisKegiatanInput = {
+    where: KegiatanScalarWhereInput
+    data: XOR<KegiatanUpdateManyMutationInput, KegiatanUncheckedUpdateManyWithoutJenisKegiatanInput>
+  }
+
+  export type JenisKegiatanFieldUpsertWithWhereUniqueWithoutJenisKegiatanInput = {
+    where: JenisKegiatanFieldWhereUniqueInput
+    update: XOR<JenisKegiatanFieldUpdateWithoutJenisKegiatanInput, JenisKegiatanFieldUncheckedUpdateWithoutJenisKegiatanInput>
+    create: XOR<JenisKegiatanFieldCreateWithoutJenisKegiatanInput, JenisKegiatanFieldUncheckedCreateWithoutJenisKegiatanInput>
+  }
+
+  export type JenisKegiatanFieldUpdateWithWhereUniqueWithoutJenisKegiatanInput = {
+    where: JenisKegiatanFieldWhereUniqueInput
+    data: XOR<JenisKegiatanFieldUpdateWithoutJenisKegiatanInput, JenisKegiatanFieldUncheckedUpdateWithoutJenisKegiatanInput>
+  }
+
+  export type JenisKegiatanFieldUpdateManyWithWhereWithoutJenisKegiatanInput = {
+    where: JenisKegiatanFieldScalarWhereInput
+    data: XOR<JenisKegiatanFieldUpdateManyMutationInput, JenisKegiatanFieldUncheckedUpdateManyWithoutJenisKegiatanInput>
+  }
+
+  export type JenisKegiatanFieldScalarWhereInput = {
+    AND?: JenisKegiatanFieldScalarWhereInput | JenisKegiatanFieldScalarWhereInput[]
+    OR?: JenisKegiatanFieldScalarWhereInput[]
+    NOT?: JenisKegiatanFieldScalarWhereInput | JenisKegiatanFieldScalarWhereInput[]
+    id?: StringFilter<"JenisKegiatanField"> | string
+    jenisKegiatanId?: StringFilter<"JenisKegiatanField"> | string
+    fieldName?: StringFilter<"JenisKegiatanField"> | string
+    fieldType?: StringFilter<"JenisKegiatanField"> | string
+    templateKey?: StringNullableFilter<"JenisKegiatanField"> | string | null
+    isRequired?: BoolFilter<"JenisKegiatanField"> | boolean
+    order?: IntFilter<"JenisKegiatanField"> | number
+    createdAt?: DateTimeFilter<"JenisKegiatanField"> | Date | string
+    updatedAt?: DateTimeFilter<"JenisKegiatanField"> | Date | string
+  }
+
+  export type JenisKegiatanCreateWithoutFieldsInput = {
+    id?: string
+    nama: string
+    templateIdentifier?: string | null
+    isMataKuliahRequired?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    programStudi: ProgramStudiCreateNestedOneWithoutJenisKegiatanInput
+    kegiatan?: KegiatanCreateNestedManyWithoutJenisKegiatanInput
+  }
+
+  export type JenisKegiatanUncheckedCreateWithoutFieldsInput = {
+    id?: string
+    programStudiId: string
+    nama: string
+    templateIdentifier?: string | null
+    isMataKuliahRequired?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    kegiatan?: KegiatanUncheckedCreateNestedManyWithoutJenisKegiatanInput
+  }
+
+  export type JenisKegiatanCreateOrConnectWithoutFieldsInput = {
+    where: JenisKegiatanWhereUniqueInput
+    create: XOR<JenisKegiatanCreateWithoutFieldsInput, JenisKegiatanUncheckedCreateWithoutFieldsInput>
+  }
+
+  export type FieldKegiatanValuesCreateWithoutJenisKegiatanFieldInput = {
+    id?: string
+    value: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    kegiatan: KegiatanCreateNestedOneWithoutFieldValuesInput
+  }
+
+  export type FieldKegiatanValuesUncheckedCreateWithoutJenisKegiatanFieldInput = {
+    id?: string
+    kegiatanId: string
+    value: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FieldKegiatanValuesCreateOrConnectWithoutJenisKegiatanFieldInput = {
+    where: FieldKegiatanValuesWhereUniqueInput
+    create: XOR<FieldKegiatanValuesCreateWithoutJenisKegiatanFieldInput, FieldKegiatanValuesUncheckedCreateWithoutJenisKegiatanFieldInput>
+  }
+
+  export type FieldKegiatanValuesCreateManyJenisKegiatanFieldInputEnvelope = {
+    data: FieldKegiatanValuesCreateManyJenisKegiatanFieldInput | FieldKegiatanValuesCreateManyJenisKegiatanFieldInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type JenisKegiatanUpsertWithoutFieldsInput = {
+    update: XOR<JenisKegiatanUpdateWithoutFieldsInput, JenisKegiatanUncheckedUpdateWithoutFieldsInput>
+    create: XOR<JenisKegiatanCreateWithoutFieldsInput, JenisKegiatanUncheckedCreateWithoutFieldsInput>
+    where?: JenisKegiatanWhereInput
+  }
+
+  export type JenisKegiatanUpdateToOneWithWhereWithoutFieldsInput = {
+    where?: JenisKegiatanWhereInput
+    data: XOR<JenisKegiatanUpdateWithoutFieldsInput, JenisKegiatanUncheckedUpdateWithoutFieldsInput>
+  }
+
+  export type JenisKegiatanUpdateWithoutFieldsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nama?: StringFieldUpdateOperationsInput | string
+    templateIdentifier?: NullableStringFieldUpdateOperationsInput | string | null
+    isMataKuliahRequired?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    programStudi?: ProgramStudiUpdateOneRequiredWithoutJenisKegiatanNestedInput
+    kegiatan?: KegiatanUpdateManyWithoutJenisKegiatanNestedInput
+  }
+
+  export type JenisKegiatanUncheckedUpdateWithoutFieldsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    programStudiId?: StringFieldUpdateOperationsInput | string
+    nama?: StringFieldUpdateOperationsInput | string
+    templateIdentifier?: NullableStringFieldUpdateOperationsInput | string | null
+    isMataKuliahRequired?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    kegiatan?: KegiatanUncheckedUpdateManyWithoutJenisKegiatanNestedInput
+  }
+
+  export type FieldKegiatanValuesUpsertWithWhereUniqueWithoutJenisKegiatanFieldInput = {
+    where: FieldKegiatanValuesWhereUniqueInput
+    update: XOR<FieldKegiatanValuesUpdateWithoutJenisKegiatanFieldInput, FieldKegiatanValuesUncheckedUpdateWithoutJenisKegiatanFieldInput>
+    create: XOR<FieldKegiatanValuesCreateWithoutJenisKegiatanFieldInput, FieldKegiatanValuesUncheckedCreateWithoutJenisKegiatanFieldInput>
+  }
+
+  export type FieldKegiatanValuesUpdateWithWhereUniqueWithoutJenisKegiatanFieldInput = {
+    where: FieldKegiatanValuesWhereUniqueInput
+    data: XOR<FieldKegiatanValuesUpdateWithoutJenisKegiatanFieldInput, FieldKegiatanValuesUncheckedUpdateWithoutJenisKegiatanFieldInput>
+  }
+
+  export type FieldKegiatanValuesUpdateManyWithWhereWithoutJenisKegiatanFieldInput = {
+    where: FieldKegiatanValuesScalarWhereInput
+    data: XOR<FieldKegiatanValuesUpdateManyMutationInput, FieldKegiatanValuesUncheckedUpdateManyWithoutJenisKegiatanFieldInput>
+  }
+
+  export type KegiatanCreateWithoutFieldValuesInput = {
+    id?: string
+    status: string
+    alasanDitolak?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    logbook: LogbookCreateNestedOneWithoutKegiatanInput
+    MataKuliah?: MataKuliahCreateNestedOneWithoutKegiatanInput
+    jenisKegiatan: JenisKegiatanCreateNestedOneWithoutKegiatanInput
+    lampiran?: LampiranCreateNestedManyWithoutKegiatanInput
+  }
+
+  export type KegiatanUncheckedCreateWithoutFieldValuesInput = {
+    id?: string
+    logbookId: string
+    mataKuliahId?: number | null
+    jenisKegiatanId: string
+    status: string
+    alasanDitolak?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lampiran?: LampiranUncheckedCreateNestedManyWithoutKegiatanInput
+  }
+
+  export type KegiatanCreateOrConnectWithoutFieldValuesInput = {
+    where: KegiatanWhereUniqueInput
+    create: XOR<KegiatanCreateWithoutFieldValuesInput, KegiatanUncheckedCreateWithoutFieldValuesInput>
+  }
+
+  export type JenisKegiatanFieldCreateWithoutFieldValuesInput = {
+    id?: string
+    fieldName: string
+    fieldType: string
+    templateKey?: string | null
+    isRequired?: boolean
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    jenisKegiatan: JenisKegiatanCreateNestedOneWithoutFieldsInput
+  }
+
+  export type JenisKegiatanFieldUncheckedCreateWithoutFieldValuesInput = {
+    id?: string
+    jenisKegiatanId: string
+    fieldName: string
+    fieldType: string
+    templateKey?: string | null
+    isRequired?: boolean
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type JenisKegiatanFieldCreateOrConnectWithoutFieldValuesInput = {
+    where: JenisKegiatanFieldWhereUniqueInput
+    create: XOR<JenisKegiatanFieldCreateWithoutFieldValuesInput, JenisKegiatanFieldUncheckedCreateWithoutFieldValuesInput>
+  }
+
+  export type KegiatanUpsertWithoutFieldValuesInput = {
+    update: XOR<KegiatanUpdateWithoutFieldValuesInput, KegiatanUncheckedUpdateWithoutFieldValuesInput>
+    create: XOR<KegiatanCreateWithoutFieldValuesInput, KegiatanUncheckedCreateWithoutFieldValuesInput>
+    where?: KegiatanWhereInput
+  }
+
+  export type KegiatanUpdateToOneWithWhereWithoutFieldValuesInput = {
+    where?: KegiatanWhereInput
+    data: XOR<KegiatanUpdateWithoutFieldValuesInput, KegiatanUncheckedUpdateWithoutFieldValuesInput>
+  }
+
+  export type KegiatanUpdateWithoutFieldValuesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    alasanDitolak?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logbook?: LogbookUpdateOneRequiredWithoutKegiatanNestedInput
+    MataKuliah?: MataKuliahUpdateOneWithoutKegiatanNestedInput
+    jenisKegiatan?: JenisKegiatanUpdateOneRequiredWithoutKegiatanNestedInput
+    lampiran?: LampiranUpdateManyWithoutKegiatanNestedInput
+  }
+
+  export type KegiatanUncheckedUpdateWithoutFieldValuesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    logbookId?: StringFieldUpdateOperationsInput | string
+    mataKuliahId?: NullableIntFieldUpdateOperationsInput | number | null
+    jenisKegiatanId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    alasanDitolak?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lampiran?: LampiranUncheckedUpdateManyWithoutKegiatanNestedInput
+  }
+
+  export type JenisKegiatanFieldUpsertWithoutFieldValuesInput = {
+    update: XOR<JenisKegiatanFieldUpdateWithoutFieldValuesInput, JenisKegiatanFieldUncheckedUpdateWithoutFieldValuesInput>
+    create: XOR<JenisKegiatanFieldCreateWithoutFieldValuesInput, JenisKegiatanFieldUncheckedCreateWithoutFieldValuesInput>
+    where?: JenisKegiatanFieldWhereInput
+  }
+
+  export type JenisKegiatanFieldUpdateToOneWithWhereWithoutFieldValuesInput = {
+    where?: JenisKegiatanFieldWhereInput
+    data: XOR<JenisKegiatanFieldUpdateWithoutFieldValuesInput, JenisKegiatanFieldUncheckedUpdateWithoutFieldValuesInput>
+  }
+
+  export type JenisKegiatanFieldUpdateWithoutFieldValuesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fieldName?: StringFieldUpdateOperationsInput | string
+    fieldType?: StringFieldUpdateOperationsInput | string
+    templateKey?: NullableStringFieldUpdateOperationsInput | string | null
+    isRequired?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    jenisKegiatan?: JenisKegiatanUpdateOneRequiredWithoutFieldsNestedInput
+  }
+
+  export type JenisKegiatanFieldUncheckedUpdateWithoutFieldValuesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    jenisKegiatanId?: StringFieldUpdateOperationsInput | string
+    fieldName?: StringFieldUpdateOperationsInput | string
+    fieldType?: StringFieldUpdateOperationsInput | string
+    templateKey?: NullableStringFieldUpdateOperationsInput | string | null
+    isRequired?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MahasiswaCreateWithoutRiwayatPerubahanPembimbingInput = {
+    id?: string
+    semester?: number | null
+    judulDisertasi?: string | null
+    angkatan?: string | null
+    tempatTanggalLahir?: string | null
+    alamat?: string | null
+    alamatKeluarga?: string | null
+    tahunLulus?: string | null
+    mulaiMasukPendidikan?: Date | string | null
+    pekerjaan?: string | null
+    nomorTelpon?: string | null
+    email?: string | null
+    jenisKelamin?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    pengguna: PenggunaCreateNestedOneWithoutMahasiswaInput
+    logbook?: LogbookCreateNestedManyWithoutMahasiswaInput
+    pembimbing?: DosenCreateNestedOneWithoutMahasiswaBimbinganInput
+    permohonanBimbingan?: PermohonanBimbinganCreateNestedManyWithoutMahasiswaInput
+  }
+
+  export type MahasiswaUncheckedCreateWithoutRiwayatPerubahanPembimbingInput = {
+    id?: string
+    penggunaId: string
+    pembimbingId?: string | null
+    semester?: number | null
+    judulDisertasi?: string | null
+    angkatan?: string | null
+    tempatTanggalLahir?: string | null
+    alamat?: string | null
+    alamatKeluarga?: string | null
+    tahunLulus?: string | null
+    mulaiMasukPendidikan?: Date | string | null
+    pekerjaan?: string | null
+    nomorTelpon?: string | null
+    email?: string | null
+    jenisKelamin?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    logbook?: LogbookUncheckedCreateNestedManyWithoutMahasiswaInput
+    permohonanBimbingan?: PermohonanBimbinganUncheckedCreateNestedManyWithoutMahasiswaInput
+  }
+
+  export type MahasiswaCreateOrConnectWithoutRiwayatPerubahanPembimbingInput = {
+    where: MahasiswaWhereUniqueInput
+    create: XOR<MahasiswaCreateWithoutRiwayatPerubahanPembimbingInput, MahasiswaUncheckedCreateWithoutRiwayatPerubahanPembimbingInput>
+  }
+
+  export type MahasiswaUpsertWithoutRiwayatPerubahanPembimbingInput = {
+    update: XOR<MahasiswaUpdateWithoutRiwayatPerubahanPembimbingInput, MahasiswaUncheckedUpdateWithoutRiwayatPerubahanPembimbingInput>
+    create: XOR<MahasiswaCreateWithoutRiwayatPerubahanPembimbingInput, MahasiswaUncheckedCreateWithoutRiwayatPerubahanPembimbingInput>
+    where?: MahasiswaWhereInput
+  }
+
+  export type MahasiswaUpdateToOneWithWhereWithoutRiwayatPerubahanPembimbingInput = {
+    where?: MahasiswaWhereInput
+    data: XOR<MahasiswaUpdateWithoutRiwayatPerubahanPembimbingInput, MahasiswaUncheckedUpdateWithoutRiwayatPerubahanPembimbingInput>
+  }
+
+  export type MahasiswaUpdateWithoutRiwayatPerubahanPembimbingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    semester?: NullableIntFieldUpdateOperationsInput | number | null
+    judulDisertasi?: NullableStringFieldUpdateOperationsInput | string | null
+    angkatan?: NullableStringFieldUpdateOperationsInput | string | null
+    tempatTanggalLahir?: NullableStringFieldUpdateOperationsInput | string | null
+    alamat?: NullableStringFieldUpdateOperationsInput | string | null
+    alamatKeluarga?: NullableStringFieldUpdateOperationsInput | string | null
+    tahunLulus?: NullableStringFieldUpdateOperationsInput | string | null
+    mulaiMasukPendidikan?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pekerjaan?: NullableStringFieldUpdateOperationsInput | string | null
+    nomorTelpon?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    jenisKelamin?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pengguna?: PenggunaUpdateOneRequiredWithoutMahasiswaNestedInput
+    logbook?: LogbookUpdateManyWithoutMahasiswaNestedInput
+    pembimbing?: DosenUpdateOneWithoutMahasiswaBimbinganNestedInput
+    permohonanBimbingan?: PermohonanBimbinganUpdateManyWithoutMahasiswaNestedInput
+  }
+
+  export type MahasiswaUncheckedUpdateWithoutRiwayatPerubahanPembimbingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    penggunaId?: StringFieldUpdateOperationsInput | string
+    pembimbingId?: NullableStringFieldUpdateOperationsInput | string | null
+    semester?: NullableIntFieldUpdateOperationsInput | number | null
+    judulDisertasi?: NullableStringFieldUpdateOperationsInput | string | null
+    angkatan?: NullableStringFieldUpdateOperationsInput | string | null
+    tempatTanggalLahir?: NullableStringFieldUpdateOperationsInput | string | null
+    alamat?: NullableStringFieldUpdateOperationsInput | string | null
+    alamatKeluarga?: NullableStringFieldUpdateOperationsInput | string | null
+    tahunLulus?: NullableStringFieldUpdateOperationsInput | string | null
+    mulaiMasukPendidikan?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pekerjaan?: NullableStringFieldUpdateOperationsInput | string | null
+    nomorTelpon?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    jenisKelamin?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logbook?: LogbookUncheckedUpdateManyWithoutMahasiswaNestedInput
+    permohonanBimbingan?: PermohonanBimbinganUncheckedUpdateManyWithoutMahasiswaNestedInput
   }
 
   export type NotifikasiCreateManyPenggunaInput = {
@@ -20383,7 +23671,7 @@ export namespace Prisma {
 
   export type LogbookCreateManyPenggunaInput = {
     id?: string
-    mahasiswaId: string
+    mahasiswaId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -20419,13 +23707,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    mahasiswa?: MahasiswaUpdateOneRequiredWithoutLogbookNestedInput
+    mahasiswa?: MahasiswaUpdateOneWithoutLogbookNestedInput
     kegiatan?: KegiatanUpdateManyWithoutLogbookNestedInput
   }
 
   export type LogbookUncheckedUpdateWithoutPenggunaInput = {
     id?: StringFieldUpdateOperationsInput | string
-    mahasiswaId?: StringFieldUpdateOperationsInput | string
+    mahasiswaId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     kegiatan?: KegiatanUncheckedUpdateManyWithoutLogbookNestedInput
@@ -20433,7 +23721,7 @@ export namespace Prisma {
 
   export type LogbookUncheckedUpdateManyWithoutPenggunaInput = {
     id?: StringFieldUpdateOperationsInput | string
-    mahasiswaId?: StringFieldUpdateOperationsInput | string
+    mahasiswaId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -20459,11 +23747,7 @@ export namespace Prisma {
     id?: string
     alasan: string
     pembimbingIdLama?: string | null
-    promotorIdLama?: string | null
-    koPromotorIdLama?: string | null
     pembimbingIdBaru?: string | null
-    promotorIdBaru?: string | null
-    koPromotorIdBaru?: string | null
     changedAt?: Date | string
   }
 
@@ -20524,11 +23808,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     alasan?: StringFieldUpdateOperationsInput | string
     pembimbingIdLama?: NullableStringFieldUpdateOperationsInput | string | null
-    promotorIdLama?: NullableStringFieldUpdateOperationsInput | string | null
-    koPromotorIdLama?: NullableStringFieldUpdateOperationsInput | string | null
     pembimbingIdBaru?: NullableStringFieldUpdateOperationsInput | string | null
-    promotorIdBaru?: NullableStringFieldUpdateOperationsInput | string | null
-    koPromotorIdBaru?: NullableStringFieldUpdateOperationsInput | string | null
     changedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -20536,11 +23816,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     alasan?: StringFieldUpdateOperationsInput | string
     pembimbingIdLama?: NullableStringFieldUpdateOperationsInput | string | null
-    promotorIdLama?: NullableStringFieldUpdateOperationsInput | string | null
-    koPromotorIdLama?: NullableStringFieldUpdateOperationsInput | string | null
     pembimbingIdBaru?: NullableStringFieldUpdateOperationsInput | string | null
-    promotorIdBaru?: NullableStringFieldUpdateOperationsInput | string | null
-    koPromotorIdBaru?: NullableStringFieldUpdateOperationsInput | string | null
     changedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -20548,11 +23824,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     alasan?: StringFieldUpdateOperationsInput | string
     pembimbingIdLama?: NullableStringFieldUpdateOperationsInput | string | null
-    promotorIdLama?: NullableStringFieldUpdateOperationsInput | string | null
-    koPromotorIdLama?: NullableStringFieldUpdateOperationsInput | string | null
     pembimbingIdBaru?: NullableStringFieldUpdateOperationsInput | string | null
-    promotorIdBaru?: NullableStringFieldUpdateOperationsInput | string | null
-    koPromotorIdBaru?: NullableStringFieldUpdateOperationsInput | string | null
     changedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -20570,6 +23842,7 @@ export namespace Prisma {
     pekerjaan?: string | null
     nomorTelpon?: string | null
     email?: string | null
+    jenisKelamin?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -20597,6 +23870,7 @@ export namespace Prisma {
     pekerjaan?: NullableStringFieldUpdateOperationsInput | string | null
     nomorTelpon?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    jenisKelamin?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     pengguna?: PenggunaUpdateOneRequiredWithoutMahasiswaNestedInput
@@ -20619,6 +23893,7 @@ export namespace Prisma {
     pekerjaan?: NullableStringFieldUpdateOperationsInput | string | null
     nomorTelpon?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    jenisKelamin?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     logbook?: LogbookUncheckedUpdateManyWithoutMahasiswaNestedInput
@@ -20640,6 +23915,7 @@ export namespace Prisma {
     pekerjaan?: NullableStringFieldUpdateOperationsInput | string | null
     nomorTelpon?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    jenisKelamin?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -20676,8 +23952,8 @@ export namespace Prisma {
 
   export type KegiatanCreateManyLogbookInput = {
     id?: string
-    mataKuliahId: number
-    fieldsData?: NullableJsonNullValueInput | InputJsonValue
+    mataKuliahId?: number | null
+    jenisKegiatanId: string
     status: string
     alasanDitolak?: string | null
     createdAt?: Date | string
@@ -20686,34 +23962,44 @@ export namespace Prisma {
 
   export type KegiatanUpdateWithoutLogbookInput = {
     id?: StringFieldUpdateOperationsInput | string
-    fieldsData?: NullableJsonNullValueInput | InputJsonValue
     status?: StringFieldUpdateOperationsInput | string
     alasanDitolak?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    MataKuliah?: MataKuliahUpdateOneRequiredWithoutKegiatanNestedInput
+    MataKuliah?: MataKuliahUpdateOneWithoutKegiatanNestedInput
+    jenisKegiatan?: JenisKegiatanUpdateOneRequiredWithoutKegiatanNestedInput
+    fieldValues?: FieldKegiatanValuesUpdateManyWithoutKegiatanNestedInput
     lampiran?: LampiranUpdateManyWithoutKegiatanNestedInput
   }
 
   export type KegiatanUncheckedUpdateWithoutLogbookInput = {
     id?: StringFieldUpdateOperationsInput | string
-    mataKuliahId?: IntFieldUpdateOperationsInput | number
-    fieldsData?: NullableJsonNullValueInput | InputJsonValue
+    mataKuliahId?: NullableIntFieldUpdateOperationsInput | number | null
+    jenisKegiatanId?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     alasanDitolak?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    fieldValues?: FieldKegiatanValuesUncheckedUpdateManyWithoutKegiatanNestedInput
     lampiran?: LampiranUncheckedUpdateManyWithoutKegiatanNestedInput
   }
 
   export type KegiatanUncheckedUpdateManyWithoutLogbookInput = {
     id?: StringFieldUpdateOperationsInput | string
-    mataKuliahId?: IntFieldUpdateOperationsInput | number
-    fieldsData?: NullableJsonNullValueInput | InputJsonValue
+    mataKuliahId?: NullableIntFieldUpdateOperationsInput | number | null
+    jenisKegiatanId?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     alasanDitolak?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FieldKegiatanValuesCreateManyKegiatanInput = {
+    id?: string
+    jenisKegiatanFieldId: string
+    value: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type LampiranCreateManyKegiatanInput = {
@@ -20722,6 +24008,30 @@ export namespace Prisma {
     url: string
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type FieldKegiatanValuesUpdateWithoutKegiatanInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    jenisKegiatanField?: JenisKegiatanFieldUpdateOneRequiredWithoutFieldValuesNestedInput
+  }
+
+  export type FieldKegiatanValuesUncheckedUpdateWithoutKegiatanInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    jenisKegiatanFieldId?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FieldKegiatanValuesUncheckedUpdateManyWithoutKegiatanInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    jenisKegiatanFieldId?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type LampiranUpdateWithoutKegiatanInput = {
@@ -20751,7 +24061,7 @@ export namespace Prisma {
   export type KegiatanCreateManyMataKuliahInput = {
     id?: string
     logbookId: string
-    fieldsData?: NullableJsonNullValueInput | InputJsonValue
+    jenisKegiatanId: string
     status: string
     alasanDitolak?: string | null
     createdAt?: Date | string
@@ -20760,30 +24070,32 @@ export namespace Prisma {
 
   export type KegiatanUpdateWithoutMataKuliahInput = {
     id?: StringFieldUpdateOperationsInput | string
-    fieldsData?: NullableJsonNullValueInput | InputJsonValue
     status?: StringFieldUpdateOperationsInput | string
     alasanDitolak?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     logbook?: LogbookUpdateOneRequiredWithoutKegiatanNestedInput
+    jenisKegiatan?: JenisKegiatanUpdateOneRequiredWithoutKegiatanNestedInput
+    fieldValues?: FieldKegiatanValuesUpdateManyWithoutKegiatanNestedInput
     lampiran?: LampiranUpdateManyWithoutKegiatanNestedInput
   }
 
   export type KegiatanUncheckedUpdateWithoutMataKuliahInput = {
     id?: StringFieldUpdateOperationsInput | string
     logbookId?: StringFieldUpdateOperationsInput | string
-    fieldsData?: NullableJsonNullValueInput | InputJsonValue
+    jenisKegiatanId?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     alasanDitolak?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    fieldValues?: FieldKegiatanValuesUncheckedUpdateManyWithoutKegiatanNestedInput
     lampiran?: LampiranUncheckedUpdateManyWithoutKegiatanNestedInput
   }
 
   export type KegiatanUncheckedUpdateManyWithoutMataKuliahInput = {
     id?: StringFieldUpdateOperationsInput | string
     logbookId?: StringFieldUpdateOperationsInput | string
-    fieldsData?: NullableJsonNullValueInput | InputJsonValue
+    jenisKegiatanId?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     alasanDitolak?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20801,12 +24113,11 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type ProgramStudiFieldCreateManyProgramStudiInput = {
+  export type JenisKegiatanCreateManyProgramStudiInput = {
     id?: string
-    fieldName: string
-    fieldType: string
-    isRequired?: boolean
-    order?: number
+    nama: string
+    templateIdentifier?: string | null
+    isMataKuliahRequired?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -20860,32 +24171,33 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type ProgramStudiFieldUpdateWithoutProgramStudiInput = {
+  export type JenisKegiatanUpdateWithoutProgramStudiInput = {
     id?: StringFieldUpdateOperationsInput | string
-    fieldName?: StringFieldUpdateOperationsInput | string
-    fieldType?: StringFieldUpdateOperationsInput | string
-    isRequired?: BoolFieldUpdateOperationsInput | boolean
-    order?: IntFieldUpdateOperationsInput | number
+    nama?: StringFieldUpdateOperationsInput | string
+    templateIdentifier?: NullableStringFieldUpdateOperationsInput | string | null
+    isMataKuliahRequired?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    kegiatan?: KegiatanUpdateManyWithoutJenisKegiatanNestedInput
+    fields?: JenisKegiatanFieldUpdateManyWithoutJenisKegiatanNestedInput
   }
 
-  export type ProgramStudiFieldUncheckedUpdateWithoutProgramStudiInput = {
+  export type JenisKegiatanUncheckedUpdateWithoutProgramStudiInput = {
     id?: StringFieldUpdateOperationsInput | string
-    fieldName?: StringFieldUpdateOperationsInput | string
-    fieldType?: StringFieldUpdateOperationsInput | string
-    isRequired?: BoolFieldUpdateOperationsInput | boolean
-    order?: IntFieldUpdateOperationsInput | number
+    nama?: StringFieldUpdateOperationsInput | string
+    templateIdentifier?: NullableStringFieldUpdateOperationsInput | string | null
+    isMataKuliahRequired?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    kegiatan?: KegiatanUncheckedUpdateManyWithoutJenisKegiatanNestedInput
+    fields?: JenisKegiatanFieldUncheckedUpdateManyWithoutJenisKegiatanNestedInput
   }
 
-  export type ProgramStudiFieldUncheckedUpdateManyWithoutProgramStudiInput = {
+  export type JenisKegiatanUncheckedUpdateManyWithoutProgramStudiInput = {
     id?: StringFieldUpdateOperationsInput | string
-    fieldName?: StringFieldUpdateOperationsInput | string
-    fieldType?: StringFieldUpdateOperationsInput | string
-    isRequired?: BoolFieldUpdateOperationsInput | boolean
-    order?: IntFieldUpdateOperationsInput | number
+    nama?: StringFieldUpdateOperationsInput | string
+    templateIdentifier?: NullableStringFieldUpdateOperationsInput | string | null
+    isMataKuliahRequired?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -20911,6 +24223,128 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     judul?: StringFieldUpdateOperationsInput | string
     semester?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type KegiatanCreateManyJenisKegiatanInput = {
+    id?: string
+    logbookId: string
+    mataKuliahId?: number | null
+    status: string
+    alasanDitolak?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type JenisKegiatanFieldCreateManyJenisKegiatanInput = {
+    id?: string
+    fieldName: string
+    fieldType: string
+    templateKey?: string | null
+    isRequired?: boolean
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type KegiatanUpdateWithoutJenisKegiatanInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    alasanDitolak?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logbook?: LogbookUpdateOneRequiredWithoutKegiatanNestedInput
+    MataKuliah?: MataKuliahUpdateOneWithoutKegiatanNestedInput
+    fieldValues?: FieldKegiatanValuesUpdateManyWithoutKegiatanNestedInput
+    lampiran?: LampiranUpdateManyWithoutKegiatanNestedInput
+  }
+
+  export type KegiatanUncheckedUpdateWithoutJenisKegiatanInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    logbookId?: StringFieldUpdateOperationsInput | string
+    mataKuliahId?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    alasanDitolak?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    fieldValues?: FieldKegiatanValuesUncheckedUpdateManyWithoutKegiatanNestedInput
+    lampiran?: LampiranUncheckedUpdateManyWithoutKegiatanNestedInput
+  }
+
+  export type KegiatanUncheckedUpdateManyWithoutJenisKegiatanInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    logbookId?: StringFieldUpdateOperationsInput | string
+    mataKuliahId?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    alasanDitolak?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type JenisKegiatanFieldUpdateWithoutJenisKegiatanInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fieldName?: StringFieldUpdateOperationsInput | string
+    fieldType?: StringFieldUpdateOperationsInput | string
+    templateKey?: NullableStringFieldUpdateOperationsInput | string | null
+    isRequired?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    fieldValues?: FieldKegiatanValuesUpdateManyWithoutJenisKegiatanFieldNestedInput
+  }
+
+  export type JenisKegiatanFieldUncheckedUpdateWithoutJenisKegiatanInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fieldName?: StringFieldUpdateOperationsInput | string
+    fieldType?: StringFieldUpdateOperationsInput | string
+    templateKey?: NullableStringFieldUpdateOperationsInput | string | null
+    isRequired?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    fieldValues?: FieldKegiatanValuesUncheckedUpdateManyWithoutJenisKegiatanFieldNestedInput
+  }
+
+  export type JenisKegiatanFieldUncheckedUpdateManyWithoutJenisKegiatanInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fieldName?: StringFieldUpdateOperationsInput | string
+    fieldType?: StringFieldUpdateOperationsInput | string
+    templateKey?: NullableStringFieldUpdateOperationsInput | string | null
+    isRequired?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FieldKegiatanValuesCreateManyJenisKegiatanFieldInput = {
+    id?: string
+    kegiatanId: string
+    value: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FieldKegiatanValuesUpdateWithoutJenisKegiatanFieldInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    kegiatan?: KegiatanUpdateOneRequiredWithoutFieldValuesNestedInput
+  }
+
+  export type FieldKegiatanValuesUncheckedUpdateWithoutJenisKegiatanFieldInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    kegiatanId?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FieldKegiatanValuesUncheckedUpdateManyWithoutJenisKegiatanFieldInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    kegiatanId?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

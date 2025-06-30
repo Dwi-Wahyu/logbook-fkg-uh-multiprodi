@@ -1,3 +1,5 @@
+// schema.prisma
+// Ini adalah bagian dari schema Anda yang sudah ada, tidak perlu diulang penuh
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma"
@@ -21,7 +23,7 @@ model Pengguna {
   notifikasi     Notifikasi[]
   logbook        Logbook[]
   programStudiId String
-  programStudi   ProgramStudi @relation(fields: [programStudiId], references: [id]) // Relasi ke ProgramStudi 
+  programStudi   ProgramStudi @relation(fields: [programStudiId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -47,6 +49,7 @@ model Mahasiswa {
   pekerjaan            String?
   nomorTelpon          String?
   email                String?
+  jenisKelamin         String?
 
   createdAt                  DateTime                     @default(now())
   updatedAt                  DateTime                     @updatedAt
@@ -66,8 +69,8 @@ model Dosen {
 
 model Logbook {
   id          String     @id @default(uuid())
-  mahasiswaId String
-  mahasiswa   Mahasiswa  @relation(fields: [mahasiswaId], references: [id])
+  mahasiswaId String?
+  mahasiswa   Mahasiswa? @relation(fields: [mahasiswaId], references: [id])
   kegiatan    Kegiatan[]
 
   createdAt  DateTime  @default(now())
@@ -76,30 +79,19 @@ model Logbook {
   penggunaId String?
 }
 
-model RiwayatPerubahanPembimbing {
-  id               String    @id @default(uuid())
-  mahasiswaId      String
-  mahasiswa        Mahasiswa @relation(fields: [mahasiswaId], references: [id])
-  alasan           String
-  pembimbingIdLama String?
-  promotorIdLama   String?
-  koPromotorIdLama String?
-  pembimbingIdBaru String?
-  promotorIdBaru   String?
-  koPromotorIdBaru String?
-  changedAt        DateTime  @default(now())
-}
-
+// --- PERUBAHAN PADA MODEL KEGIATAN: mataKuliahId menjadi opsional ---
 model Kegiatan {
-  id           String     @id @default(uuid())
-  logbookId    String
-  logbook      Logbook    @relation(fields: [logbookId], references: [id])
-  mataKuliahId Int
-  MataKuliah   MataKuliah @relation(fields: [mataKuliahId], references: [id])
-  fieldsData   Json?
-  lampiran     Lampiran[]
-  status       String // DIAJUKAN | DISETUJUI | DITOLAK
+  id              String        @id @default(uuid())
+  logbookId       String
+  logbook         Logbook       @relation(fields: [logbookId], references: [id])
+  mataKuliahId    Int? // <-- DIUBAH: Menjadi opsional (Int?)
+  MataKuliah      MataKuliah?   @relation(fields: [mataKuliahId], references: [id]) // <-- DIUBAH: Relasi menjadi opsional
+  jenisKegiatanId String
+  jenisKegiatan   JenisKegiatan @relation(fields: [jenisKegiatanId], references: [id])
 
+  fieldValues   FieldKegiatanValues[]
+  lampiran      Lampiran[]
+  status        String // DIAJUKAN | DISETUJUI | DITOLAK
   alasanDitolak String?
 
   createdAt DateTime @default(now())
@@ -157,30 +149,77 @@ model Notifikasi {
 }
 
 model ProgramStudi {
-  id          String              @id @default(uuid())
-  nama        String              @unique // Contoh: PPDGS ILMU PENYAKIT MULUT 
-  displayName String // Contoh: PROGRAM PENDIDIKAN DOKTER GIGI SPESIALIS ILMU PENYAKIT MULUT 
-  pengguna    Pengguna[] // Relasi dengan Pengguna (Dosen dan Mahasiswa)
-  fields      ProgramStudiField[] // Field yang dibutuhkan untuk kegiatan pada ProgramStudi ini
-  mataKuliah  MataKuliah[]
-
-  templateSingleFieldForDate Boolean @default(true) // flag untuk memastikan bahwa template kegiatan program studi hanya satu field 
+  id                         String          @id @default(uuid())
+  nama                       String          @unique
+  displayName                String
+  pengguna                   Pengguna[]
+  jenisKegiatan              JenisKegiatan[]
+  mataKuliah                 MataKuliah[]
+  templateSingleFieldForDate Boolean         @default(true)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model ProgramStudiField {
-  id             String       @id @default(uuid())
-  programStudiId String
-  programStudi   ProgramStudi @relation(fields: [programStudiId], references: [id])
-  fieldName      String // Contoh: "Hari/Tanggal", "Jam", "No. RM", "Nama Pasien" 
-  fieldType      String // Tipe data field (misal: "TEXT", "DATE", "NUMBER", "BOOLEAN")
-  isRequired     Boolean      @default(false) // Apakah field wajib diisi
-  order          Int          @default(0) // Untuk menentukan urutan field
+// --- MODEL JenisKegiatan (Dengan isMataKuliahRequired) ---
+model JenisKegiatan {
+  id                   String       @id @default(uuid())
+  programStudiId       String
+  programStudi         ProgramStudi @relation(fields: [programStudiId], references: [id])
+  nama                 String
+  templateIdentifier   String?      @unique
+  isMataKuliahRequired Boolean      @default(true) // <-- TAMBAHKAN INI
+
+  kegiatan Kegiatan[]
+  fields   JenisKegiatanField[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([programStudiId, fieldName]) // Nama field harus unik dalam satu program studi
+  @@unique([programStudiId, nama])
+}
+
+// --- MODEL JenisKegiatanField ---
+model JenisKegiatanField {
+  id              String        @id @default(uuid())
+  jenisKegiatanId String
+  jenisKegiatan   JenisKegiatan @relation(fields: [jenisKegiatanId], references: [id])
+  fieldName       String
+  fieldType       String
+  templateKey     String?
+  isRequired      Boolean       @default(false)
+  order           Int           @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  fieldValues FieldKegiatanValues[]
+
+  @@unique([jenisKegiatanId, fieldName])
+}
+
+// --- MODEL FieldKegiatanValues ---
+model FieldKegiatanValues {
+  id                   String             @id @default(uuid())
+  kegiatanId           String
+  kegiatan             Kegiatan           @relation(fields: [kegiatanId], references: [id], onDelete: Cascade)
+  jenisKegiatanFieldId String
+  jenisKegiatanField   JenisKegiatanField @relation(fields: [jenisKegiatanFieldId], references: [id])
+  value                String             @db.VarChar(255) // Menyimpan nilai sebagai string
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([kegiatanId, jenisKegiatanFieldId])
+}
+
+// --- RiwayatPerubahanPembimbing ---
+model RiwayatPerubahanPembimbing {
+  id               String    @id @default(uuid())
+  mahasiswaId      String
+  mahasiswa        Mahasiswa @relation(fields: [mahasiswaId], references: [id])
+  alasan           String
+  pembimbingIdLama String?
+  pembimbingIdBaru String?
+  changedAt        DateTime  @default(now())
 }
