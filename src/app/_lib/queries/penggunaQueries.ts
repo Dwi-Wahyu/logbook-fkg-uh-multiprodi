@@ -253,6 +253,12 @@ export async function getPenggunaByProgramStudi(
     whereClause.peran = params.peran;
   }
 
+  const total = await prisma.pengguna.count({
+    where: {
+      programStudiId: programStudiId,
+    },
+  });
+
   const filtered = await prisma.pengguna.count({
     where: whereClause,
   });
@@ -279,5 +285,5 @@ export async function getPenggunaByProgramStudi(
 
   const pageCount = Math.ceil(filtered / params.perPage);
 
-  return { data, pageCount, filtered };
+  return { data, total, pageCount, filtered };
 }

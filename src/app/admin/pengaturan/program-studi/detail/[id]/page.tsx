@@ -66,6 +66,8 @@ export default async function PenggunaProgramStudiPage({
   const {
     data: penggunaList,
     filtered, // Total filtered count (used for display, not pagination control here)
+    pageCount,
+    total,
   }: PenggunaListResult = await getPenggunaByProgramStudi(
     programStudiId,
     parsedSearchParams
@@ -105,6 +107,7 @@ export default async function PenggunaProgramStudiPage({
           <Suspense fallback={<DatatableSkeleton />}>
             <PenggunaProgramStudiOverview
               initialPenggunaList={penggunaList} // Pass the fetched user data
+              initialPageCount={pageCount}
               programStudiDisplayName={programStudi.displayName} // Pass display name for UI
               programStudiId={programStudiId} // Pass ID for client-side links/actions
               currentSearchParams={rawSearchParams} // Pass raw search params to nuqs hooks in client component
