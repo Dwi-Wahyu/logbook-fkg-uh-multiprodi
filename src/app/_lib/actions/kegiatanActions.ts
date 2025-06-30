@@ -29,6 +29,7 @@ import {
   updateStatusKegiatanSchema,
 } from "@/schema/kegiatan/UpdateKegiatanSchema";
 import { JenisKegiatanField } from "@/generated/prisma";
+import { auth } from "@/config/auth";
 // import { auth } from "@/config/auth"; // Tidak perlu import auth di sini, pengajuId datang dari payload
 
 const UPLOAD_DIR = join(process.cwd(), "public/lampiran");
@@ -55,6 +56,8 @@ async function deleteKegiatanLampiranFile(namaFile: string) {
 }
 
 export async function tambahKegiatan(payload: TTambahKegiatan) {
+  const session = await auth();
+
   const validationResult = await validateServerActionPayload(
     payload,
     tambahKegiatanSchema
@@ -207,6 +210,7 @@ export async function tambahKegiatan(payload: TTambahKegiatan) {
         logbookId: logbook.id,
         mataKuliahId: parsedMataKuliahId, // Bisa null
         jenisKegiatanId: jenisKegiatan.id,
+        semester: session?.user.semester ?? null,
         status: status || "DIAJUKAN",
       },
     });

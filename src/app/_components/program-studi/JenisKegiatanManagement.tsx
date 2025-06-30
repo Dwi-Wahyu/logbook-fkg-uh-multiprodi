@@ -545,8 +545,8 @@ export default function JenisKegiatanManagement({
               <span className="font-semibold">
                 {selectedJenisKegiatan?.nama}
               </span>
-              "? Ini juga akan menghapus semua field kustom yang terkait.
-              Tindakan ini tidak dapat dibatalkan.
+              "? Ini juga akan menghapus semua field yang terkait. Tindakan ini
+              tidak dapat dibatalkan.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

@@ -281,6 +281,19 @@ export default function JenisKegiatanFieldsForm({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <Alert className="bg-blue-50 border-blue-200 text-blue-800 rounded-lg shadow-sm mb-6">
+          <Info className="h-5 w-5 text-blue-600" />
+          <AlertTitle className="font-semibold">
+            Informasi Penting: Memahami Istilah "Field"
+          </AlertTitle>
+          <AlertDescription className="text-sm">
+            Dalam konteks sistem ini, istilah "Field" merujuk pada setiap kolom
+            data atau isian spesifik yang perlu mahasiswa lengkapi ketika
+            mengajukan kegiatan. Setiap field memiliki nama, tipe data, dan
+            aturan pengisiannya sendiri.
+          </AlertDescription>
+        </Alert>
+
         {/* ALERT untuk Ketentuan Mengisi Field */}
         <Alert className="bg-blue-50 border-blue-200 text-blue-800 rounded-lg shadow-sm mb-6">
           {" "}
@@ -304,7 +317,7 @@ export default function JenisKegiatanFieldsForm({
               <DialogContent className="sm:max-w-md md:max-w-lg lg:max-w-xl rounded-xl">
                 <DialogHeader>
                   <DialogTitle className="text-2xl font-bold text-gray-900">
-                    Aturan Pengisian Field Kustom
+                    Aturan Pengisian Field
                   </DialogTitle>
                   <DialogDescription className="text-gray-700">
                     Penting untuk mengikuti ketentuan ini agar data dapat
@@ -313,12 +326,8 @@ export default function JenisKegiatanFieldsForm({
                 </DialogHeader>
                 <div className="py-4 space-y-4 text-gray-800">
                   <p>
-                    1.{" "}
-                    <span className="font-semibold">
-                      Nama Field (`fieldName`)
-                    </span>
-                    : Ini adalah label yang akan dilihat pada form input
-                    mahasiswa.
+                    1. <span className="font-semibold">Nama Field</span>: Ini
+                    adalah label yang akan dilihat pada form input mahasiswa.
                   </p>
                   <ul className="list-disc pl-5 space-y-1 text-sm text-gray-700">
                     <li>
@@ -336,7 +345,7 @@ export default function JenisKegiatanFieldsForm({
                   </ul>
                   <Separator />
                   <p>
-                    2. <span className="font-semibold">Urutan (`order`)</span>:
+                    2. <span className="font-semibold">Urutan </span>:
                     Menentukan urutan field pada form input.
                   </p>
                   <ul className="list-disc pl-5 text-sm text-gray-700">
@@ -347,11 +356,8 @@ export default function JenisKegiatanFieldsForm({
                   </ul>
                   <Separator />
                   <p>
-                    3.{" "}
-                    <span className="font-semibold">
-                      Wajib Diisi (`isRequired`)
-                    </span>
-                    : Menentukan apakah field ini harus diisi oleh mahasiswa.
+                    3. <span className="font-semibold">Wajib Diisi</span>:
+                    Menentukan apakah field ini harus diisi oleh mahasiswa.
                   </p>
                   <ul className="list-disc pl-5 text-sm text-gray-700">
                     <li>Centang jika field ini mutlak diperlukan.</li>

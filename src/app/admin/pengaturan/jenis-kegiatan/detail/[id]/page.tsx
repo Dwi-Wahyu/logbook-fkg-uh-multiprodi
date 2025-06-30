@@ -95,7 +95,7 @@ export default async function JenisKegiatanDetailPage({
             <div className="flex items-center space-x-3 mb-2">
               <ListPlus className="h-6 w-6 text-primary" />
               <CardTitle className="text-2xl font-bold text-gray-900">
-                Kelola Field Kegiatan
+                Kelola Kolom Kegiatan
               </CardTitle>
             </div>
             <CardDescription className="text-gray-700">

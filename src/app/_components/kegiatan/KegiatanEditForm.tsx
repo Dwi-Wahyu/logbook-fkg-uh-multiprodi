@@ -399,7 +399,7 @@ export default function KegiatanEditForm({
             {kegiatan.jenisKegiatan.fields.length > 0 && (
               <div className="space-y-6 p-4 border rounded-md bg-gray-50">
                 <h3 className="text-lg font-semibold text-gray-700">
-                  Detail Kegiatan (Field Kustom)
+                  Detail Kegiatan
                 </h3>
                 {kegiatan.jenisKegiatan.fields.map(
                   (fieldDef: JenisKegiatanFieldDef, index) => (

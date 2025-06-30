@@ -442,7 +442,7 @@ export default function KegiatanDetailClient({
           </div>
         ) : (
           <p className="text-gray-500 text-sm">
-            Tidak ada field kustom untuk jenis kegiatan ini.
+            Tidak ada field untuk jenis kegiatan ini.
           </p>
         )}
 

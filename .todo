@@ -17,3 +17,9 @@
 - ubah skema penyimpanan data logbook menyimpan pada model baru yaitu KegiatanFieldValues yang memiliki relasi ke ProgramStudiFields dan Kegiatan daripada menyimpan dalam bentuk json
 
 - fix navbar ketika belum edit semester nonaktifkan isDropdown
+
+- fix agar mahasiswa tidak perlu login ulang setelah mengubah semester
+
+- fix agar mahasiswa hanya perlu edit semester ketika edit profil
+
+- hapus kunci template pada detail jenis kegiatan

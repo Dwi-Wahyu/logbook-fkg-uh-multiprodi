@@ -6562,10 +6562,12 @@ export namespace Prisma {
 
   export type KegiatanAvgAggregateOutputType = {
     mataKuliahId: number | null
+    semester: number | null
   }
 
   export type KegiatanSumAggregateOutputType = {
     mataKuliahId: number | null
+    semester: number | null
   }
 
   export type KegiatanMinAggregateOutputType = {
@@ -6573,6 +6575,7 @@ export namespace Prisma {
     logbookId: string | null
     mataKuliahId: number | null
     jenisKegiatanId: string | null
+    semester: number | null
     status: string | null
     alasanDitolak: string | null
     createdAt: Date | null
@@ -6584,6 +6587,7 @@ export namespace Prisma {
     logbookId: string | null
     mataKuliahId: number | null
     jenisKegiatanId: string | null
+    semester: number | null
     status: string | null
     alasanDitolak: string | null
     createdAt: Date | null
@@ -6595,6 +6599,7 @@ export namespace Prisma {
     logbookId: number
     mataKuliahId: number
     jenisKegiatanId: number
+    semester: number
     status: number
     alasanDitolak: number
     createdAt: number
@@ -6605,10 +6610,12 @@ export namespace Prisma {
 
   export type KegiatanAvgAggregateInputType = {
     mataKuliahId?: true
+    semester?: true
   }
 
   export type KegiatanSumAggregateInputType = {
     mataKuliahId?: true
+    semester?: true
   }
 
   export type KegiatanMinAggregateInputType = {
@@ -6616,6 +6623,7 @@ export namespace Prisma {
     logbookId?: true
     mataKuliahId?: true
     jenisKegiatanId?: true
+    semester?: true
     status?: true
     alasanDitolak?: true
     createdAt?: true
@@ -6627,6 +6635,7 @@ export namespace Prisma {
     logbookId?: true
     mataKuliahId?: true
     jenisKegiatanId?: true
+    semester?: true
     status?: true
     alasanDitolak?: true
     createdAt?: true
@@ -6638,6 +6647,7 @@ export namespace Prisma {
     logbookId?: true
     mataKuliahId?: true
     jenisKegiatanId?: true
+    semester?: true
     status?: true
     alasanDitolak?: true
     createdAt?: true
@@ -6736,6 +6746,7 @@ export namespace Prisma {
     logbookId: string
     mataKuliahId: number | null
     jenisKegiatanId: string
+    semester: number | null
     status: string
     alasanDitolak: string | null
     createdAt: Date
@@ -6766,6 +6777,7 @@ export namespace Prisma {
     logbookId?: boolean
     mataKuliahId?: boolean
     jenisKegiatanId?: boolean
+    semester?: boolean
     status?: boolean
     alasanDitolak?: boolean
     createdAt?: boolean
@@ -6785,13 +6797,14 @@ export namespace Prisma {
     logbookId?: boolean
     mataKuliahId?: boolean
     jenisKegiatanId?: boolean
+    semester?: boolean
     status?: boolean
     alasanDitolak?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type KegiatanOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "logbookId" | "mataKuliahId" | "jenisKegiatanId" | "status" | "alasanDitolak" | "createdAt" | "updatedAt", ExtArgs["result"]["kegiatan"]>
+  export type KegiatanOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "logbookId" | "mataKuliahId" | "jenisKegiatanId" | "semester" | "status" | "alasanDitolak" | "createdAt" | "updatedAt", ExtArgs["result"]["kegiatan"]>
   export type KegiatanInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     logbook?: boolean | LogbookDefaultArgs<ExtArgs>
     MataKuliah?: boolean | Kegiatan$MataKuliahArgs<ExtArgs>
@@ -6815,6 +6828,7 @@ export namespace Prisma {
       logbookId: string
       mataKuliahId: number | null
       jenisKegiatanId: string
+      semester: number | null
       status: string
       alasanDitolak: string | null
       createdAt: Date
@@ -7197,6 +7211,7 @@ export namespace Prisma {
     readonly logbookId: FieldRef<"Kegiatan", 'String'>
     readonly mataKuliahId: FieldRef<"Kegiatan", 'Int'>
     readonly jenisKegiatanId: FieldRef<"Kegiatan", 'String'>
+    readonly semester: FieldRef<"Kegiatan", 'Int'>
     readonly status: FieldRef<"Kegiatan", 'String'>
     readonly alasanDitolak: FieldRef<"Kegiatan", 'String'>
     readonly createdAt: FieldRef<"Kegiatan", 'DateTime'>
@@ -16543,6 +16558,7 @@ export namespace Prisma {
     logbookId: 'logbookId',
     mataKuliahId: 'mataKuliahId',
     jenisKegiatanId: 'jenisKegiatanId',
+    semester: 'semester',
     status: 'status',
     alasanDitolak: 'alasanDitolak',
     createdAt: 'createdAt',
@@ -17222,6 +17238,7 @@ export namespace Prisma {
     logbookId?: StringFilter<"Kegiatan"> | string
     mataKuliahId?: IntNullableFilter<"Kegiatan"> | number | null
     jenisKegiatanId?: StringFilter<"Kegiatan"> | string
+    semester?: IntNullableFilter<"Kegiatan"> | number | null
     status?: StringFilter<"Kegiatan"> | string
     alasanDitolak?: StringNullableFilter<"Kegiatan"> | string | null
     createdAt?: DateTimeFilter<"Kegiatan"> | Date | string
@@ -17238,6 +17255,7 @@ export namespace Prisma {
     logbookId?: SortOrder
     mataKuliahId?: SortOrderInput | SortOrder
     jenisKegiatanId?: SortOrder
+    semester?: SortOrderInput | SortOrder
     status?: SortOrder
     alasanDitolak?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -17258,6 +17276,7 @@ export namespace Prisma {
     logbookId?: StringFilter<"Kegiatan"> | string
     mataKuliahId?: IntNullableFilter<"Kegiatan"> | number | null
     jenisKegiatanId?: StringFilter<"Kegiatan"> | string
+    semester?: IntNullableFilter<"Kegiatan"> | number | null
     status?: StringFilter<"Kegiatan"> | string
     alasanDitolak?: StringNullableFilter<"Kegiatan"> | string | null
     createdAt?: DateTimeFilter<"Kegiatan"> | Date | string
@@ -17274,6 +17293,7 @@ export namespace Prisma {
     logbookId?: SortOrder
     mataKuliahId?: SortOrderInput | SortOrder
     jenisKegiatanId?: SortOrder
+    semester?: SortOrderInput | SortOrder
     status?: SortOrder
     alasanDitolak?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -17293,6 +17313,7 @@ export namespace Prisma {
     logbookId?: StringWithAggregatesFilter<"Kegiatan"> | string
     mataKuliahId?: IntNullableWithAggregatesFilter<"Kegiatan"> | number | null
     jenisKegiatanId?: StringWithAggregatesFilter<"Kegiatan"> | string
+    semester?: IntNullableWithAggregatesFilter<"Kegiatan"> | number | null
     status?: StringWithAggregatesFilter<"Kegiatan"> | string
     alasanDitolak?: StringNullableWithAggregatesFilter<"Kegiatan"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Kegiatan"> | Date | string
@@ -18280,6 +18301,7 @@ export namespace Prisma {
 
   export type KegiatanCreateInput = {
     id?: string
+    semester?: number | null
     status: string
     alasanDitolak?: string | null
     createdAt?: Date | string
@@ -18296,6 +18318,7 @@ export namespace Prisma {
     logbookId: string
     mataKuliahId?: number | null
     jenisKegiatanId: string
+    semester?: number | null
     status: string
     alasanDitolak?: string | null
     createdAt?: Date | string
@@ -18306,6 +18329,7 @@ export namespace Prisma {
 
   export type KegiatanUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    semester?: NullableIntFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     alasanDitolak?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18322,6 +18346,7 @@ export namespace Prisma {
     logbookId?: StringFieldUpdateOperationsInput | string
     mataKuliahId?: NullableIntFieldUpdateOperationsInput | number | null
     jenisKegiatanId?: StringFieldUpdateOperationsInput | string
+    semester?: NullableIntFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     alasanDitolak?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18335,6 +18360,7 @@ export namespace Prisma {
     logbookId: string
     mataKuliahId?: number | null
     jenisKegiatanId: string
+    semester?: number | null
     status: string
     alasanDitolak?: string | null
     createdAt?: Date | string
@@ -18343,6 +18369,7 @@ export namespace Prisma {
 
   export type KegiatanUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    semester?: NullableIntFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     alasanDitolak?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18354,6 +18381,7 @@ export namespace Prisma {
     logbookId?: StringFieldUpdateOperationsInput | string
     mataKuliahId?: NullableIntFieldUpdateOperationsInput | number | null
     jenisKegiatanId?: StringFieldUpdateOperationsInput | string
+    semester?: NullableIntFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     alasanDitolak?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19443,6 +19471,7 @@ export namespace Prisma {
     logbookId?: SortOrder
     mataKuliahId?: SortOrder
     jenisKegiatanId?: SortOrder
+    semester?: SortOrder
     status?: SortOrder
     alasanDitolak?: SortOrder
     createdAt?: SortOrder
@@ -19451,6 +19480,7 @@ export namespace Prisma {
 
   export type KegiatanAvgOrderByAggregateInput = {
     mataKuliahId?: SortOrder
+    semester?: SortOrder
   }
 
   export type KegiatanMaxOrderByAggregateInput = {
@@ -19458,6 +19488,7 @@ export namespace Prisma {
     logbookId?: SortOrder
     mataKuliahId?: SortOrder
     jenisKegiatanId?: SortOrder
+    semester?: SortOrder
     status?: SortOrder
     alasanDitolak?: SortOrder
     createdAt?: SortOrder
@@ -19469,6 +19500,7 @@ export namespace Prisma {
     logbookId?: SortOrder
     mataKuliahId?: SortOrder
     jenisKegiatanId?: SortOrder
+    semester?: SortOrder
     status?: SortOrder
     alasanDitolak?: SortOrder
     createdAt?: SortOrder
@@ -19477,6 +19509,7 @@ export namespace Prisma {
 
   export type KegiatanSumOrderByAggregateInput = {
     mataKuliahId?: SortOrder
+    semester?: SortOrder
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -22103,6 +22136,7 @@ export namespace Prisma {
 
   export type KegiatanCreateWithoutLogbookInput = {
     id?: string
+    semester?: number | null
     status: string
     alasanDitolak?: string | null
     createdAt?: Date | string
@@ -22117,6 +22151,7 @@ export namespace Prisma {
     id?: string
     mataKuliahId?: number | null
     jenisKegiatanId: string
+    semester?: number | null
     status: string
     alasanDitolak?: string | null
     createdAt?: Date | string
@@ -22249,6 +22284,7 @@ export namespace Prisma {
     logbookId?: StringFilter<"Kegiatan"> | string
     mataKuliahId?: IntNullableFilter<"Kegiatan"> | number | null
     jenisKegiatanId?: StringFilter<"Kegiatan"> | string
+    semester?: IntNullableFilter<"Kegiatan"> | number | null
     status?: StringFilter<"Kegiatan"> | string
     alasanDitolak?: StringNullableFilter<"Kegiatan"> | string | null
     createdAt?: DateTimeFilter<"Kegiatan"> | Date | string
@@ -22564,6 +22600,7 @@ export namespace Prisma {
 
   export type KegiatanCreateWithoutMataKuliahInput = {
     id?: string
+    semester?: number | null
     status: string
     alasanDitolak?: string | null
     createdAt?: Date | string
@@ -22578,6 +22615,7 @@ export namespace Prisma {
     id?: string
     logbookId: string
     jenisKegiatanId: string
+    semester?: number | null
     status: string
     alasanDitolak?: string | null
     createdAt?: Date | string
@@ -22674,6 +22712,7 @@ export namespace Prisma {
 
   export type KegiatanCreateWithoutLampiranInput = {
     id?: string
+    semester?: number | null
     status: string
     alasanDitolak?: string | null
     createdAt?: Date | string
@@ -22689,6 +22728,7 @@ export namespace Prisma {
     logbookId: string
     mataKuliahId?: number | null
     jenisKegiatanId: string
+    semester?: number | null
     status: string
     alasanDitolak?: string | null
     createdAt?: Date | string
@@ -22714,6 +22754,7 @@ export namespace Prisma {
 
   export type KegiatanUpdateWithoutLampiranInput = {
     id?: StringFieldUpdateOperationsInput | string
+    semester?: NullableIntFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     alasanDitolak?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22729,6 +22770,7 @@ export namespace Prisma {
     logbookId?: StringFieldUpdateOperationsInput | string
     mataKuliahId?: NullableIntFieldUpdateOperationsInput | number | null
     jenisKegiatanId?: StringFieldUpdateOperationsInput | string
+    semester?: NullableIntFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     alasanDitolak?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -23180,6 +23222,7 @@ export namespace Prisma {
 
   export type KegiatanCreateWithoutJenisKegiatanInput = {
     id?: string
+    semester?: number | null
     status: string
     alasanDitolak?: string | null
     createdAt?: Date | string
@@ -23194,6 +23237,7 @@ export namespace Prisma {
     id?: string
     logbookId: string
     mataKuliahId?: number | null
+    semester?: number | null
     status: string
     alasanDitolak?: string | null
     createdAt?: Date | string
@@ -23430,6 +23474,7 @@ export namespace Prisma {
 
   export type KegiatanCreateWithoutFieldValuesInput = {
     id?: string
+    semester?: number | null
     status: string
     alasanDitolak?: string | null
     createdAt?: Date | string
@@ -23445,6 +23490,7 @@ export namespace Prisma {
     logbookId: string
     mataKuliahId?: number | null
     jenisKegiatanId: string
+    semester?: number | null
     status: string
     alasanDitolak?: string | null
     createdAt?: Date | string
@@ -23499,6 +23545,7 @@ export namespace Prisma {
 
   export type KegiatanUpdateWithoutFieldValuesInput = {
     id?: StringFieldUpdateOperationsInput | string
+    semester?: NullableIntFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     alasanDitolak?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -23514,6 +23561,7 @@ export namespace Prisma {
     logbookId?: StringFieldUpdateOperationsInput | string
     mataKuliahId?: NullableIntFieldUpdateOperationsInput | number | null
     jenisKegiatanId?: StringFieldUpdateOperationsInput | string
+    semester?: NullableIntFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     alasanDitolak?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -23954,6 +24002,7 @@ export namespace Prisma {
     id?: string
     mataKuliahId?: number | null
     jenisKegiatanId: string
+    semester?: number | null
     status: string
     alasanDitolak?: string | null
     createdAt?: Date | string
@@ -23962,6 +24011,7 @@ export namespace Prisma {
 
   export type KegiatanUpdateWithoutLogbookInput = {
     id?: StringFieldUpdateOperationsInput | string
+    semester?: NullableIntFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     alasanDitolak?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -23976,6 +24026,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     mataKuliahId?: NullableIntFieldUpdateOperationsInput | number | null
     jenisKegiatanId?: StringFieldUpdateOperationsInput | string
+    semester?: NullableIntFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     alasanDitolak?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -23988,6 +24039,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     mataKuliahId?: NullableIntFieldUpdateOperationsInput | number | null
     jenisKegiatanId?: StringFieldUpdateOperationsInput | string
+    semester?: NullableIntFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     alasanDitolak?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24062,6 +24114,7 @@ export namespace Prisma {
     id?: string
     logbookId: string
     jenisKegiatanId: string
+    semester?: number | null
     status: string
     alasanDitolak?: string | null
     createdAt?: Date | string
@@ -24070,6 +24123,7 @@ export namespace Prisma {
 
   export type KegiatanUpdateWithoutMataKuliahInput = {
     id?: StringFieldUpdateOperationsInput | string
+    semester?: NullableIntFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     alasanDitolak?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24084,6 +24138,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     logbookId?: StringFieldUpdateOperationsInput | string
     jenisKegiatanId?: StringFieldUpdateOperationsInput | string
+    semester?: NullableIntFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     alasanDitolak?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24096,6 +24151,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     logbookId?: StringFieldUpdateOperationsInput | string
     jenisKegiatanId?: StringFieldUpdateOperationsInput | string
+    semester?: NullableIntFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     alasanDitolak?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24231,6 +24287,7 @@ export namespace Prisma {
     id?: string
     logbookId: string
     mataKuliahId?: number | null
+    semester?: number | null
     status: string
     alasanDitolak?: string | null
     createdAt?: Date | string
@@ -24250,6 +24307,7 @@ export namespace Prisma {
 
   export type KegiatanUpdateWithoutJenisKegiatanInput = {
     id?: StringFieldUpdateOperationsInput | string
+    semester?: NullableIntFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     alasanDitolak?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24264,6 +24322,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     logbookId?: StringFieldUpdateOperationsInput | string
     mataKuliahId?: NullableIntFieldUpdateOperationsInput | number | null
+    semester?: NullableIntFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     alasanDitolak?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24276,6 +24335,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     logbookId?: StringFieldUpdateOperationsInput | string
     mataKuliahId?: NullableIntFieldUpdateOperationsInput | number | null
+    semester?: NullableIntFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     alasanDitolak?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string

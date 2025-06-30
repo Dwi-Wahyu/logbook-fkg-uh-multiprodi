@@ -169,6 +169,7 @@ exports.Prisma.KegiatanScalarFieldEnum = {
   logbookId: 'logbookId',
   mataKuliahId: 'mataKuliahId',
   jenisKegiatanId: 'jenisKegiatanId',
+  semester: 'semester',
   status: 'status',
   alasanDitolak: 'alasanDitolak',
   createdAt: 'createdAt',

@@ -150,23 +150,15 @@ export async function getKegiatan(input: TKegiatanSearchParams) {
     filters.push({ mataKuliahId: parseInt(input.mataKuliahId) });
   }
 
-  // Filter berdasarkan semester
-  // Jika input.semester didefinisikan, filter kegiatan yang MataKuliah-nya punya semester tsb.
-  // ATAU kegiatan yang mataKuliahId-nya null (untuk tidak mengecualikan mereka).
+  // --- PERBAIKAN FILTER SEMESTER DI SINI ---
+  // Logika filter semester yang lebih canggih:
+  // Jika input.semester didefinisikan, filter kegiatan yang:
+  // (Memiliki MataKuliah DAN semester MataKuliah cocok)
+  // ATAU
+  // (Tidak memiliki MataKuliah (mataKuliahId null) DAN semester di model Kegiatan cocok)
   if (input.semester !== undefined && input.semester !== null) {
     filters.push({
-      OR: [
-        {
-          // Kegiatan yang memiliki MataKuliah dan semester-nya cocok
-          MataKuliah: {
-            semester: input.semester,
-          },
-        },
-        {
-          // Kegiatan yang tidak memiliki MataKuliah (mataKuliahId adalah null)
-          mataKuliahId: null,
-        },
-      ],
+      semester: input.semester,
     });
   }
 

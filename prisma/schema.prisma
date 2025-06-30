@@ -89,6 +89,7 @@ model Kegiatan {
   jenisKegiatanId String
   jenisKegiatan   JenisKegiatan @relation(fields: [jenisKegiatanId], references: [id])
 
+  semester      Int? // semester kegiatan jika tidak menggunakan mata kuliah
   fieldValues   FieldKegiatanValues[]
   lampiran      Lampiran[]
   status        String // DIAJUKAN | DISETUJUI | DITOLAK
