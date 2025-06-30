@@ -105,7 +105,7 @@ export default function ProfilEditFormMahasiswa({
         toast.custom(() => (
           <CustomToast
             title="Profil Terupdate"
-            description="Perubahan data profil Anda telah berhasil disimpan. Tolong login ulang agar perubahan bisa diterapkan dengan baik"
+            description="Silahkan login ulang agar perubahan bisa diterapkan dengan baik oleh sistem"
             variant="success"
           />
         ));

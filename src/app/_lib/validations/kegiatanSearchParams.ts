@@ -4,6 +4,7 @@ import {
   parseAsString,
   parseAsInteger,
   parseAsStringEnum,
+  parseAsBoolean,
 } from "nuqs/server";
 
 export const kegiatanSearchParams = createSearchParamsCache({
@@ -17,7 +18,8 @@ export const kegiatanSearchParams = createSearchParamsCache({
   semester: parseAsInteger.withOptions({
     clearOnDefault: true,
   }),
-  jenisKegiatanId: parseAsString.withDefault(""), // <-- TAMBAHKAN INI
+  jenisKegiatanId: parseAsString.withDefault(""),
+  filterAllProgramStudi: parseAsBoolean.withDefault(false),
 });
 
 export type TKegiatanSearchParams = {
@@ -27,5 +29,6 @@ export type TKegiatanSearchParams = {
   status: "DIAJUKAN" | "DISETUJUI" | "DITOLAK" | undefined | null;
   mataKuliahId: string;
   semester: number | null;
-  jenisKegiatanId: string; // <-- TAMBAHKAN INI
+  jenisKegiatanId: string;
+  filterAllProgramStudi: boolean;
 };

@@ -1,5 +1,5 @@
 import { Skeleton } from "@/components/ui/skeleton";
-import { prisma } from "@/lib/prisma"; // Keep if still used directly, though getDashboardData encapsulates it
+import { prisma } from "@/lib/prisma";
 import {
   NotebookText,
   Users,
@@ -10,14 +10,13 @@ import {
   Clock,
 } from "lucide-react"; // Import more icons
 import { Suspense } from "react";
-import { auth } from "@/config/auth"; // Import auth for session
+import { auth } from "@/config/auth"; // Import auth
 
 // Import Client Component for Dosen Dashboard
-import { Card } from "@/components/ui/card";
-import DashboardCard from "./dashboard/DashboardCard";
+import DosenDashboardClient from "./DosenDashboardClient";
 import { getDashboardData } from "@/app/_lib/queries/dashboardQueries";
-import DosenDashboardClient from "./dashboard/DosenDashboardClient";
-import MahasiswaDashboardClient from "./dashboard/MahasiswaDashboardClient";
+import DashboardCard from "./DashboardCard";
+import { Card } from "@/components/ui/card";
 
 export default async function DashboardInfo() {
   const session = await auth();
@@ -87,6 +86,9 @@ export default async function DashboardInfo() {
       {/* Admin/Superadmin Specific Dashboard Section (Placeholder for future expansion) */}
       {isAdmin && (
         <div className="mt-8">
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            Dashboard Admin/Superadmin
+          </h2>
           <Card className="p-6 shadow-lg rounded-xl">
             <p className="text-gray-600">
               Konten dashboard untuk Admin/Superadmin akan datang.

@@ -1,3 +1,4 @@
+import DosenDashboardClient from "@/app/_components/dashboard/DosenDashboardClient";
 import DashboardInfo from "@/app/_components/DashboardInfo";
 import NotifikasiCard from "@/app/_components/NotifikasiCard";
 import { findAllNotifikasi } from "@/app/_lib/actions/notifikasiAction";
@@ -22,7 +23,7 @@ export default async function Dashboard() {
         </h1>
       </div>
 
-      <DashboardInfo peran={session.user.peran} id={session.user.id} />
+      <DashboardInfo />
 
       <NotifikasiCard allNotifikasi={allNotifikasi} />
     </div>

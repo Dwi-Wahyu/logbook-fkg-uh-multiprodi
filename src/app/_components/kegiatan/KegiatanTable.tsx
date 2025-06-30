@@ -76,6 +76,9 @@ import {
 } from "@/app/_lib/queries/kegiatanQueries";
 import { useSession } from "next-auth/react";
 import { type SearchParams } from "nuqs/server";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 
 type MataKuliahOption = {
   id: number;
@@ -142,6 +145,9 @@ export default function KegiatanTable({
   const [jenisKegiatanFilter, setJenisKegiatanFilter] = useState(
     currentSearchParams.jenisKegiatanId?.toString() || "all"
   );
+  const [filterAllProgramStudi, setFilterAllProgramStudi] = useState(
+    currentSearchParams.filterAllProgramStudi === "true"
+  );
 
   useEffect(() => {
     setData(initialKegiatanList);
@@ -162,6 +168,9 @@ export default function KegiatanTable({
     );
     setJenisKegiatanFilter(
       currentSearchParams.jenisKegiatanId?.toString() || "all"
+    );
+    setFilterAllProgramStudi(
+      currentSearchParams.filterAllProgramStudi === "true"
     );
   }, [
     initialKegiatanList,
@@ -192,6 +201,9 @@ export default function KegiatanTable({
         params.set("jenisKegiatanId", jenisKegiatanFilter);
       else params.delete("jenisKegiatanId");
 
+      if (filterAllProgramStudi) params.set("filterAllProgramStudi", "true");
+      else params.delete("filterAllProgramStudi");
+
       router.push(`/admin/kegiatan?${params.toString()}`);
     });
   };
@@ -209,6 +221,7 @@ export default function KegiatanTable({
     setMataKuliahFilter("all");
     setSemesterFilter("all");
     setJenisKegiatanFilter("all");
+    setFilterAllProgramStudi(false); // Reset switch
 
     // Clear all params from URL
     startTransition(() => {
@@ -426,6 +439,19 @@ export default function KegiatanTable({
                     ))}
                   </SelectContent>
                 </Select>
+
+                {isDosen && (
+                  <div className="flex shadow-sm border rounded-lg px-3 py-2 gap-3 items-center">
+                    <Switch
+                      id="filterAllProgramStudi"
+                      checked={filterAllProgramStudi}
+                      onCheckedChange={setFilterAllProgramStudi} // Update state saat switch diubah
+                    />
+                    <Label className="text-sm" htmlFor="filterAllProgramStudi">
+                      Tampilkan Semua Kegiatan Mahasiswa Program Studi Ini
+                    </Label>
+                  </div>
+                )}
               </div>
               <DialogFooter>
                 <Button variant="outline" onClick={handleResetFilters}>
@@ -483,21 +509,26 @@ export default function KegiatanTable({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {data.map((kegiatan, index) => (
-                  <TableRow key={kegiatan.id}>
-                    <TableCell>{(page - 1) * perPage + index + 1}</TableCell>
-                    <TableCell>{kegiatan.jenisKegiatan.nama}</TableCell>
-                    <TableCell>
-                      {kegiatan.MataKuliah?.judul
-                        ? `${kegiatan.MataKuliah.judul} (Sm. ${kegiatan.MataKuliah.semester})`
-                        : "-"}
-                    </TableCell>
-                    <TableCell>
-                      {kegiatan.logbook.mahasiswa?.pengguna.nama || "-"}
-                    </TableCell>
-                    <TableCell>
-                      <span
-                        className={`px-2 py-1 rounded-full text-xs font-semibold
+                {data.map((kegiatan, index) => {
+                  const isDosenPembimbing =
+                    session.data?.user.id ===
+                    kegiatan.logbook.mahasiswa?.pembimbing?.pengguna.id;
+
+                  return (
+                    <TableRow key={kegiatan.id}>
+                      <TableCell>{(page - 1) * perPage + index + 1}</TableCell>
+                      <TableCell>{kegiatan.jenisKegiatan.nama}</TableCell>
+                      <TableCell>
+                        {kegiatan.MataKuliah?.judul
+                          ? `${kegiatan.MataKuliah.judul} (Sm. ${kegiatan.MataKuliah.semester})`
+                          : "-"}
+                      </TableCell>
+                      <TableCell>
+                        {kegiatan.logbook.mahasiswa?.pengguna.nama || "-"}
+                      </TableCell>
+                      <TableCell>
+                        <span
+                          className={`px-2 py-1 rounded-full text-xs font-semibold
                           ${
                             kegiatan.status === "DISETUJUI"
                               ? "bg-green-100 text-green-800"
@@ -514,48 +545,19 @@ export default function KegiatanTable({
                               : ""
                           }
                         `}
-                      >
-                        {kegiatan.status}
-                      </span>
-                    </TableCell>
-                    <TableCell>
-                      {new Date(kegiatan.createdAt).toLocaleDateString("id-ID")}
-                    </TableCell>
-                    <TableCell className="flex space-x-2 justify-center">
-                      {/* Actions for Mahasiswa or Admin/Superadmin */}
-                      {(isMahasiswa || isAdminOrSuperadmin) && (
-                        <>
-                          <Link href={`/admin/kegiatan/detail/${kegiatan.id}`}>
-                            <Button variant="outline" size="sm" className="p-2">
-                              <Eye className="h-4 w-4" />
-                            </Button>
-                          </Link>
-                          {isMahasiswa && kegiatan.status === "DIAJUKAN" && (
-                            <Link href={`/admin/kegiatan/edit/${kegiatan.id}`}>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                className="p-2"
-                              >
-                                <Edit className="h-4 w-4" />
-                              </Button>
-                            </Link>
-                          )}
-                          <Button
-                            variant="destructive"
-                            size="sm"
-                            className="p-2"
-                            onClick={() => handleDeleteClick(kegiatan.id)}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </>
-                      )}
-
-                      {/* Actions for Dosen or Admin/Superadmin (without duplicating Detail if already present) */}
-                      {(isDosen || isAdminOrSuperadmin) && (
-                        <>
-                          {!(isMahasiswa || isAdminOrSuperadmin) && (
+                        >
+                          {kegiatan.status}
+                        </span>
+                      </TableCell>
+                      <TableCell>
+                        {new Date(kegiatan.createdAt).toLocaleDateString(
+                          "id-ID"
+                        )}
+                      </TableCell>
+                      <TableCell className="flex space-x-2 justify-center">
+                        {/* Actions for Mahasiswa or Admin/Superadmin */}
+                        {(isMahasiswa || isAdminOrSuperadmin) && (
+                          <>
                             <Link
                               href={`/admin/kegiatan/detail/${kegiatan.id}`}
                             >
@@ -564,36 +566,80 @@ export default function KegiatanTable({
                                 size="sm"
                                 className="p-2"
                               >
-                                Detail
+                                <Eye className="h-4 w-4" />
                               </Button>
                             </Link>
-                          )}
-                          <Button
-                            size="sm"
-                            className="p-2"
-                            disabled={kegiatan.status === "DISETUJUI"}
-                            onClick={() =>
-                              handleUpdateStatus(kegiatan.id, "DISETUJUI")
-                            }
-                          >
-                            Setujui
-                          </Button>
-                          <Button
-                            variant="destructive"
-                            size="sm"
-                            disabled={kegiatan.status === "DITOLAK"}
-                            className="p-2"
-                            onClick={() =>
-                              handleUpdateStatus(kegiatan.id, "DITOLAK")
-                            }
-                          >
-                            Tolak
-                          </Button>
-                        </>
-                      )}
-                    </TableCell>
-                  </TableRow>
-                ))}
+                            {isMahasiswa && kegiatan.status === "DIAJUKAN" && (
+                              <Link
+                                href={`/admin/kegiatan/edit/${kegiatan.id}`}
+                              >
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  className="p-2"
+                                >
+                                  <Edit className="h-4 w-4" />
+                                </Button>
+                              </Link>
+                            )}
+                            <Button
+                              variant="destructive"
+                              size="sm"
+                              className="p-2"
+                              onClick={() => handleDeleteClick(kegiatan.id)}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </>
+                        )}
+
+                        {/* Actions for Dosen or Admin/Superadmin (without duplicating Detail if already present) */}
+                        {(isDosen || isAdminOrSuperadmin) && (
+                          <>
+                            {!(isMahasiswa || isAdminOrSuperadmin) && (
+                              <Link
+                                href={`/admin/kegiatan/detail/${kegiatan.id}`}
+                              >
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  className="p-2"
+                                >
+                                  Detail
+                                </Button>
+                              </Link>
+                            )}
+                            {isDosenPembimbing && (
+                              <>
+                                <Button
+                                  size="sm"
+                                  className="p-2"
+                                  disabled={kegiatan.status === "DISETUJUI"}
+                                  onClick={() =>
+                                    handleUpdateStatus(kegiatan.id, "DISETUJUI")
+                                  }
+                                >
+                                  Approve
+                                </Button>
+                                <Button
+                                  variant="destructive"
+                                  size="sm"
+                                  disabled={kegiatan.status === "DITOLAK"}
+                                  className="p-2"
+                                  onClick={() =>
+                                    handleUpdateStatus(kegiatan.id, "DITOLAK")
+                                  }
+                                >
+                                  Tolak
+                                </Button>
+                              </>
+                            )}
+                          </>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
               </TableBody>
             </Table>
           </div>

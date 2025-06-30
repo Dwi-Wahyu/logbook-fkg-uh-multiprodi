@@ -47,6 +47,7 @@ export default async function KegiatanListPage({
     mataKuliahId: search.mataKuliahId,
     semester: search.semester,
     jenisKegiatanId: search.jenisKegiatanId,
+    filterAllProgramStudi: search.filterAllProgramStudi,
   });
 
   // Ambil semua mata kuliah untuk filter dropdown

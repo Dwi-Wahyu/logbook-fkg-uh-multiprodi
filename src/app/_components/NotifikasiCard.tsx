@@ -18,7 +18,7 @@ export default function NotifikasiCard({
   }
 
   return (
-    <Card>
+    <Card className="mt-6">
       {allNotifikasi.data?.length ? (
         <Fragment>
           <CardHeader>

@@ -118,7 +118,7 @@ export async function getKegiatan(input: TKegiatanSearchParams) {
   } else if (session.user.peran === "DOSEN") {
     const dosen = await prisma.dosen.findUnique({
       where: { penggunaId: session.user.id },
-      select: { id: true },
+      select: { id: true, pengguna: { select: { programStudiId: true } } },
     });
     if (!dosen) {
       console.warn(
@@ -127,13 +127,29 @@ export async function getKegiatan(input: TKegiatanSearchParams) {
       );
       return { data: [], pageCount: 0, filtered: 0 };
     }
-    filters.push({
-      logbook: {
-        mahasiswa: {
-          pembimbingId: dosen.id,
+
+    // --- LOGIKA FILTER DOSEN BERDASARKAN filterAllProgramStudi ---
+    if (input.filterAllProgramStudi && dosen.pengguna.programStudiId) {
+      // Jika filterAllProgramStudi aktif, tampilkan semua kegiatan dari mahasiswa di Program Studi yang sama
+      filters.push({
+        logbook: {
+          mahasiswa: {
+            pengguna: {
+              programStudiId: dosen.pengguna.programStudiId,
+            },
+          },
         },
-      },
-    });
+      });
+    } else {
+      // Default: Hanya tampilkan kegiatan mahasiswa bimbingan dosen ini
+      filters.push({
+        logbook: {
+          mahasiswa: {
+            pembimbingId: dosen.id,
+          },
+        },
+      });
+    }
   }
 
   // Filter berdasarkan status

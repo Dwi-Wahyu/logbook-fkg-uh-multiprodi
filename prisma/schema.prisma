@@ -10,13 +10,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Model yang sudah ada (disesuaikan)
 model Pengguna {
   id             String       @id @default(uuid())
   nama           String
   username       String       @unique
   password       String
-  peran          String // SUPERADMIN | ADMIN | MAHASISWA | DOSEN
+  peran          String
   avatar         String?
   mahasiswa      Mahasiswa?
   dosen          Dosen?
@@ -24,36 +23,37 @@ model Pengguna {
   logbook        Logbook[]
   programStudiId String
   programStudi   ProgramStudi @relation(fields: [programStudiId], references: [id])
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  @@map("Pengguna")
 }
 
 model Mahasiswa {
-  id                  String                @id @default(uuid())
-  penggunaId          String                @unique
-  pengguna            Pengguna              @relation(fields: [penggunaId], references: [id], onDelete: Cascade)
-  logbook             Logbook[]
-  pembimbing          Dosen?                @relation("PembimbingMahasiswa", fields: [pembimbingId], references: [id])
-  pembimbingId        String?
-  permohonanBimbingan PermohonanBimbingan[]
-
-  semester             Int?
-  judulDisertasi       String?
-  angkatan             String?
-  tempatTanggalLahir   String?
-  alamat               String?
-  alamatKeluarga       String?
-  tahunLulus           String?
-  mulaiMasukPendidikan DateTime?
-  pekerjaan            String?
-  nomorTelpon          String?
-  email                String?
-  jenisKelamin         String?
-
+  id                         String                       @id @default(uuid())
+  penggunaId                 String                       @unique
+  pengguna                   Pengguna                     @relation(fields: [penggunaId], references: [id], onDelete: Cascade)
+  logbook                    Logbook[]
+  pembimbing                 Dosen?                       @relation("PembimbingMahasiswa", fields: [pembimbingId], references: [id])
+  pembimbingId               String?
+  permohonanBimbingan        PermohonanBimbingan[]
+  semester                   Int?
+  judulDisertasi             String?
+  angkatan                   String?
+  tempatTanggalLahir         String?
+  alamat                     String?
+  alamatKeluarga             String?
+  tahunLulus                 String?
+  mulaiMasukPendidikan       DateTime?
+  pekerjaan                  String?
+  nomorTelpon                String?
+  email                      String?
+  jenisKelamin               String?
   createdAt                  DateTime                     @default(now())
   updatedAt                  DateTime                     @updatedAt
   RiwayatPerubahanPembimbing RiwayatPerubahanPembimbing[]
+
+  @@map("Mahasiswa")
 }
 
 model Dosen {
@@ -62,9 +62,10 @@ model Dosen {
   pengguna            Pengguna              @relation(fields: [penggunaId], references: [id], onDelete: Cascade)
   mahasiswaBimbingan  Mahasiswa[]           @relation("PembimbingMahasiswa")
   permohonanBimbingan PermohonanBimbingan[]
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  @@map("Dosen")
 }
 
 model Logbook {
@@ -72,31 +73,31 @@ model Logbook {
   mahasiswaId String?
   mahasiswa   Mahasiswa? @relation(fields: [mahasiswaId], references: [id])
   kegiatan    Kegiatan[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  Pengguna    Pengguna?  @relation(fields: [penggunaId], references: [id])
+  penggunaId  String?
 
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  Pengguna   Pengguna? @relation(fields: [penggunaId], references: [id])
-  penggunaId String?
+  @@map("Logbook")
 }
 
-// --- PERUBAHAN PADA MODEL KEGIATAN: mataKuliahId menjadi opsional ---
 model Kegiatan {
-  id              String        @id @default(uuid())
+  id              String                @id @default(uuid())
   logbookId       String
-  logbook         Logbook       @relation(fields: [logbookId], references: [id])
-  mataKuliahId    Int? // <-- DIUBAH: Menjadi opsional (Int?)
-  MataKuliah      MataKuliah?   @relation(fields: [mataKuliahId], references: [id]) // <-- DIUBAH: Relasi menjadi opsional
+  logbook         Logbook               @relation(fields: [logbookId], references: [id])
+  mataKuliahId    Int?
+  MataKuliah      MataKuliah?           @relation(fields: [mataKuliahId], references: [id])
   jenisKegiatanId String
-  jenisKegiatan   JenisKegiatan @relation(fields: [jenisKegiatanId], references: [id])
+  jenisKegiatan   JenisKegiatan         @relation(fields: [jenisKegiatanId], references: [id])
+  semester        Int?
+  fieldValues     FieldKegiatanValues[]
+  lampiran        Lampiran[]
+  status          String
+  alasanDitolak   String?
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
 
-  semester      Int? // semester kegiatan jika tidak menggunakan mata kuliah
-  fieldValues   FieldKegiatanValues[]
-  lampiran      Lampiran[]
-  status        String // DIAJUKAN | DISETUJUI | DITOLAK
-  alasanDitolak String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  @@map("Kegiatan")
 }
 
 model MataKuliah {
@@ -110,6 +111,7 @@ model MataKuliah {
   programStudiId String?
 
   @@unique([judul, semester])
+  @@map("MataKuliah")
 }
 
 model Lampiran {
@@ -118,9 +120,10 @@ model Lampiran {
   kegiatan   Kegiatan @relation(fields: [kegiatanId], references: [id])
   namaFile   String
   url        String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  @@map("Lampiran")
 }
 
 model PermohonanBimbingan {
@@ -129,12 +132,13 @@ model PermohonanBimbingan {
   mahasiswa     Mahasiswa @relation(fields: [mahasiswaId], references: [id])
   dosenId       String
   dosen         Dosen     @relation(fields: [dosenId], references: [id])
-  status        String    @default("TERKIRIM") // "DITOLAK" | "DISETUJUI" | "TERKIRIM"
+  status        String    @default("TERKIRIM")
   pesan         String?
   alasanDitolak String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  @@map("PermohonanBimbingan")
 }
 
 model Notifikasi {
@@ -144,9 +148,10 @@ model Notifikasi {
   judul      String
   pesan      String
   isRead     Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  @@map("Notifikasi")
 }
 
 model ProgramStudi {
@@ -157,64 +162,59 @@ model ProgramStudi {
   jenisKegiatan              JenisKegiatan[]
   mataKuliah                 MataKuliah[]
   templateSingleFieldForDate Boolean         @default(true)
+  createdAt                  DateTime        @default(now())
+  updatedAt                  DateTime        @updatedAt
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  @@map("ProgramStudi")
 }
 
-// --- MODEL JenisKegiatan (Dengan isMataKuliahRequired) ---
 model JenisKegiatan {
-  id                   String       @id @default(uuid())
+  id                   String               @id @default(uuid())
   programStudiId       String
-  programStudi         ProgramStudi @relation(fields: [programStudiId], references: [id])
+  programStudi         ProgramStudi         @relation(fields: [programStudiId], references: [id])
   nama                 String
-  templateIdentifier   String?      @unique
-  isMataKuliahRequired Boolean      @default(true) // <-- TAMBAHKAN INI
-
-  kegiatan Kegiatan[]
-  fields   JenisKegiatanField[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  templateIdentifier   String?              @unique
+  isMataKuliahRequired Boolean              @default(true)
+  kegiatan             Kegiatan[]
+  fields               JenisKegiatanField[]
+  createdAt            DateTime             @default(now())
+  updatedAt            DateTime             @updatedAt
 
   @@unique([programStudiId, nama])
+  @@map("JenisKegiatan")
 }
 
-// --- MODEL JenisKegiatanField ---
 model JenisKegiatanField {
-  id              String        @id @default(uuid())
+  id              String                @id @default(uuid())
   jenisKegiatanId String
-  jenisKegiatan   JenisKegiatan @relation(fields: [jenisKegiatanId], references: [id])
+  jenisKegiatan   JenisKegiatan         @relation(fields: [jenisKegiatanId], references: [id])
   fieldName       String
   fieldType       String
   templateKey     String?
-  isRequired      Boolean       @default(false)
-  order           Int           @default(0)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  fieldValues FieldKegiatanValues[]
+  isRequired      Boolean               @default(false)
+  order           Int                   @default(0)
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
+  fieldValues     FieldKegiatanValues[]
 
   @@unique([jenisKegiatanId, fieldName])
+  @@map("JenisKegiatanField")
 }
 
-// --- MODEL FieldKegiatanValues ---
 model FieldKegiatanValues {
   id                   String             @id @default(uuid())
   kegiatanId           String
   kegiatan             Kegiatan           @relation(fields: [kegiatanId], references: [id], onDelete: Cascade)
   jenisKegiatanFieldId String
   jenisKegiatanField   JenisKegiatanField @relation(fields: [jenisKegiatanFieldId], references: [id])
-  value                String             @db.VarChar(255) // Menyimpan nilai sebagai string
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  value                String             @db.VarChar(255)
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
 
   @@unique([kegiatanId, jenisKegiatanFieldId])
+  @@map("FieldKegiatanValues")
 }
 
-// --- RiwayatPerubahanPembimbing ---
 model RiwayatPerubahanPembimbing {
   id               String    @id @default(uuid())
   mahasiswaId      String
@@ -223,4 +223,6 @@ model RiwayatPerubahanPembimbing {
   pembimbingIdLama String?
   pembimbingIdBaru String?
   changedAt        DateTime  @default(now())
+
+  @@map("RiwayatPerubahanPembimbing")
 }

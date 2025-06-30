@@ -81,15 +81,20 @@ export default async function DetailPengguna({
             </Badge>
           </div>
         </CardHeader>
-        <CardContent className="flex flex-col gap-4 p-6">
+        <CardContent className="flex flex-col gap-4">
           <CardTitle className="text-xl font-semibold border-b pb-2">
             Informasi Pengguna
           </CardTitle>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <h1 className="font-semibold text-gray-700">
-                {isDosen ? "NIP" : "NIM"}
-              </h1>
+              <h1 className="font-semibold text-gray-700">Program Studi</h1>
+              <p className="text-muted-foreground">
+                {dataPengguna.programStudi.displayName}
+              </p>
+            </div>
+
+            <div>
+              <h1 className="font-semibold text-gray-700">Username</h1>
               <p className="text-muted-foreground">
                 {dataPengguna.username ?? "-"}
               </p>

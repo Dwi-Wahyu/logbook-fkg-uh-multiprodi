@@ -140,6 +140,11 @@ export async function getDetailPengguna(id: string) {
       id,
     },
     include: {
+      programStudi: {
+        select: {
+          displayName: true,
+        },
+      },
       mahasiswa: {
         select: {
           email: true,

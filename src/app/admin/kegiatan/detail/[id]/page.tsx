@@ -58,13 +58,7 @@ export default async function KegiatanDetailPage({
 
   return (
     <>
-      <div className="container mx-auto p-6">
-        <h1 className="text-3xl font-bold mb-2 text-center text-gray-800">
-          Detail Kegiatan
-        </h1>
-        <p className="text-lg text-center text-gray-600 mb-8">
-          Informasi lengkap mengenai kegiatan yang diajukan.
-        </p>
+      <div className="pb-2">
         <KegiatanDetailClient
           // Teruskan objek kegiatan lengkap, yang sudah memiliki semua relasi yang diperlukan
           kegiatan={kegiatan}
