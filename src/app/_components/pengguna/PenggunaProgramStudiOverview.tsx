@@ -368,9 +368,7 @@ PenggunaProgramStudiOverviewProps) {
                         </div>
                       </div>
                       <div className="mt-auto">
-                        <Link
-                          href={`/admin/pengaturan/pengguna/detail/${pengguna.id}`}
-                        >
+                        <Link href={`/admin/pengguna/detail/${pengguna.id}`}>
                           <Button
                             variant="outline"
                             className="w-full text-primary border-primary hover:bg-primary/10 transition-colors"
