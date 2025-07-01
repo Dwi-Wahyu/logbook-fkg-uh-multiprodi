@@ -68,8 +68,7 @@ export default function DosenDashboardClient({
       </div>
 
       {/* Charts Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Chart 1: Tren Pengajuan Kegiatan (Area Chart) */}
+      {/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <Card className="shadow-lg rounded-xl">
           <CardHeader>
             <CardTitle>Tren Pengajuan Kegiatan (6 Bulan Terakhir)</CardTitle>
@@ -133,7 +132,7 @@ export default function DosenDashboardClient({
             )}
           </CardContent>
         </Card>
-      </div>
+      </div> */}
 
       {/* Tambahan: Daftar Mahasiswa Bimbingan Teratas (Placeholder) */}
       <Card className="shadow-lg rounded-xl">

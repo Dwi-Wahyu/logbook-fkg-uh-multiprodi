@@ -59,7 +59,7 @@ export default function MahasiswaDashboardClient({
           value={currentSupervisorName || "Belum Ditentukan"}
           description={
             currentSupervisorName
-              ? "Dosen Pembimbing Anda saat ini."
+              ? "DPJP Anda saat ini."
               : "Silakan ajukan permohonan bimbingan."
           }
           accentColorClass="text-indigo-500"

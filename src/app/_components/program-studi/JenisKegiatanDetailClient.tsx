@@ -193,14 +193,6 @@ export default function JenisKegiatanDetailClient({
                       {field.isRequired ? "Ya" : "Tidak"}
                     </span>
                   </p>
-                  {field.templateKey && (
-                    <p className="text-sm text-gray-600 flex items-center">
-                      Kunci Template:{" "}
-                      <span className="font-mono text-xs bg-gray-100 p-1 rounded ml-1">
-                        {field.templateKey}
-                      </span>
-                    </p>
-                  )}
                 </div>
                 {/* Anda bisa menambahkan tombol edit/hapus field individual di sini jika perlu */}
               </div>

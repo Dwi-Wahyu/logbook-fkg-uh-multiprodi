@@ -38,7 +38,7 @@ export default function DataPembimbingAnda({
               {" "}
               {/* Atur flex, gap, dan padding */}
               <h1 className="text-2xl font-bold text-gray-800 mb-2">
-                Pembimbing Anda Saat Ini
+                DPJP Anda Saat Ini
               </h1>{" "}
               {/* Judul lebih besar dan bold */}
               <div className="flex flex-col items-center gap-4">
@@ -87,8 +87,8 @@ export default function DataPembimbingAnda({
                 Pembimbing Belum Ditentukan
               </CardTitle>
               <CardDescription className="text-base text-gray-600">
-                Anda belum memiliki dosen pembimbing yang ditugaskan. Silakan
-                hubungi admin program studi Anda untuk informasi lebih lanjut.
+                Anda belum memiliki DPJP yang ditugaskan. Silakan hubungi admin
+                program studi Anda untuk informasi lebih lanjut.
               </CardDescription>
             </div>
           )}

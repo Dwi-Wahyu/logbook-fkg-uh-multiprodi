@@ -26,6 +26,10 @@ model Pengguna {
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
 
+  // Relasi balik dari ketua (opsional satu-satu)
+  ketuaiProgramStudi ProgramStudi? @relation("KetuaProgramStudi")
+  Catatan            Catatan[]
+
   @@map("Pengguna")
 }
 
@@ -96,8 +100,22 @@ model Kegiatan {
   alasanDitolak   String?
   createdAt       DateTime              @default(now())
   updatedAt       DateTime              @updatedAt
+  Catatan         Catatan[]
 
   @@map("Kegiatan")
+}
+
+model Catatan {
+  id         String   @id @default(uuid())
+  kegiatanId String
+  kegiatan   Kegiatan @relation(fields: [kegiatanId], references: [id], onDelete: Cascade)
+  penggunaId String // Siapa yang membuat catatan (Dosen/Admin)
+  pengguna   Pengguna @relation(fields: [penggunaId], references: [id])
+  konten     String   @db.Text // Isi catatan/komentar
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("Catatan")
 }
 
 model MataKuliah {
@@ -159,6 +177,8 @@ model ProgramStudi {
   nama                       String          @unique
   displayName                String
   pengguna                   Pengguna[]
+  ketuaProgramStudiId        String?         @unique
+  ketuaProgramStudi          Pengguna?       @relation("KetuaProgramStudi", fields: [ketuaProgramStudiId], references: [id])
   jenisKegiatan              JenisKegiatan[]
   mataKuliah                 MataKuliah[]
   templateSingleFieldForDate Boolean         @default(true)
@@ -191,6 +211,7 @@ model JenisKegiatanField {
   fieldName       String
   fieldType       String
   templateKey     String?
+  showInTable     Boolean               @default(true)
   isRequired      Boolean               @default(false)
   order           Int                   @default(0)
   createdAt       DateTime              @default(now())

@@ -141,7 +141,7 @@ export default function GantiPembimbingForm({
                 </SelectContent>
               </Select>
               <FormDescription className="text-sm text-gray-500">
-                Pilih dosen pembimbing utama untuk mahasiswa ini.
+                Pilih DPJP utama untuk mahasiswa ini.
               </FormDescription>
               <FormMessage />
             </FormItem>

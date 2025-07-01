@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { TKegiatanSearchParams } from "../validations/kegiatanSearchParams";
 import { auth } from "@/config/auth";
 import { Prisma } from "@/generated/prisma";
+import { JenisKegiatanWithFields } from "./programStudiQueries";
 
 // Tipe untuk data field kustom beserta nilainya
 export type FieldValueWithDefinition = Prisma.FieldKegiatanValuesGetPayload<{
@@ -81,6 +82,16 @@ export type KegiatanWithRelations = Prisma.KegiatanGetPayload<{
         };
       };
     };
+    Catatan: {
+      include: {
+        pengguna: {
+          select: {
+            avatar: true;
+            nama: true;
+          };
+        };
+      };
+    };
     lampiran: true; // true akan meng-include semua field Lampiran
   };
 }>;
@@ -97,8 +108,13 @@ export async function getKegiatan(input: TKegiatanSearchParams) {
 
   const filters: Prisma.KegiatanWhereInput[] = [];
 
-  // Filter berdasarkan peran pengguna yang login
-  if (session.user.peran === "MAHASISWA") {
+  if (input.pengajuId) {
+    filters.push({
+      logbook: {
+        penggunaId: input.pengajuId,
+      },
+    });
+  } else if (session.user.peran === "MAHASISWA") {
     const mahasiswa = await prisma.mahasiswa.findUnique({
       where: { penggunaId: session.user.id },
       select: { id: true },
@@ -247,6 +263,17 @@ export async function getKegiatan(input: TKegiatanSearchParams) {
         },
       },
       lampiran: true,
+
+      Catatan: {
+        include: {
+          pengguna: {
+            select: {
+              avatar: true,
+              nama: true,
+            },
+          },
+        },
+      },
     },
   });
 
@@ -317,6 +344,16 @@ export async function getKegiatanById(
         },
       },
       lampiran: true,
+      Catatan: {
+        include: {
+          pengguna: {
+            select: {
+              avatar: true,
+              nama: true,
+            },
+          },
+        },
+      },
     },
   });
   return kegiatan;
@@ -354,7 +391,6 @@ export async function getAllJenisKegiatan(programStudiId?: string | null) {
   return jenisKegiatanList;
 }
 
-// getAllMataKuliah (tetap sama)
 export async function getAllMataKuliah() {
   const allMataKuliah = await prisma.mataKuliah.findMany({
     select: { id: true, judul: true, semester: true, programStudiId: true },
@@ -363,7 +399,6 @@ export async function getAllMataKuliah() {
   return allMataKuliah;
 }
 
-// getPenanggungJawabMahasiswa (tetap sama)
 export async function getPenanggungJawabMahasiswa(mahasiswaId: string) {
   const mahasiswa = await prisma.mahasiswa.findUnique({
     where: { id: mahasiswaId },

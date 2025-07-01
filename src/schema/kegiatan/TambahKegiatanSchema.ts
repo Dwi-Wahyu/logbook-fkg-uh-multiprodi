@@ -38,3 +38,10 @@ export const tambahKegiatanSchema = z.object({
 });
 
 export type TTambahKegiatan = z.infer<typeof tambahKegiatanSchema>;
+
+export const addCatatanSchema = z.object({
+  kegiatanId: z.string().min(1, "ID Kegiatan wajib diisi."),
+  penggunaId: z.string().min(1, "ID Pengguna wajib diisi."),
+  konten: z.string().min(1, "Catatan tidak boleh kosong."),
+});
+export type TAddCatatan = z.infer<typeof addCatatanSchema>;

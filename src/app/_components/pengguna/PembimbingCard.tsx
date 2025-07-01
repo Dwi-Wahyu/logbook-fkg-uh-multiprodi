@@ -55,6 +55,7 @@ import {
   updatePembimbingSchema,
 } from "@/schema/BimbinganSchema";
 import PembimbingHero from "../PembimbingHero";
+import { useSession } from "next-auth/react";
 
 // Define props type more explicitly to avoid direct Awaited<ReturnType> here for clarity
 // The `page.tsx` will pass the resolved data.
@@ -67,12 +68,18 @@ type Props = {
 };
 
 export default function PembimbingCard({ dataPengguna, allDosen }: Props) {
+  const session = useSession();
+
   const router = useRouter();
   const [openDialog, setOpenDialog] = useState(false);
   const [loading, setLoading] = useState(false);
 
   // Determine if the student already has a supervisor
   const hasPembimbing = !!dataPengguna?.mahasiswa?.pembimbing;
+
+  const isViewerAdmin =
+    session?.data?.user.peran === "ADMIN" ||
+    session?.data?.user.peran === "SUPERADMIN";
 
   // Initialize form with existing data
   const form = useForm<TUpdatePembimbingSchema>({
@@ -92,7 +99,7 @@ export default function PembimbingCard({ dataPengguna, allDosen }: Props) {
       toast.custom(() => (
         <CustomToast
           title="Pembimbing Diperbarui"
-          description={"Data pembimbing mahasiswa telah berhasil disimpan."}
+          description={"Data DPJP telah berhasil disimpan."}
           variant="success"
           icon={<UserCheck width={50} height={50} />} // Custom success icon
         />
@@ -119,8 +126,8 @@ export default function PembimbingCard({ dataPengguna, allDosen }: Props) {
   return (
     <Card className="shadow-lg rounded-xl">
       <CardHeader className="">
-        <CardTitle className="text-2xl font-bold text-gray-900">
-          Pembimbing Mahasiswa
+        <CardTitle className="font-bold text-gray-900">
+          DPJP Mahasiswa
         </CardTitle>
       </CardHeader>
 
@@ -142,25 +149,25 @@ export default function PembimbingCard({ dataPengguna, allDosen }: Props) {
         <div className="flex justify-end pt-5">
           <Dialog open={openDialog} onOpenChange={setOpenDialog}>
             <DialogTrigger asChild>
-              <Button className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-md rounded-lg flex items-center px-6 py-3">
-                {hasPembimbing ? (
-                  <>
-                    <Edit className="mr-2 h-5 w-5" /> Ubah Pembimbing Mahasiswa
-                  </>
-                ) : (
-                  <>
-                    <UserPlus className="mr-2 h-5 w-5" /> Pilih Pembimbing
-                    Mahasiswa
-                  </>
-                )}
-              </Button>
+              {isViewerAdmin && (
+                <Button className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-md rounded-lg flex items-center px-6 py-3">
+                  {hasPembimbing ? (
+                    <>
+                      <Edit className="h-5 w-5" /> Ubah DPJP
+                    </>
+                  ) : (
+                    <>
+                      <UserPlus className="h-5 w-5" /> Pilih Pembimbing
+                      Mahasiswa
+                    </>
+                  )}
+                </Button>
+              )}
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px] rounded-xl p-6">
               <DialogHeader className="mb-4">
                 <DialogTitle className="text-xl font-bold">
-                  {hasPembimbing
-                    ? "Ubah Pembimbing Mahasiswa"
-                    : "Pilih Pembimbing Mahasiswa"}
+                  {hasPembimbing ? "Ubah DPJP" : "Pilih DPJP"}
                 </DialogTitle>
                 <DialogDescription className="text-gray-600">
                   Untuk mahasiswa:{" "}
@@ -201,8 +208,7 @@ export default function PembimbingCard({ dataPengguna, allDosen }: Props) {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          Dosen Pembimbing{" "}
-                          <span className="text-red-500">*</span>
+                          DPJP <span className="text-red-500">*</span>
                         </FormLabel>
                         <Select
                           onValueChange={(value) =>
@@ -213,7 +219,7 @@ export default function PembimbingCard({ dataPengguna, allDosen }: Props) {
                         >
                           <FormControl>
                             <SelectTrigger className="w-full">
-                              <SelectValue placeholder="Pilih dosen pembimbing" />
+                              <SelectValue placeholder="Pilih DPJP" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>

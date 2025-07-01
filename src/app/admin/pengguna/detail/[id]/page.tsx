@@ -13,7 +13,12 @@ import {
 } from "@/components/ui/card";
 import { getNameInitials } from "@/service/getNameInitials";
 import { Separator } from "@/components/ui/separator";
-import { Contact, ContactRound, User as UserIcon } from "lucide-react"; // Renamed User to UserIcon to avoid conflict with Pengguna type
+import {
+  CircleDashed,
+  Contact,
+  ContactRound,
+  User as UserIcon,
+} from "lucide-react"; // Renamed User to UserIcon to avoid conflict with Pengguna type
 import MahasiswaBimbinganCard from "@/app/_components/pengguna/MahasiswaBimbinganCard";
 import { format } from "date-fns";
 import PembimbingCard from "@/app/_components/pengguna/PembimbingCard"; // Changed to client component import
@@ -21,7 +26,11 @@ import { auth } from "@/config/auth";
 import {
   getAllDosen,
   getDetailPengguna,
+  getKegiatanProgressByMahasiswaId,
 } from "@/app/_lib/queries/penggunaQueries";
+import MahasiswaKegiatanProgress from "@/app/_components/pengguna/MahasiswaKegiatanProgress";
+import JenisKegiatanTable from "@/app/_components/pengguna/JenisKegiatanPenggunaTable";
+import { getProgramStudiById } from "@/app/_lib/queries/programStudiQueries";
 
 export default async function DetailPengguna({
   params,
@@ -43,14 +52,29 @@ export default async function DetailPengguna({
 
   const isDosen = dataPengguna.peran === "DOSEN";
   const isMahasiswa = dataPengguna.peran === "MAHASISWA";
-  const isAdmin = session?.user.peran === "ADMIN";
+
+  const isViewerDPJP =
+    session?.user.id === dataPengguna.mahasiswa?.pembimbing?.pengguna.id;
+
+  let kegiatanProgress: Awaited<
+    ReturnType<typeof getKegiatanProgressByMahasiswaId>
+  > = [];
+  if (isMahasiswa && isViewerDPJP && dataPengguna.mahasiswa?.id) {
+    kegiatanProgress = await getKegiatanProgressByMahasiswaId(
+      dataPengguna.mahasiswa.id
+    );
+  }
+
+  const programStudiData = await getProgramStudiById(
+    dataPengguna.programStudiId
+  );
 
   return (
     <Suspense fallback={<Skeleton className="w-full h-40" />}>
       <Card className="mb-5 shadow-lg rounded-xl">
         {" "}
         {/* Added shadow and rounded corners */}
-        <CardHeader className="flex flex-col sm:flex-row items-center gap-5 w-full border-b pb-4">
+        <CardHeader className="flex flex-col sm:flex-row items-center gap-5 w-full">
           <Avatar className="w-20 h-20 rounded-lg">
             <AvatarImage
               src={`/image/profile-picture/${dataPengguna.avatar}`}
@@ -81,7 +105,7 @@ export default async function DetailPengguna({
             </Badge>
           </div>
         </CardHeader>
-        <CardContent className="flex flex-col gap-4">
+        {/* <CardContent className="flex flex-col gap-4">
           <CardTitle className="text-xl font-semibold border-b pb-2">
             Informasi Pengguna
           </CardTitle>
@@ -160,13 +184,28 @@ export default async function DetailPengguna({
               </div>
             </Fragment>
           )}
-        </CardContent>
+        </CardContent> */}
       </Card>
 
       {isDosen && <MahasiswaBimbinganCard dataPengguna={dataPengguna} />}
 
       {/* Pass allDosen to PembimbingCard for the selection dropdown */}
-      <PembimbingCard dataPengguna={dataPengguna} allDosen={allDosen} />
+      {/* <PembimbingCard dataPengguna={dataPengguna} allDosen={allDosen} /> */}
+
+      <Card>
+        <CardContent>
+          <div className="flex mb-4 gap-2 items-center">
+            <CircleDashed className="h-5 w-5" />
+
+            <CardTitle>Progress Kegiatan Mahasiswa</CardTitle>
+          </div>
+
+          <JenisKegiatanTable
+            initialJenisKegiatanList={programStudiData?.jenisKegiatan}
+            idPengguna={dataPengguna.id}
+          />
+        </CardContent>
+      </Card>
     </Suspense>
   );
 }

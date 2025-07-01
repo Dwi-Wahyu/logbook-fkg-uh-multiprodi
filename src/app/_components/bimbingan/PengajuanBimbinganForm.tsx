@@ -214,7 +214,7 @@ export default function PengajuanBimbinganForm({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      Pilih Dosen Pembimbing{" "}
+                      Pilih DPJP
                       <span className="text-red-500">*</span>
                     </FormLabel>
                     <Select
@@ -224,7 +224,7 @@ export default function PengajuanBimbinganForm({
                     >
                       <FormControl>
                         <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Pilih dosen pembimbing" />
+                          <SelectValue placeholder="Pilih DPJP" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>

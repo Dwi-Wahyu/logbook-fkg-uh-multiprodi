@@ -18,6 +18,8 @@ import {
 import { generateSafeFilename } from "@/hooks/use-safe-filename";
 
 import {
+  addCatatanSchema,
+  TAddCatatan,
   tambahKegiatanSchema,
   TTambahKegiatan,
 } from "@/schema/kegiatan/TambahKegiatanSchema";
@@ -690,6 +692,42 @@ export async function hapusSemuaLampiran(kegiatanId: string) {
       `Gagal menghapus semua lampiran untuk kegiatan ${kegiatanId}:`,
       error
     );
+    return handlePrismaUniqueViolation(error);
+  }
+}
+
+export async function addCatatanKegiatan(payload: TAddCatatan) {
+  const validationResult = await validateServerActionPayload(
+    payload,
+    addCatatanSchema
+  );
+  if (validationResult.error) return validationResult.error;
+  if (!validationResult.data)
+    return { success: false, message: "Data catatan tidak valid." };
+
+  try {
+    const newCatatan = await prisma.catatan.create({
+      data: {
+        kegiatanId: validationResult.data.kegiatanId,
+        penggunaId: validationResult.data.penggunaId,
+        konten: validationResult.data.konten,
+      },
+      include: {
+        pengguna: { select: { nama: true, avatar: true } }, // Include pengguna untuk tampilan langsung di frontend
+      },
+    });
+
+    revalidatePath(
+      `/admin/kegiatan/detail/${validationResult.data.kegiatanId}`
+    ); // Revalidate halaman detail kegiatan
+
+    return {
+      success: true,
+      message: "Catatan berhasil ditambahkan.",
+      data: newCatatan,
+    };
+  } catch (error) {
+    console.error("Error adding catatan kegiatan:", error);
     return handlePrismaUniqueViolation(error);
   }
 }

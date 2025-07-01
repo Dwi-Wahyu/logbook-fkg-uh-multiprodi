@@ -31,12 +31,16 @@ import {
   Hash, // For number field type
   ToggleRight, // For boolean field type
   Key, // For template key
+  MessageSquare, // For notes/comments
 } from "lucide-react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { CustomToast } from "@/components/toast";
-import { updateKegiatanStatus } from "@/app/_lib/actions/kegiatanActions";
+import {
+  updateKegiatanStatus,
+  addCatatanKegiatan,
+} from "@/app/_lib/actions/kegiatanActions";
 
 import {
   AlertDialog,
@@ -59,15 +63,21 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getNameInitials } from "@/service/getNameInitials";
 
 // Import type for KegiatanWithRelations from queries
 import {
   KegiatanWithRelations,
   FieldValueWithDefinition,
 } from "@/app/_lib/queries/kegiatanQueries";
+import CatatanList from "../CatatanList";
+import AddCatatanForm from "../AddCatatanForm";
+
+// Import komponen catatan
 
 interface KegiatanDetailClientProps {
-  kegiatan: KegiatanWithRelations; // Gunakan tipe KegiatanWithRelations yang sudah didefinisikan
+  kegiatan: KegiatanWithRelations;
 }
 
 export default function KegiatanDetailClient({
@@ -93,7 +103,6 @@ export default function KegiatanDetailClient({
     }
   };
 
-  // Fungsi pembantu untuk memformat nilai berdasarkan fieldType
   const formatValueBasedOnType = (value: any, fieldType: string): string => {
     if (value === null || value === undefined || String(value).trim() === "") {
       return "-";
@@ -102,9 +111,8 @@ export default function KegiatanDetailClient({
       case "DATE":
         try {
           const date = new Date(value);
-          // Periksa apakah tanggal valid sebelum memformat
           if (isNaN(date.getTime())) {
-            return String(value); // Kembali ke string jika tanggal tidak valid
+            return String(value);
           }
           return date.toLocaleDateString("id-ID", {
             year: "numeric",
@@ -112,57 +120,49 @@ export default function KegiatanDetailClient({
             day: "numeric",
           });
         } catch {
-          return String(value); // Fallback jika parsing tanggal gagal
+          return String(value);
         }
       case "NUMBER":
-        return Number(value).toLocaleString("id-ID"); // Format angka dengan pemisah ribuan
+        return Number(value).toLocaleString("id-ID");
       case "BOOLEAN":
-        // Handle boolean yang disimpan sebagai string "true" atau "false"
         return value === "true" || value === true ? "Ya" : "Tidak";
-      case "TEXTAREA": // Handle textarea, mungkin dengan memecah baris jika perlu
+      case "TEXTAREA":
         return String(value);
-      default: // TEXT
+      default:
         return String(value);
     }
   };
 
-  // Helper untuk mendapatkan nilai field dari fieldValues berdasarkan templateKey atau fieldName
   const getFormattedFieldValue = (key: string): string => {
-    // Prioritaskan pencarian berdasarkan templateKey
     let fieldValueEntry = kegiatan.fieldValues.find(
       (fv) => fv.jenisKegiatanField.templateKey === key
     );
-
-    // Jika tidak ditemukan berdasarkan templateKey, coba cari berdasarkan fieldName
     if (!fieldValueEntry) {
       fieldValueEntry = kegiatan.fieldValues.find(
         (fv) =>
           fv.jenisKegiatanField.fieldName?.toLowerCase() === key.toLowerCase()
       );
     }
-
     if (
       !fieldValueEntry ||
       fieldValueEntry.value === null ||
       fieldValueEntry.value === undefined ||
       String(fieldValueEntry.value).trim() === ""
     ) {
-      return "";
+      return "-";
     }
-
     return formatValueBasedOnType(
       fieldValueEntry.value,
       fieldValueEntry.jenisKegiatanField.fieldType
     );
   };
 
-  // Ambil judul kegiatan dan lokasi dari fieldValues
   const judulKegiatan =
     getFormattedFieldValue("judul") ||
     kegiatan.jenisKegiatan.nama ||
     "Judul Tidak Tersedia";
   const lokasiKegiatan =
-    getFormattedFieldValue("lokasi") || "Lokasi Tidak Tersedia"; // Asumsi ada field 'lokasi'
+    getFormattedFieldValue("lokasi") || "Lokasi Tidak Tersedia";
 
   const isMahasiswaPengaju =
     session?.user.id === kegiatan.logbook.mahasiswa?.pengguna.id;
@@ -172,7 +172,8 @@ export default function KegiatanDetailClient({
     session?.user.peran === "ADMIN" || session?.user.peran === "SUPERADMIN";
 
   const canEditKegiatan = isMahasiswaPengaju && kegiatan.status === "DIAJUKAN";
-  const canSeeTanggapiButtons = isDosenPembimbing || isAdminOrSuperadmin;
+  // Hanya Dosen/Admin yang bisa menanggapi atau menambahkan catatan
+  const canTanggapiAtauCatat = isDosenPembimbing || isAdminOrSuperadmin;
 
   const handleUpdateStatus = async (
     newStatus: "DISETUJUI" | "DITOLAK",
@@ -274,7 +275,7 @@ export default function KegiatanDetailClient({
             )}
 
             {/* Response buttons for Dosen Pembimbing or Admin/Superadmin */}
-            {canSeeTanggapiButtons && (
+            {canTanggapiAtauCatat && (
               <>
                 <Button
                   onClick={handleApprove}
@@ -342,7 +343,7 @@ export default function KegiatanDetailClient({
 
       <CardContent className="p-6 pt-0 space-y-6">
         {/* Informasi Utama Kegiatan */}
-        <div className="grid grid-cols-1 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
           <div className="space-y-1">
             <h3 className="font-semibold text-gray-700">Jenis Kegiatan</h3>
             <p className="text-gray-900 flex items-center">
@@ -350,7 +351,7 @@ export default function KegiatanDetailClient({
               {kegiatan.jenisKegiatan.nama}
             </p>
           </div>
-
+          {/* Tampilkan Mata Kuliah hanya jika isMataKuliahRequired true dan ada MataKuliah */}
           {kegiatan.jenisKegiatan.isMataKuliahRequired &&
             kegiatan.MataKuliah && (
               <div className="space-y-1">
@@ -391,7 +392,7 @@ export default function KegiatanDetailClient({
         {kegiatan.fieldValues.length > 0 ? (
           <div>
             <h2 className="text-xl font-semibold text-gray-800 mb-4">
-              Detail Kegiatan
+              Detail Kegiatan (Field Kustom)
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {/* Urutkan fieldValues berdasarkan order dari jenisKegiatanField-nya */}
@@ -402,11 +403,10 @@ export default function KegiatanDetailClient({
                 )
                 .map((fieldValueEntry) => (
                   <div
-                    key={fieldValueEntry.jenisKegiatanField.templateKey}
+                    key={fieldValueEntry.jenisKegiatanField.id}
                     className="space-y-1 p-3 border rounded-md bg-white shadow-sm"
                   >
                     <h3 className="font-semibold text-gray-700 flex items-center">
-                      {/* Ikon berdasarkan Field Type */}
                       {fieldValueEntry.jenisKegiatanField.fieldType ===
                         "TEXT" && (
                         <FileText className="h-4 w-4 mr-2 text-blue-500" />
@@ -426,8 +426,7 @@ export default function KegiatanDetailClient({
                       {fieldValueEntry.jenisKegiatanField.fieldType ===
                         "TEXTAREA" && (
                         <FileText className="h-4 w-4 mr-2 text-yellow-500" />
-                      )}{" "}
-                      {/* Re-use FileText or add specific for TEXTAREA */}
+                      )}
                       {fieldValueEntry.jenisKegiatanField.fieldName}
                     </h3>
                     <p className="text-gray-900 break-words text-sm">
@@ -436,13 +435,21 @@ export default function KegiatanDetailClient({
                         fieldValueEntry.jenisKegiatanField.fieldType
                       )}
                     </p>
+                    {fieldValueEntry.jenisKegiatanField.templateKey && (
+                      <p className="text-gray-500 text-xs flex items-center mt-1">
+                        <Key className="h-3 w-3 mr-1" />
+                        <span className="font-mono">
+                          {fieldValueEntry.jenisKegiatanField.templateKey}
+                        </span>
+                      </p>
+                    )}
                   </div>
                 ))}
             </div>
           </div>
         ) : (
-          <p className="text-gray-500 text-sm">
-            Tidak ada field untuk jenis kegiatan ini.
+          <p className="text-gray-500 text-sm p-4 border rounded-md bg-gray-50">
+            Tidak ada field kustom yang ditentukan untuk jenis kegiatan ini.
           </p>
         )}
 
@@ -476,6 +483,19 @@ export default function KegiatanDetailClient({
               Tidak ada lampiran untuk kegiatan ini.
             </p>
           )}
+        </div>
+
+        <Separator className="my-6" />
+
+        {/* Catatan/Komentar */}
+        <div className="space-y-4">
+          <CatatanList catatan={kegiatan.Catatan} />{" "}
+          {/* Gunakan komponen CatatanList */}
+          {/* Form untuk Menambah Catatan Baru (Hanya untuk Dosen/Admin) */}
+          <AddCatatanForm
+            kegiatanId={kegiatan.id}
+            canAddNote={canTanggapiAtauCatat}
+          />
         </div>
       </CardContent>
 

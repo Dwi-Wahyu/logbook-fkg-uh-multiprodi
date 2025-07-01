@@ -20,6 +20,7 @@ export const kegiatanSearchParams = createSearchParamsCache({
   }),
   jenisKegiatanId: parseAsString.withDefault(""),
   filterAllProgramStudi: parseAsBoolean.withDefault(false),
+  pengajuId: parseAsString.withDefault(""),
 });
 
 export type TKegiatanSearchParams = {
@@ -31,4 +32,5 @@ export type TKegiatanSearchParams = {
   semester: number | null;
   jenisKegiatanId: string;
   filterAllProgramStudi: boolean;
+  pengajuId: string;
 };

@@ -30,13 +30,7 @@ export const editProfilPenggunaSchema = z.object({
       message: "Nomor telepon minimal 10 digit",
     })
     .optional(),
-
-  angkatan: z
-    .string()
-    .regex(/^\d{4}$/, {
-      message: "Format angkatan harus 4 digit (contoh: 2023)",
-    })
-    .optional(),
+  angkatan: z.string(),
   tahunLulus: z.string().optional(),
   mulaiMasukPendidikan: z.date().optional(),
 

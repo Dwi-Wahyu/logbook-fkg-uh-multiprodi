@@ -147,6 +147,7 @@ export async function getDetailPengguna(id: string) {
       },
       mahasiswa: {
         select: {
+          id: true,
           email: true,
           nomorTelpon: true,
           alamat: true,
@@ -158,6 +159,7 @@ export async function getDetailPengguna(id: string) {
             select: {
               pengguna: {
                 select: {
+                  id: true,
                   nama: true,
                   username: true,
                   avatar: true,
@@ -286,4 +288,72 @@ export async function getPenggunaByProgramStudi(
   const pageCount = Math.ceil(filtered / params.perPage);
 
   return { data, total, pageCount, filtered };
+}
+
+// NEW QUERY: getKegiatanProgressByMahasiswaId
+// Mengambil semua kegiatan untuk mahasiswa tertentu, dikelompokkan berdasarkan JenisKegiatan.
+export async function getKegiatanProgressByMahasiswaId(mahasiswaId: string) {
+  // Pastikan mahasiswaId valid
+  if (!mahasiswaId) {
+    return [];
+  }
+
+  const kegiatanList = await prisma.kegiatan.findMany({
+    where: {
+      logbook: {
+        mahasiswaId: mahasiswaId,
+      },
+    },
+    include: {
+      jenisKegiatan: {
+        select: {
+          id: true,
+          nama: true,
+          templateIdentifier: true,
+        },
+      },
+      fieldValues: {
+        include: {
+          jenisKegiatanField: {
+            select: {
+              fieldName: true,
+              fieldType: true,
+              templateKey: true,
+              order: true,
+            },
+          },
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc", // Urutkan dari yang terbaru
+    },
+  });
+
+  // Kelompokkan kegiatan berdasarkan jenisKegiatan
+  const groupedProgress = new Map<
+    string,
+    {
+      jenisKegiatanId: string;
+      jenisKegiatanNama: string;
+      kegiatan: Array<(typeof kegiatanList)[number]>;
+    }
+  >();
+
+  kegiatanList.forEach((kegiatan) => {
+    const jenisKegiatanId = kegiatan.jenisKegiatan.id;
+    if (!groupedProgress.has(jenisKegiatanId)) {
+      groupedProgress.set(jenisKegiatanId, {
+        jenisKegiatanId: jenisKegiatanId,
+        jenisKegiatanNama: kegiatan.jenisKegiatan.nama,
+        kegiatan: [],
+      });
+    }
+    groupedProgress.get(jenisKegiatanId)?.kegiatan.push(kegiatan);
+  });
+
+  // Konversi Map ke Array dan urutkan jenis kegiatan berdasarkan nama
+  return Array.from(groupedProgress.values()).sort((a, b) =>
+    a.jenisKegiatanNama.localeCompare(b.jenisKegiatanNama)
+  );
 }
