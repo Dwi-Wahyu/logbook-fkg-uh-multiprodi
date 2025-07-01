@@ -190,22 +190,24 @@ export default async function DetailPengguna({
       {isDosen && <MahasiswaBimbinganCard dataPengguna={dataPengguna} />}
 
       {/* Pass allDosen to PembimbingCard for the selection dropdown */}
-      {/* <PembimbingCard dataPengguna={dataPengguna} allDosen={allDosen} /> */}
+      <PembimbingCard dataPengguna={dataPengguna} allDosen={allDosen} />
 
-      <Card>
-        <CardContent>
-          <div className="flex mb-4 gap-2 items-center">
-            <CircleDashed className="h-5 w-5" />
+      {isMahasiswa && (
+        <Card>
+          <CardContent>
+            <div className="flex mb-4 gap-2 items-center">
+              <CircleDashed className="h-5 w-5" />
 
-            <CardTitle>Progress Kegiatan Mahasiswa</CardTitle>
-          </div>
+              <CardTitle>Progress Kegiatan Mahasiswa</CardTitle>
+            </div>
 
-          <JenisKegiatanTable
-            initialJenisKegiatanList={programStudiData?.jenisKegiatan ?? []}
-            idPengguna={dataPengguna.id}
-          />
-        </CardContent>
-      </Card>
+            <JenisKegiatanTable
+              initialJenisKegiatanList={programStudiData?.jenisKegiatan ?? []}
+              idPengguna={dataPengguna.id}
+            />
+          </CardContent>
+        </Card>
+      )}
     </Suspense>
   );
 }
