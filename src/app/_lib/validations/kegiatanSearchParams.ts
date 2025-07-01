@@ -32,5 +32,5 @@ export type TKegiatanSearchParams = {
   semester: number | null;
   jenisKegiatanId: string;
   filterAllProgramStudi: boolean;
-  pengajuId: string;
+  pengajuId?: string;
 };
