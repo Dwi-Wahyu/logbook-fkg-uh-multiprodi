@@ -124,7 +124,7 @@ export default function PembimbingCard({ dataPengguna, allDosen }: Props) {
   }
 
   return (
-    <Card className="shadow-lg rounded-xl">
+    <Card className="shadow-lg mb-5 rounded-xl">
       <CardHeader className="">
         <CardTitle className="font-bold text-gray-900">
           DPJP Mahasiswa

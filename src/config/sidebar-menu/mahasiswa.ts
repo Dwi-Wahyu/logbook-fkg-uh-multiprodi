@@ -2,6 +2,7 @@ import { SidebarMenu } from "@/types/sidebar";
 import {
   Activity,
   BookType,
+  CircleDashed,
   FileUser,
   LayoutDashboard,
   ScrollText,
@@ -24,6 +25,13 @@ export const mahasiswaSidebarMenu: SidebarMenu = {
           title: "Pengajuan Bimbingan",
           url: "pengajuan-bimbingan",
           icon: FileUser,
+          isDropdown: false,
+          items: [],
+        },
+        {
+          title: "Progress Kegiatan",
+          url: "kegiatan/progress",
+          icon: CircleDashed,
           isDropdown: false,
           items: [],
         },
