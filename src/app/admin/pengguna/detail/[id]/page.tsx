@@ -201,7 +201,7 @@ export default async function DetailPengguna({
           </div>
 
           <JenisKegiatanTable
-            initialJenisKegiatanList={programStudiData?.jenisKegiatan}
+            initialJenisKegiatanList={programStudiData?.jenisKegiatan ?? []}
             idPengguna={dataPengguna.id}
           />
         </CardContent>
