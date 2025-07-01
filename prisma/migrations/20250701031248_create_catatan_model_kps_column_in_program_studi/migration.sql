@@ -5,7 +5,7 @@
 
 */
 -- AlterTable
-ALTER TABLE `programstudi` ADD COLUMN `ketuaProgramStudiId` VARCHAR(191) NULL;
+ALTER TABLE `ProgramStudi` ADD COLUMN `ketuaProgramStudiId` VARCHAR(191) NULL;
 
 -- CreateTable
 CREATE TABLE `Catatan` (
