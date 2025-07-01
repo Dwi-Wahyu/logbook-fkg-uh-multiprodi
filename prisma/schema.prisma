@@ -75,11 +75,11 @@ model Dosen {
 model Logbook {
   id          String     @id @default(uuid())
   mahasiswaId String?
-  mahasiswa   Mahasiswa? @relation(fields: [mahasiswaId], references: [id])
+  mahasiswa   Mahasiswa? @relation(fields: [mahasiswaId], references: [id], onDelete: Cascade)
   kegiatan    Kegiatan[]
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
-  Pengguna    Pengguna?  @relation(fields: [penggunaId], references: [id])
+  Pengguna    Pengguna?  @relation(fields: [penggunaId], references: [id], onDelete: Cascade)
   penggunaId  String?
 
   @@map("Logbook")
@@ -88,7 +88,7 @@ model Logbook {
 model Kegiatan {
   id              String                @id @default(uuid())
   logbookId       String
-  logbook         Logbook               @relation(fields: [logbookId], references: [id])
+  logbook         Logbook               @relation(fields: [logbookId], references: [id], onDelete: Cascade)
   mataKuliahId    Int?
   MataKuliah      MataKuliah?           @relation(fields: [mataKuliahId], references: [id])
   jenisKegiatanId String

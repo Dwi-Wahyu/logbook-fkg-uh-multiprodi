@@ -320,7 +320,7 @@ export default function KegiatanDetailClient({
           >
             Status: {kegiatan.status}
           </Badge>
-          <span className="text-sm text-gray-500 flex items-center">
+          {/* <span className="text-sm text-gray-500 flex items-center">
             <Calendar className="h-4 w-4 mr-1" />
             Dibuat:{" "}
             {new Date(kegiatan.createdAt).toLocaleDateString("id-ID", {
@@ -328,7 +328,7 @@ export default function KegiatanDetailClient({
               month: "long",
               day: "numeric",
             })}
-          </span>
+          </span> */}
           {kegiatan.status === "DITOLAK" && kegiatan.alasanDitolak && (
             <Badge
               variant="destructive"
