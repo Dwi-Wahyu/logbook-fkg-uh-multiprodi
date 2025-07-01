@@ -79,6 +79,7 @@ export default async function EditProgramStudiPage({
     templateSingleFieldForDate: programStudiData.templateSingleFieldForDate,
     createdAt: programStudiData.createdAt,
     updatedAt: programStudiData.updatedAt,
+    ketuaProgramStudiId: "",
   };
 
   return (
