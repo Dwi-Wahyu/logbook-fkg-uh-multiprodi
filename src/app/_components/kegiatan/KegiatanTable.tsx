@@ -504,7 +504,7 @@ export default function KegiatanTable({
                   <TableHead className="">Mata Kuliah</TableHead>
                   <TableHead className="">Pengaju</TableHead>
                   <TableHead className="">Status</TableHead>
-                  <TableHead className="">Tanggal Dibuat</TableHead>
+                  {/* <TableHead className="">Tanggal Dibuat</TableHead> */}
                   <TableHead className=" text-center">Aksi</TableHead>
                 </TableRow>
               </TableHeader>
@@ -549,11 +549,11 @@ export default function KegiatanTable({
                           {kegiatan.status}
                         </span>
                       </TableCell>
-                      <TableCell>
+                      {/* <TableCell>
                         {new Date(kegiatan.createdAt).toLocaleDateString(
                           "id-ID"
                         )}
-                      </TableCell>
+                      </TableCell> */}
                       <TableCell className="flex space-x-2 justify-center">
                         {/* Actions for Mahasiswa or Admin/Superadmin */}
                         {(isMahasiswa || isAdminOrSuperadmin) && (
