@@ -45,6 +45,17 @@ import {
 } from "@/app/_lib/actions/kegiatanActions";
 import { useSession } from "next-auth/react";
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+
 // Import useQueryState dan parsers dari 'nuqs'
 import { useQueryState, parseAsInteger, parseAsStringEnum } from "nuqs";
 
@@ -401,7 +412,46 @@ export default function KegiatanProgressTable({
           </PaginationItem>
         </PaginationContent>
       </Pagination>
-      {/* ... (AlertDialog untuk Hapus Kegiatan tetap sama) ... */}
+
+      <AlertDialog
+        open={isDeleteDialogOpen} // Mengontrol visibilitas dialog
+        onOpenChange={setIsDeleteDialogOpen} // Untuk menutup dialog jika diklik di luar atau Esc
+      >
+        <AlertDialogContent className="rounded-xl">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-xl font-bold text-gray-900">
+              Konfirmasi Menghapus Kegiatan
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-gray-700">
+              Anda yakin ingin menghapus kegiatan ini secara permanen? Tindakan
+              ini tidak dapat dibatalkan.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel asChild>
+              <Button variant="outline" className="px-5 py-2 rounded-md">
+                Batal
+              </Button>
+            </AlertDialogCancel>
+            <AlertDialogAction asChild>
+              <Button
+                onClick={handleConfirmDelete} // Panggil fungsi konfirmasi saat diklik
+                disabled={isDeleting} // Nonaktifkan tombol saat proses penghapusan
+                className="px-5 py-2 rounded-md bg-red-600 hover:bg-red-700 text-white"
+              >
+                {isDeleting ? ( // Tampilkan loader jika sedang menghapus
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />{" "}
+                    Menghapus...
+                  </>
+                ) : (
+                  "Ya, Hapus"
+                )}
+              </Button>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
