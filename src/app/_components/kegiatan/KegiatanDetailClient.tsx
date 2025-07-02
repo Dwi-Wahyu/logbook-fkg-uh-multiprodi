@@ -31,7 +31,8 @@ import {
   Hash, // For number field type
   ToggleRight, // For boolean field type
   Key, // For template key
-  MessageSquare, // For notes/comments
+  MessageSquare,
+  Paperclip, // For notes/comments
 } from "lucide-react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
@@ -341,9 +342,9 @@ export default function KegiatanDetailClient({
         </div>
       </CardHeader>
 
-      <CardContent className="p-6 pt-0 space-y-6">
+      <CardContent className=" pt-0 space-y-6">
         {/* Informasi Utama Kegiatan */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-1">
             <h3 className="font-semibold text-gray-700">Jenis Kegiatan</h3>
             <p className="text-gray-900 flex items-center">
@@ -392,7 +393,7 @@ export default function KegiatanDetailClient({
         {kegiatan.fieldValues.length > 0 ? (
           <div>
             <h2 className="text-xl font-semibold text-gray-800 mb-4">
-              Detail Kegiatan (Field Kustom)
+              Detail Kegiatan
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {/* Urutkan fieldValues berdasarkan order dari jenisKegiatanField-nya */}
@@ -435,14 +436,6 @@ export default function KegiatanDetailClient({
                         fieldValueEntry.jenisKegiatanField.fieldType
                       )}
                     </p>
-                    {fieldValueEntry.jenisKegiatanField.templateKey && (
-                      <p className="text-gray-500 text-xs flex items-center mt-1">
-                        <Key className="h-3 w-3 mr-1" />
-                        <span className="font-mono">
-                          {fieldValueEntry.jenisKegiatanField.templateKey}
-                        </span>
-                      </p>
-                    )}
                   </div>
                 ))}
             </div>
@@ -455,11 +448,14 @@ export default function KegiatanDetailClient({
 
         <Separator className="my-6" />
 
-        {/* Lampiran */}
         <div>
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">
-            Lampiran ({kegiatan.lampiran.length})
-          </h2>
+          {/* Lampiran */}
+          <div>
+            <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
+              <Paperclip className="h-5 w-5 text-primary" />
+              Lampiran ({kegiatan.lampiran.length})
+            </h2>
+          </div>
           {kegiatan.lampiran.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {kegiatan.lampiran.map((lampiran) => (

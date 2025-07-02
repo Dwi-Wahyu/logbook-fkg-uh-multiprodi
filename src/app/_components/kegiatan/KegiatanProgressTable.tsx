@@ -1,6 +1,7 @@
+// src/app/admin/kegiatan/_components/KegiatanProgressTable.tsx
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { useState, useTransition } from "react"; // Hapus useEffect
 import { useRouter } from "next/navigation";
 import {
   Table,
@@ -26,13 +27,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import {
-  Loader2,
-  Eye,
-  Edit,
-  Trash2,
-  Filter as FilterIcon, // Rename to avoid conflict with Filter component
-} from "lucide-react";
+import { Loader2, Eye, Edit, Trash2, Filter as FilterIcon } from "lucide-react";
 
 import { CardContent } from "@/components/ui/card";
 import { toast } from "sonner";
@@ -42,7 +37,7 @@ import Link from "next/link";
 import {
   KegiatanWithRelations,
   getAllMataKuliah,
-  getAllJenisKegiatan, // Untuk tipe JenisKegiatanOption
+  getAllJenisKegiatan,
 } from "@/app/_lib/queries/kegiatanQueries";
 import {
   updateKegiatanStatus,
@@ -50,19 +45,23 @@ import {
 } from "@/app/_lib/actions/kegiatanActions";
 import { useSession } from "next-auth/react";
 
+// Import useQueryState dan parsers dari 'nuqs'
+import { useQueryState, parseAsInteger, parseAsStringEnum } from "nuqs";
+
 // Inferensi tipe untuk MataKuliahOption
 type MataKuliahOption = Awaited<ReturnType<typeof getAllMataKuliah>>[number];
 type JenisKegiatanData = Awaited<
   ReturnType<typeof getAllJenisKegiatan>
->[number]; // Tipe untuk jenisKegiatanData
+>[number];
 
 interface KegiatanProgressTableProps {
   initialKegiatanList: KegiatanWithRelations[];
   initialPageCount: number;
   initialFilteredCount: number;
+  // allMataKuliah tidak digunakan di komponen ini, bisa dihapus jika tidak ada rencana pakai
   allMataKuliah: MataKuliahOption[];
-  jenisKegiatanData: JenisKegiatanData; // Data jenis kegiatan lengkap dari parent
-  mahasiswaPenggunaId: string; // ID Pengguna mahasiswa
+  jenisKegiatanData: JenisKegiatanData;
+  mahasiswaPenggunaId: string;
 }
 
 export default function KegiatanProgressTable({
@@ -74,10 +73,6 @@ export default function KegiatanProgressTable({
 }: KegiatanProgressTableProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  const [data, setData] =
-    useState<KegiatanWithRelations[]>(initialKegiatanList);
-  const [pageCount, setPageCount] = useState(initialPageCount);
-  const [filteredCount, setFilteredCount] = useState(initialFilteredCount);
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [kegiatanToDeleteId, setKegiatanToDeleteId] = useState<string | null>(
@@ -85,58 +80,66 @@ export default function KegiatanProgressTable({
   );
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // Filter state (hanya status di sini)
-  const [statusFilter, setStatusFilter] = useState("all"); // Default 'all'
+  // --- Gunakan useQueryState untuk pagination dan filter status ---
+  const [page, setPage] = useQueryState(
+    "page",
+    parseAsInteger.withDefault(1).withOptions({ shallow: false })
+  );
+  const [perPage, setPerPage] = useQueryState(
+    "perPage",
+    parseAsInteger.withDefault(10).withOptions({ shallow: false })
+  );
+  const [statusFilter, setStatusFilter] = useQueryState(
+    "status",
+    parseAsStringEnum(["DIAJUKAN", "DISETUJUI", "DITOLAK"])
+      .withOptions({ clearOnDefault: true })
+      .withOptions({ shallow: false })
+  );
+  // Tambahkan pengajuId dan jenisKegiatanId sebagai useQueryState juga
+  // Jika mereka selalu ada di URL, Anda bisa menggunakannya seperti ini.
+  // Pastikan parameter ini juga ada di `kegiatanSearchParams.ts`
+  const [queryJenisKegiatanId, setQueryJenisKegiatanId] = useQueryState(
+    "jenisKegiatanId",
+    parseAsStringEnum([jenisKegiatanData.id]).withOptions({
+      shallow: false,
+      clearOnDefault: true, // Akan dihapus jika null, atau Anda bisa pakai withDefault(jenisKegiatanData.id)
+    })
+  );
+  const [queryPengajuId, setQueryPengajuId] = useQueryState(
+    "pengajuId",
+    parseAsStringEnum([mahasiswaPenggunaId]).withOptions({
+      shallow: false,
+      clearOnDefault: true, // Akan dihapus jika null, atau Anda bisa pakai withDefault(mahasiswaPenggunaId)
+    })
+  );
 
-  // Pagination states
-  const [page, setPage] = useState(1);
-  const [perPage, setPerPage] = useState(10);
+  // Hapus useEffect sinkronisasi, karena useQueryState menanganinya
+  // useEffect(() => {
+  //   setData(initialKegiatanList);
+  //   setPageCount(initialPageCount);
+  //   setFilteredCount(initialFilteredCount);
+  //   const urlParams = new URLSearchParams(window.location.search);
+  //   setStatusFilter(urlParams.get("status") || "all");
+  //   setPage(parseInt(urlParams.get("page") || "1"));
+  //   setPerPage(parseInt(urlParams.get("perPage") || "10"));
+  // }, [initialKegiatanList, initialPageCount, initialFilteredCount]);
 
-  // Sinkronkan data dari server props ke state komponen
-  useEffect(() => {
-    setData(initialKegiatanList);
-    setPageCount(initialPageCount);
-    setFilteredCount(initialFilteredCount);
-    // Inisialisasi filter dari URL jika ada (tapi untuk halaman ini, status default 'all')
-    const urlParams = new URLSearchParams(window.location.search);
-    setStatusFilter(urlParams.get("status") || "all");
-    setPage(parseInt(urlParams.get("page") || "1"));
-    setPerPage(parseInt(urlParams.get("perPage") || "10"));
-  }, [initialKegiatanList, initialPageCount, initialFilteredCount]);
-
-  // Fungsi untuk menerapkan filter dan menavigasi
-  const applyFiltersAndNavigate = () => {
+  // Fungsi untuk menerapkan filter
+  const handleApplyFilters = () => {
     startTransition(() => {
-      const params = new URLSearchParams();
-      params.set("page", page.toString());
-      params.set("perPage", perPage.toString());
-      params.set("jenisKegiatanId", jenisKegiatanData.id); // Selalu sertakan jenisKegiatanId dari route params
-      params.set("pengajuId", mahasiswaPenggunaId); // Selalu sertakan penggunaId dari route params
-
-      if (statusFilter && statusFilter !== "all") {
-        params.set("status", statusFilter);
-      } else {
-        params.delete("status");
-      }
-
-      // Bangun URL dengan route params dan search params
-      router.push(
-        `/admin/kegiatan/progress/${
-          jenisKegiatanData.id
-        }/${mahasiswaPenggunaId}?${params.toString()}`
-      );
-      router.refresh(); // Memaksa re-fetch data dari Server Component
+      setPage(1); // Reset halaman ke 1 saat filter baru diterapkan
+      // setStatusFilter sudah diatur oleh komponen Select
+      // queryJenisKegiatanId dan queryPengajuId tidak perlu diatur di sini
+      // karena mereka diasumsikan sudah ada dari route params.
+      // Namun, jika route params TIDAK secara otomatis menjadi query params,
+      // Anda mungkin perlu secara eksplisit set ini (lihat catatan di bawah).
     });
   };
 
-  const handleApplyFilters = () => {
-    setPage(1); // Reset halaman ke 1 saat filter baru diterapkan
-    applyFiltersAndNavigate();
-  };
-
   const handlePageChange = (newPage: number) => {
-    setPage(newPage);
-    applyFiltersAndNavigate();
+    startTransition(() => {
+      setPage(newPage);
+    });
   };
 
   // --- LOGIKA DAN STATE UNTUK HAPUS KEGIATAN ---
@@ -163,7 +166,7 @@ export default function KegiatanProgressTable({
           variant="success"
         />
       ));
-      router.refresh(); // Re-fetch data untuk memperbarui tabel
+      router.refresh(); // Re-fetch data dari Server Component
     } else {
       toast.custom(() => (
         <CustomToast
@@ -245,7 +248,16 @@ export default function KegiatanProgressTable({
     <div className="pt-0">
       <div className="flex items-center justify-between gap-4 flex-wrap">
         {/* Filter Status */}
-        <Select value={statusFilter} onValueChange={setStatusFilter}>
+        <Select
+          value={statusFilter === null ? "all" : statusFilter} // Pastikan nilai default di Select item match
+          onValueChange={(value) => {
+            if (value === "all") {
+              setStatusFilter(null); // Set ke null untuk menghapus dari URL jika clearOnDefault
+            } else if (["DIAJUKAN", "DISETUJUI", "DITOLAK"].includes(value)) {
+              setStatusFilter(value as "DIAJUKAN" | "DISETUJUI" | "DITOLAK");
+            }
+          }}
+        >
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Filter Status" />
           </SelectTrigger>
@@ -265,15 +277,15 @@ export default function KegiatanProgressTable({
       </div>
 
       <p className="text-sm text-gray-600 my-4">
-        Total Kegiatan: {filteredCount}
+        Total Kegiatan: {initialFilteredCount}
       </p>
 
-      {isPending && data.length === 0 ? (
+      {isPending && initialKegiatanList.length === 0 ? ( // Gunakan initialKegiatanList
         <div className="flex justify-center items-center h-40">
           <Loader2 className="animate-spin" size={32} />
           <span className="ml-2">Memuat data...</span>
         </div>
-      ) : data.length === 0 ? (
+      ) : initialKegiatanList.length === 0 ? ( // Gunakan initialKegiatanList
         <div className="text-center p-8 text-gray-500">
           Tidak ada kegiatan yang ditemukan.
         </div>
@@ -285,11 +297,13 @@ export default function KegiatanProgressTable({
                 {jenisKegiatanData.fields.map((value) => (
                   <TableHead key={value.id}>{value.fieldName}</TableHead>
                 ))}
+                <TableHead>Status</TableHead> {/* Tambahkan kolom Status */}
                 <TableHead>Aksi</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data.map((kegiatan, index) => {
+              {initialKegiatanList.map((kegiatan, index) => {
+                // Gunakan initialKegiatanList
                 const isDosenPembimbing =
                   session.data?.user.id ===
                   kegiatan.logbook.mahasiswa?.pembimbing?.pengguna.id;
@@ -304,7 +318,15 @@ export default function KegiatanProgressTable({
                         )}
                       </TableCell>
                     ))}
-
+                    {/* Tambahkan Td untuk Status */}
+                    <TableCell>
+                      {/* prettier-ignore */}
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs font-semibold border ${getStatusBadgeColorClass(kegiatan.status)}`}
+                      >
+                        {kegiatan.status}
+                      </span>
+                    </TableCell>
                     <TableCell className="flex space-x-2">
                       <Link href={`/admin/kegiatan/detail/${kegiatan.id}`}>
                         <Button variant="outline" size="sm" className="p-2">
@@ -325,6 +347,14 @@ export default function KegiatanProgressTable({
                               </Button>
                             </Link>
                           )}
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            className="p-2"
+                            onClick={() => handleDeleteClick(kegiatan.id)}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
                         </>
                       )}
                     </TableCell>
@@ -341,16 +371,16 @@ export default function KegiatanProgressTable({
         <PaginationContent>
           <PaginationItem>
             <PaginationPrevious
-              onClick={() => handlePageChange(Math.max(1, page - 1))}
+              onClick={() => handlePageChange(Math.max(1, (page || 1) - 1))}
               className={
-                page === 1 ? "pointer-events-none opacity-50" : undefined
+                (page || 1) === 1 ? "pointer-events-none opacity-50" : undefined
               }
             />
           </PaginationItem>
-          {Array.from({ length: pageCount }, (_, i) => (
+          {Array.from({ length: initialPageCount }, (_, i) => (
             <PaginationItem key={i}>
               <PaginationLink
-                isActive={page === i + 1}
+                isActive={(page || 1) === i + 1}
                 onClick={() => handlePageChange(i + 1)}
               >
                 {i + 1}
@@ -359,9 +389,11 @@ export default function KegiatanProgressTable({
           ))}
           <PaginationItem>
             <PaginationNext
-              onClick={() => handlePageChange(Math.min(pageCount, page + 1))}
+              onClick={() =>
+                handlePageChange(Math.min(initialPageCount, (page || 1) + 1))
+              }
               className={
-                page === pageCount
+                (page || 1) === initialPageCount
                   ? "pointer-events-none opacity-50"
                   : undefined
               }
@@ -369,6 +401,7 @@ export default function KegiatanProgressTable({
           </PaginationItem>
         </PaginationContent>
       </Pagination>
+      {/* ... (AlertDialog untuk Hapus Kegiatan tetap sama) ... */}
     </div>
   );
 }

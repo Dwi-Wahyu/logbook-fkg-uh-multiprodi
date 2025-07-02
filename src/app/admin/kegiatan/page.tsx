@@ -64,7 +64,6 @@ export default async function KegiatanListPage({
           initialFilteredCount={filtered}
           allMataKuliah={allMataKuliah}
           allJenisKegiatan={allJenisKegiatan}
-          currentSearchParams={rawSearchParams}
         />
       </Suspense>
     </div>

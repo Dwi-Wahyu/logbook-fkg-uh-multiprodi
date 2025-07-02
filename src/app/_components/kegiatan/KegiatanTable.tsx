@@ -1,7 +1,6 @@
-// src/app/admin/kegiatan/_components/KegiatanTable.tsx
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import {
   Table,
@@ -28,15 +27,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import {
-  Loader2,
-  PlusCircle,
-  Trash2,
-  Edit,
-  Eye,
-  LucideSquareDashedMousePointer,
-  Filter, // Import Filter icon
-} from "lucide-react";
+import { Loader2, PlusCircle, Trash2, Edit, Eye, Filter } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -52,7 +43,7 @@ import {
 } from "@/components/ui/alert-dialog";
 
 import {
-  Dialog, // Import Dialog for the filter modal
+  Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -71,14 +62,21 @@ import Link from "next/link";
 
 import {
   KegiatanWithRelations,
-  FieldValueWithDefinition,
   getAllJenisKegiatan,
 } from "@/app/_lib/queries/kegiatanQueries";
 import { useSession } from "next-auth/react";
-import { type SearchParams } from "nuqs/server";
+
+// Import useQueryState DAN parsers dari 'nuqs'
+import {
+  useQueryState,
+  parseAsInteger,
+  parseAsString,
+  parseAsStringEnum,
+  parseAsBoolean,
+} from "nuqs";
+
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
 
 type MataKuliahOption = {
   id: number;
@@ -96,7 +94,6 @@ interface KegiatanTableProps {
   initialFilteredCount: number;
   allMataKuliah: MataKuliahOption[];
   allJenisKegiatan: JenisKegiatanOption[];
-  currentSearchParams: SearchParams;
 }
 
 export default function KegiatanTable({
@@ -105,14 +102,9 @@ export default function KegiatanTable({
   initialFilteredCount,
   allMataKuliah,
   allJenisKegiatan,
-  currentSearchParams,
 }: KegiatanTableProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  const [data, setData] =
-    useState<KegiatanWithRelations[]>(initialKegiatanList);
-  const [pageCount, setPageCount] = useState(initialPageCount);
-  const [filteredCount, setFilteredCount] = useState(initialFilteredCount);
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [kegiatanToDeleteId, setKegiatanToDeleteId] = useState<string | null>(
@@ -120,123 +112,45 @@ export default function KegiatanTable({
   );
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // State untuk kontrol Dialog Filter
   const [isFilterDialogOpen, setIsFilterDialogOpen] = useState(false);
 
-  const [page, setPage] = useState(
-    parseInt(currentSearchParams.page?.toString() || "1")
+  // --- Gunakan useQueryState dengan parser yang memiliki opsi shallow: false ---
+  const [page, setPage] = useQueryState(
+    "page",
+    parseAsInteger.withDefault(1).withOptions({ shallow: false }) // Opsi shallow digabung di sini
   );
-  const [perPage, setPerPage] = useState(
-    parseInt(currentSearchParams.perPage?.toString() || "10")
+  const [perPage, setPerPage] = useQueryState(
+    "perPage",
+    parseAsInteger.withDefault(10).withOptions({ shallow: false }) // Opsi shallow digabung di sini
   );
-  const [statusFilter, setStatusFilter] = useState(
-    currentSearchParams.status?.toString() === "null"
-      ? "all"
-      : currentSearchParams.status?.toString() || "all"
+  const [judulFilter, setJudulFilter] = useQueryState(
+    "judul",
+    parseAsString.withDefault("").withOptions({ shallow: false }) // Opsi shallow digabung di sini
   );
-  const [mataKuliahFilter, setMataKuliahFilter] = useState(
-    currentSearchParams.mataKuliahId?.toString() || "all"
+  const [statusFilter, setStatusFilter] = useQueryState(
+    "status",
+    parseAsStringEnum(["DIAJUKAN", "DISETUJUI", "DITOLAK"])
+      .withOptions({ clearOnDefault: true })
+      .withOptions({ shallow: false }) // Opsi shallow digabung di sini
   );
-  const [semesterFilter, setSemesterFilter] = useState(
-    currentSearchParams.semester?.toString() === "null"
-      ? "all"
-      : currentSearchParams.semester?.toString() || "all"
+  const [mataKuliahFilter, setMataKuliahFilter] = useQueryState(
+    "mataKuliahId",
+    parseAsString.withDefault("").withOptions({ shallow: false }) // Opsi shallow digabung di sini
   );
-  const [jenisKegiatanFilter, setJenisKegiatanFilter] = useState(
-    currentSearchParams.jenisKegiatanId?.toString() || "all"
+  const [semesterFilter, setSemesterFilter] = useQueryState(
+    "semester",
+    parseAsInteger
+      .withOptions({ clearOnDefault: true })
+      .withOptions({ shallow: false }) // Opsi shallow digabung di sini
   );
-  const [filterAllProgramStudi, setFilterAllProgramStudi] = useState(
-    currentSearchParams.filterAllProgramStudi === "true"
+  const [jenisKegiatanFilter, setJenisKegiatanFilter] = useQueryState(
+    "jenisKegiatanId",
+    parseAsString.withDefault("").withOptions({ shallow: false }) // Opsi shallow digabung di sini
   );
-
-  useEffect(() => {
-    setData(initialKegiatanList);
-    setPageCount(initialPageCount);
-    setFilteredCount(initialFilteredCount);
-    setPage(parseInt(currentSearchParams.page?.toString() || "1"));
-    setPerPage(parseInt(currentSearchParams.perPage?.toString() || "10"));
-    setStatusFilter(
-      currentSearchParams.status?.toString() === "null"
-        ? "all"
-        : currentSearchParams.status?.toString() || "all"
-    );
-    setMataKuliahFilter(currentSearchParams.mataKuliahId?.toString() || "all");
-    setSemesterFilter(
-      currentSearchParams.semester?.toString() === "null"
-        ? "all"
-        : currentSearchParams.semester?.toString() || "all"
-    );
-    setJenisKegiatanFilter(
-      currentSearchParams.jenisKegiatanId?.toString() || "all"
-    );
-    setFilterAllProgramStudi(
-      currentSearchParams.filterAllProgramStudi === "true"
-    );
-  }, [
-    initialKegiatanList,
-    initialPageCount,
-    initialFilteredCount,
-    currentSearchParams,
-  ]);
-
-  const applyFiltersAndNavigate = () => {
-    startTransition(() => {
-      const params = new URLSearchParams();
-      params.set("page", page.toString());
-      params.set("perPage", perPage.toString());
-
-      if (statusFilter && statusFilter !== "all")
-        params.set("status", statusFilter);
-      else params.delete("status");
-
-      if (mataKuliahFilter && mataKuliahFilter !== "all")
-        params.set("mataKuliahId", mataKuliahFilter);
-      else params.delete("mataKuliahId");
-
-      if (semesterFilter && semesterFilter !== "all")
-        params.set("semester", semesterFilter);
-      else params.delete("semester");
-
-      if (jenisKegiatanFilter && jenisKegiatanFilter !== "all")
-        params.set("jenisKegiatanId", jenisKegiatanFilter);
-      else params.delete("jenisKegiatanId");
-
-      if (filterAllProgramStudi) params.set("filterAllProgramStudi", "true");
-      else params.delete("filterAllProgramStudi");
-
-      router.push(`/admin/kegiatan?${params.toString()}`);
-    });
-  };
-
-  const handleApplyFilters = () => {
-    setPage(1); // Reset page to 1 when filters are applied
-    applyFiltersAndNavigate();
-    setIsFilterDialogOpen(false); // Close the filter dialog
-  };
-
-  const handleResetFilters = () => {
-    setPage(1);
-    setPerPage(10);
-    setStatusFilter("all");
-    setMataKuliahFilter("all");
-    setSemesterFilter("all");
-    setJenisKegiatanFilter("all");
-    setFilterAllProgramStudi(false); // Reset switch
-
-    // Clear all params from URL
-    startTransition(() => {
-      const params = new URLSearchParams(); // Create empty params
-      params.set("page", "1");
-      params.set("perPage", "10");
-      router.push(`/admin/kegiatan?${params.toString()}`);
-      setIsFilterDialogOpen(false); // Close the filter dialog
-    });
-  };
-
-  const handlePageChange = (newPage: number) => {
-    setPage(newPage);
-    applyFiltersAndNavigate();
-  };
+  const [filterAllProgramStudi, setFilterAllProgramStudi] = useQueryState(
+    "filterAllProgramStudi",
+    parseAsBoolean.withDefault(false).withOptions({ shallow: false }) // Opsi shallow digabung di sini
+  );
 
   const handleDeleteClick = (kegiatanId: string) => {
     setKegiatanToDeleteId(kegiatanId);
@@ -261,8 +175,7 @@ export default function KegiatanTable({
           variant="success"
         />
       ));
-
-      window.location.reload();
+      router.refresh();
     } else {
       toast.custom(() => (
         <CustomToast
@@ -334,7 +247,6 @@ export default function KegiatanTable({
 
   const semesterOptions = Array.from({ length: 14 }, (_, i) => i + 1);
 
-  // Helper untuk mendapatkan nilai field kustom berdasarkan templateKey
   const getFieldValue = (
     kegiatan: KegiatanWithRelations,
     templateKey: string
@@ -345,6 +257,33 @@ export default function KegiatanTable({
     return fieldValue?.value || "-";
   };
 
+  const handlePageChange = (newPage: number) => {
+    startTransition(() => {
+      setPage(newPage);
+    });
+  };
+
+  const handleApplyFilters = () => {
+    startTransition(() => {
+      setPage(1);
+    });
+    setIsFilterDialogOpen(false);
+  };
+
+  const handleResetFilters = () => {
+    startTransition(() => {
+      setPage(null);
+      setPerPage(null);
+      setJudulFilter(null);
+      setStatusFilter(null);
+      setMataKuliahFilter(null);
+      setSemesterFilter(null);
+      setJenisKegiatanFilter(null);
+      setFilterAllProgramStudi(null);
+    });
+    setIsFilterDialogOpen(false);
+  };
+
   return (
     <Card className="w-full shadow-md">
       <CardHeader>
@@ -352,7 +291,6 @@ export default function KegiatanTable({
           Daftar Kegiatan
         </CardTitle>
         <div className="flex items-center justify-between gap-4 pt-4 flex-wrap">
-          {/* Tombol Filter yang memicu Dialog */}
           <Dialog
             open={isFilterDialogOpen}
             onOpenChange={setIsFilterDialogOpen}
@@ -370,8 +308,20 @@ export default function KegiatanTable({
                 </DialogDescription>
               </DialogHeader>
               <div className="grid gap-4 py-4">
-                {/* Status Filter */}
-                <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <Select
+                  value={statusFilter === null ? "all" : statusFilter}
+                  onValueChange={(value) => {
+                    if (value === "all") {
+                      setStatusFilter(null);
+                    } else if (
+                      ["DIAJUKAN", "DISETUJUI", "DITOLAK"].includes(value)
+                    ) {
+                      setStatusFilter(
+                        value as "DIAJUKAN" | "DISETUJUI" | "DITOLAK"
+                      );
+                    }
+                  }}
+                >
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Filter Status" />
                   </SelectTrigger>
@@ -383,10 +333,11 @@ export default function KegiatanTable({
                   </SelectContent>
                 </Select>
 
-                {/* Mata Kuliah Filter */}
                 <Select
-                  value={mataKuliahFilter}
-                  onValueChange={setMataKuliahFilter}
+                  value={mataKuliahFilter || "all"}
+                  onValueChange={(value) =>
+                    setMataKuliahFilter(value === "all" ? null : value)
+                  }
                 >
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Filter Mata Kuliah" />
@@ -402,11 +353,18 @@ export default function KegiatanTable({
                   </SelectContent>
                 </Select>
 
-                {/* Semester Filter */}
                 {(isMahasiswa || isDosen || isAdminOrSuperadmin) && (
                   <Select
-                    value={semesterFilter}
-                    onValueChange={setSemesterFilter}
+                    value={
+                      semesterFilter === null
+                        ? "all"
+                        : semesterFilter.toString()
+                    }
+                    onValueChange={(value) =>
+                      setSemesterFilter(
+                        value === "all" ? null : parseInt(value)
+                      )
+                    }
                   >
                     <SelectTrigger className="w-full">
                       <SelectValue placeholder="Filter Semester" />
@@ -422,10 +380,11 @@ export default function KegiatanTable({
                   </Select>
                 )}
 
-                {/* Jenis Kegiatan Filter */}
                 <Select
-                  value={jenisKegiatanFilter}
-                  onValueChange={setJenisKegiatanFilter}
+                  value={jenisKegiatanFilter || "all"}
+                  onValueChange={(value) =>
+                    setJenisKegiatanFilter(value === "all" ? null : value)
+                  }
                 >
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Filter Jenis Kegiatan" />
@@ -444,8 +403,10 @@ export default function KegiatanTable({
                   <div className="flex shadow-sm border rounded-lg px-3 py-2 gap-3 items-center">
                     <Switch
                       id="filterAllProgramStudi"
-                      checked={filterAllProgramStudi}
-                      onCheckedChange={setFilterAllProgramStudi} // Update state saat switch diubah
+                      checked={filterAllProgramStudi || false}
+                      onCheckedChange={(checked) =>
+                        setFilterAllProgramStudi(checked)
+                      }
                     />
                     <Label className="text-sm" htmlFor="filterAllProgramStudi">
                       Tampilkan Semua Kegiatan Mahasiswa Program Studi Ini
@@ -457,17 +418,16 @@ export default function KegiatanTable({
                 <Button variant="outline" onClick={handleResetFilters}>
                   Reset Filter
                 </Button>
-                <Button onClick={handleApplyFilters} disabled={isPending}>
+                {/* <Button onClick={handleApplyFilters} disabled={isPending}>
                   {isPending ? (
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   ) : null}
                   Terapkan Filter
-                </Button>
+                </Button> */}
               </DialogFooter>
             </DialogContent>
           </Dialog>
 
-          {/* Add Kegiatan Button */}
           {isMahasiswa && (
             <Link href="/admin/kegiatan/tambah-kegiatan">
               <Button>
@@ -480,21 +440,19 @@ export default function KegiatanTable({
 
       <CardContent className="pt-0">
         <p className="text-sm text-gray-600 mb-4">
-          Total Kegiatan: {filteredCount}
+          Total Kegiatan: {initialFilteredCount}
         </p>
 
-        {/* Loading / No Data State */}
-        {isPending && data.length === 0 ? (
+        {isPending && initialKegiatanList.length === 0 ? (
           <div className="flex justify-center items-center h-40">
             <Loader2 className="animate-spin" size={32} />
             <span className="ml-2">Memuat data...</span>
           </div>
-        ) : data.length === 0 ? (
+        ) : initialKegiatanList.length === 0 ? (
           <div className="text-center p-8 text-gray-500">
             Tidak ada kegiatan yang ditemukan.
           </div>
         ) : (
-          // Data Table with horizontal scroll
           <div className="relative w-full overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
             <Table className="min-w-full bg-white">
               <TableHeader>
@@ -504,19 +462,20 @@ export default function KegiatanTable({
                   <TableHead className="">Mata Kuliah</TableHead>
                   <TableHead className="">Pengaju</TableHead>
                   <TableHead className="">Status</TableHead>
-                  {/* <TableHead className="">Tanggal Dibuat</TableHead> */}
                   <TableHead className=" text-center">Aksi</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {data.map((kegiatan, index) => {
+                {initialKegiatanList.map((kegiatan, index) => {
                   const isDosenPembimbing =
                     session.data?.user.id ===
                     kegiatan.logbook.mahasiswa?.pembimbing?.pengguna.id;
 
                   return (
                     <TableRow key={kegiatan.id}>
-                      <TableCell>{(page - 1) * perPage + index + 1}</TableCell>
+                      <TableCell>
+                        {((page || 1) - 1) * (perPage || 10) + index + 1}
+                      </TableCell>
                       <TableCell>{kegiatan.jenisKegiatan.nama}</TableCell>
                       <TableCell>
                         {kegiatan.MataKuliah?.judul
@@ -549,13 +508,7 @@ export default function KegiatanTable({
                           {kegiatan.status}
                         </span>
                       </TableCell>
-                      {/* <TableCell>
-                        {new Date(kegiatan.createdAt).toLocaleDateString(
-                          "id-ID"
-                        )}
-                      </TableCell> */}
                       <TableCell className="flex space-x-2 justify-center">
-                        {/* Actions for Mahasiswa or Admin/Superadmin */}
                         {(isMahasiswa || isAdminOrSuperadmin) && (
                           <>
                             <Link
@@ -593,7 +546,6 @@ export default function KegiatanTable({
                           </>
                         )}
 
-                        {/* Actions for Dosen or Admin/Superadmin (without duplicating Detail if already present) */}
                         {(isDosen || isAdminOrSuperadmin) && (
                           <>
                             {!(isMahasiswa || isAdminOrSuperadmin) && (
@@ -645,21 +597,22 @@ export default function KegiatanTable({
           </div>
         )}
 
-        {/* Pagination Controls */}
         <Pagination className="mt-4">
           <PaginationContent>
             <PaginationItem>
               <PaginationPrevious
-                onClick={() => handlePageChange(Math.max(1, page - 1))}
+                onClick={() => handlePageChange(Math.max(1, (page || 1) - 1))}
                 className={
-                  page === 1 ? "pointer-events-none opacity-50" : undefined
+                  (page || 1) === 1
+                    ? "pointer-events-none opacity-50"
+                    : undefined
                 }
               />
             </PaginationItem>
-            {Array.from({ length: pageCount }, (_, i) => (
+            {Array.from({ length: initialPageCount }, (_, i) => (
               <PaginationItem key={i}>
                 <PaginationLink
-                  isActive={page === i + 1}
+                  isActive={(page || 1) === i + 1}
                   onClick={() => handlePageChange(i + 1)}
                 >
                   {i + 1}
@@ -668,9 +621,11 @@ export default function KegiatanTable({
             ))}
             <PaginationItem>
               <PaginationNext
-                onClick={() => handlePageChange(Math.min(pageCount, page + 1))}
+                onClick={() =>
+                  handlePageChange(Math.min(initialPageCount, (page || 1) + 1))
+                }
                 className={
-                  page === pageCount
+                  (page || 1) === initialPageCount
                     ? "pointer-events-none opacity-50"
                     : undefined
                 }
@@ -680,7 +635,6 @@ export default function KegiatanTable({
         </Pagination>
       </CardContent>
 
-      {/* AlertDialog for Delete Confirmation */}
       <AlertDialog
         open={isDeleteDialogOpen}
         onOpenChange={setIsDeleteDialogOpen}
